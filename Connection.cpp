@@ -132,35 +132,7 @@ void* Connection::receiver( void* arg)
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* dispatchq = conndata->dispatchq->getQueue();
-    char buffer[4096] = "";public:
-    int _broker_sock;
-    sockaddr_in _broker_addr;
-    list<struct CLIENT*> clientlists;
-    
-    // Executor에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
-    Connection(int recvport);
-    // Connection 해제
-    ~Connection();
-    // serverStart wrapper
-    static void* serverStart_wrapper(void* context);
-    // serverStart internal
-    void* serverStart_internal(void* arg);
-    // sender, receivers, dispatcher 생성
-    pthread_t serverStart(QUEUE* inq, QUEUE* outq);
-    // ip주소를 뽑는 함수
-    void* get_in_addr( struct sockaddr *sa );
-    // 패킷을 보내는 함수
-    void* sender(void* arg);
-    // sender wrapper
-    static void* sender_wrapper( void* context );
-    // 패킷을 받는 함수
-    void* receiver(void* arg);
-    // receiver wrapper
-    static void* receiver_wrapper(void* context);
-    // 리비서에서 받은 패킷을 분류하는 함수
-    void* dispatcher(void* arg);
-    // dispatcher wrapper
-    static void* dispatcher_wrapper ( void* context );
+    char buffer[4096] = "";
 
     while(1)
     {
