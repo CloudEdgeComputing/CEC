@@ -15,6 +15,7 @@ private:
     QUEUE* inq, *outq;
     list<Task*> tasks;
     Connection* conn;
+    bool state;
 public:
     // 익스큐터 내의 오퍼레이터들을 스케줄링 한다.
     void executorStart();
@@ -35,4 +36,8 @@ public:
     list<Task*> getTask();
     // Task를 executor에 등록한다.
     void registerTask(Task* task);
+    // Executor가 실행중인가?
+    bool getExecutorState();
+    // Executor 상태 변경 1, running 2, blocked
+    bool setExecutorState(bool state);
 };

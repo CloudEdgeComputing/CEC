@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(cec_mig_framwork)
 
-add_executable(cec_mig_framwork main.cpp Task.cpp Connection.cpp Data.cpp Executor.cpp ExecutorManager.cpp Operator.cpp Queue.cpp Functions.cpp)
+add_executable(cec_mig_framwork Migration.cpp main.cpp Task.cpp Connection.cpp Data.cpp Executor.cpp ExecutorManager.cpp Operator.cpp Queue.cpp Functions.cpp)
 
 link_directories(/usr/lib/x86_64-linux-gnu/)
 

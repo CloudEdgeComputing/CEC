@@ -52,3 +52,13 @@ void Executor::registerTask ( Task* task )
 {
     this->tasks.push_back(task);
 }
+
+bool Executor::getExecutorState()
+{
+    return this->state;
+}
+
+bool Executor::setExecutorState ( bool state )
+{
+    this->state = state;
+}

@@ -84,3 +84,18 @@ void* Task::scheduling_wrapper ( void* context )
 {
     return ((Task*)context)->Scheduling(context);
 }
+
+bool Task::getTaskState()
+{
+    return this->isrun;
+}
+
+bool Task::setTaskState(bool state)
+{
+    this->isrun = state;
+}
+
+QUEUE* Task::getoutq()
+{
+    return this->outq;
+}

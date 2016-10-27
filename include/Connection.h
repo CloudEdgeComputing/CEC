@@ -30,6 +30,7 @@ class Connection
 private:
     pthread_t dispatcher_tid, sender_tid;
     list<pthread_t> receiver_tids;
+    bool state;
 public:
     int _broker_sock;
     sockaddr_in _broker_addr;
@@ -63,5 +64,7 @@ public:
     void setsender_tid ( pthread_t tid );
     void setdispatcher_tid ( pthread_t tid );
     //void register_user(pthread_t tid, int fd, struct sockaddr_storage client_addr);
+    // Connection 모듈이 동작하고 있는가? true: 동작중 false: blocking
+    void getConnState();
     
 };

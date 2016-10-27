@@ -38,4 +38,10 @@ public:
     void* Scheduling(void* arg);
     // 스케쥴링 래퍼 함수
     static void* scheduling_wrapper(void* context);
+    // Task가 running중인가?
+    bool getTaskState();
+    // Task의 상태를 변경한다.
+    bool setTaskState(bool state);
+    // outq를 가져온다.
+    QUEUE* getoutq();
 };

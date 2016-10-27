@@ -25,7 +25,10 @@ Connection::Connection ( int recvport )
         printf ( "Listen error!\n" );
         exit ( 0 );
     }
+    this->state = true;
+    
     printf ( "Server initialized!\n" );
+    
 }
 
 Connection::~Connection()
@@ -129,7 +132,35 @@ void* Connection::receiver( void* arg)
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* dispatchq = conndata->dispatchq->getQueue();
-    char buffer[4096] = "";
+    char buffer[4096] = "";public:
+    int _broker_sock;
+    sockaddr_in _broker_addr;
+    list<struct CLIENT*> clientlists;
+    
+    // Executor에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
+    Connection(int recvport);
+    // Connection 해제
+    ~Connection();
+    // serverStart wrapper
+    static void* serverStart_wrapper(void* context);
+    // serverStart internal
+    void* serverStart_internal(void* arg);
+    // sender, receivers, dispatcher 생성
+    pthread_t serverStart(QUEUE* inq, QUEUE* outq);
+    // ip주소를 뽑는 함수
+    void* get_in_addr( struct sockaddr *sa );
+    // 패킷을 보내는 함수
+    void* sender(void* arg);
+    // sender wrapper
+    static void* sender_wrapper( void* context );
+    // 패킷을 받는 함수
+    void* receiver(void* arg);
+    // receiver wrapper
+    static void* receiver_wrapper(void* context);
+    // 리비서에서 받은 패킷을 분류하는 함수
+    void* dispatcher(void* arg);
+    // dispatcher wrapper
+    static void* dispatcher_wrapper ( void* context );
 
     while(1)
     {
@@ -204,7 +235,7 @@ void* Connection::sender ( void* arg )
 }
 
 void* Connection::sender_wrapper ( void* context )
-{
+{    
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
     return ((Connection*)thispointer)->sender(context);
@@ -241,10 +272,7 @@ void* Connection::dispatcher ( void* arg )
                 // 커맨드
                 case 0x01:
                 {
-                    // content 벗겨내기
-                    
-                    // 마이그레이션 실행
-                    // 필요한 데이터: 타겟 아이피 또는 타겟 인덱스
+                    // 마이그레이션 설치 되어 있는가?
                     
                     break;
                 }
@@ -287,11 +315,16 @@ void Connection::register_user(pthread_t send_tid, pthread_t recv_tid, int fd, s
 }*/
 
 void Connection::setsender_tid ( pthread_t tid )
-{
+{    
     this->sender_tid = tid;
 }
 
 void Connection::setdispatcher_tid ( pthread_t tid )
 {
     this->dispatcher_tid = tid;
+}
+
+void Connection::getConnState()
+{
+    return this->state;
 }
