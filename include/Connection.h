@@ -33,6 +33,11 @@ private:
     list<pthread_t> receiver_tids;
     bool state;
     Executor* executor;
+    // Connection 모듈 시그널 컨디션 변수
+    pthread_cond_t g_condition;
+    // Connection 모듈 시그널 컨디션 변수의 락
+    pthread_mutex_t g_mutex;
+    bool shouldbeSleep;
 public:
     int _broker_sock;
     sockaddr_in _broker_addr;
@@ -68,5 +73,9 @@ public:
     //void register_user(pthread_t tid, int fd, struct sockaddr_storage client_addr);
     // Connection 모듈이 동작하고 있는가? true: 동작중 false: blocking
     bool getConnState();
+    // Connection을 재운다 (Sender 및 Receiver).
+    void sleepConnection();
+    // Connection을 깨운다 (Sender 및 Receiver).
+    void wakeupConnection();
     
 };

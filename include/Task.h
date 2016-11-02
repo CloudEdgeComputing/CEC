@@ -42,6 +42,12 @@ public:
     bool getTaskState();
     // Task의 상태를 변경한다.
     bool setTaskState(bool state);
+    // inq를 가져온다.
+    QUEUE* getinq();
     // outq를 가져온다.
     QUEUE* getoutq();
+    // 태스크 스케줄러 쓰레드를 블럭한다.
+    void SchedulerSleep();
+    // 태스크 스케줄러 쓰레드를 깨운다.
+    void SchedulerWakeup();
 };

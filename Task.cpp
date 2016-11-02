@@ -55,9 +55,9 @@ void* Task::Scheduling ( void* arg )
         // 태스크 스케줄링 블럭 요청이 있으면 블럭한다.
         if ( !this->isrun )
         {
-            printf("Operator scheduler blocked!\n");
+            printf("Task scheduler blocked!\n");
             pthread_cond_wait ( &this->g_condition, &this->g_mutex );
-            printf("Operator scheduler released!\n");
+            printf("Task scheduler released!\n");
         }
 
         /*
@@ -98,7 +98,28 @@ bool Task::getTaskState()
     return checker;
 }
 
+QUEUE* Task::getinq()
+{
+    return this->inq;
+}
+
 QUEUE* Task::getoutq()
 {
     return this->outq;
+}
+
+void Task::SchedulerSleep()
+{
+    pthread_mutex_lock(&this->g_mutex);
+    this->isrun = false;
+    pthread_mutex_unlock(&this->g_mutex);
+}
+
+void Task::SchedulerWakeup()
+{
+    pthread_mutex_lock(&this->g_mutex);
+    this->isrun = true;
+    pthread_cond_signal(&this->g_condition);
+    //printf("Op wake up...\n");
+    pthread_mutex_unlock(&this->g_mutex);
 }

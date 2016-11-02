@@ -82,15 +82,30 @@ void Migration::startMigration ( int id, Executor* executor )
 {
     int sockfd = this->getClienctCEC ( id );
     
+    // executor에 해당하는 모든 task들을 블럭시킨다.
+    // Task scheduler task 블럭, 웨이크업
+    
+    auto list = executor->getTask();
+    
+    for( auto iter = list.begin(); iter != list.end(); ++iter)
+    {
+        Task* task = (*iter);
+        task->SchedulerSleep();
+    }
+    printf("all tasks in an executor goes to sleep\n");
+    
+    // 블럭 되어있으니 이제 큐에 있는 데이터들을 전송한다.
     while ( 1 )
     {
         bool checker = false;
         QUEUE* inq = executor->getinq();
-
+        
+        printf("from inq\n");
         checker |= !inq->sendQueue ( sockfd );
         
         // executor outq
         QUEUE* outq = executor->getoutq();
+        printf("from outq\n");
         checker |= !outq->sendQueue ( sockfd );
         
         auto list = executor->getTask();
@@ -100,6 +115,7 @@ void Migration::startMigration ( int id, Executor* executor )
             Task* task = *iter;
             // task에 있는 큐를 빼냄
             QUEUE* queue = task->getoutq();
+            printf("from task\n");
             checker |= !queue->sendQueue ( sockfd );
         }
         
@@ -115,7 +131,9 @@ void Migration::startMigration ( int id, Executor* executor )
                 Task* task = *iter;
                 QUEUE* que = task->getoutq();
                 que->clearMigration();
+                task->SchedulerWakeup();
             }
+            printf("all tasks in an executor goes to wake up\n");
             break;
         }
     }

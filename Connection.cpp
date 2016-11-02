@@ -3,7 +3,8 @@
 #include "Queue.h"
 #include "Executor.h"
 #include "ExecutorManager.h"
-#include <Migration.h>
+#include "Debug.h"
+#include "Migration.h"
 
 Connection::Connection ( int recvport, Executor* executor )
 {
@@ -29,6 +30,7 @@ Connection::Connection ( int recvport, Executor* executor )
         exit ( 0 );
     }
     this->state = false;
+    this->shouldbeSleep = false;
 
     this->executor = executor;
 
@@ -117,6 +119,9 @@ void* Connection::serverStart_internal ( void* arg )
         inet_ntop ( client_addr.ss_family, get_in_addr ( ( struct sockaddr * ) &client_addr ), address, sizeof address );
 
         printf ( "[NOTICE] Got connection from %s\n", address );
+        
+        // STATE 변경 to TRUE
+        this->state = true;
 
         struct CONNDATA* receiverdata = new struct CONNDATA;
         receiverdata->fd = fd;
@@ -141,9 +146,16 @@ void* Connection::receiver ( void* arg )
 
     while ( 1 )
     {
+        if(this->shouldbeSleep == true)
+        {
+            printf("receiver goes to sleep\n");
+            pthread_cond_wait ( &this->g_condition, &this->g_mutex );
+            printf("receiver goes to wakeup\n");
+        }
+        
         // 데이터를 받는다.
         unsigned int size = recv ( conndata->fd, buffer, sizeof buffer, 0 );
-        if ( size == -1 )
+        if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
         // 데이터를 DATA 구조체로 바꾼다.
@@ -181,6 +193,12 @@ void* Connection::sender ( void* arg )
 
     while ( 1 )
     {
+        if(this->shouldbeSleep == true)
+        {
+            printf("sender goes to sleep\n");
+            pthread_cond_wait ( &this->g_condition, &this->g_mutex );
+            printf("sender goes to wakeup\n");
+        }
         // outq에서 데이터를 꺼냄 계속
         // 꺼낸뒤에 보냄
         // 데이터 메모리 해제
@@ -192,6 +210,8 @@ void* Connection::sender ( void* arg )
                 printf ( "outq pop error!\n" );
                 exit ( 0 );
             }
+            
+            debug_packet(data->getdata(), data->getLen() + 4);
 
             if ( data->getcontent() == NULL )
             {
@@ -202,6 +222,7 @@ void* Connection::sender ( void* arg )
             if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
             {
                 printf ( "Error occured in send function!\n" );
+                while(1);
                 exit ( 0 );
             }
 
@@ -299,4 +320,19 @@ void Connection::setdispatcher_tid ( pthread_t tid )
 bool Connection::getConnState()
 {
     return this->state;
+}
+
+void Connection::sleepConnection()
+{
+    pthread_mutex_lock(&this->g_mutex);
+    this->shouldbeSleep = true;
+    pthread_mutex_unlock(&this->g_mutex);
+}
+
+void Connection::wakeupConnection()
+{
+    pthread_mutex_lock(&this->g_mutex);
+    this->shouldbeSleep = false;
+    pthread_cond_broadcast(&this->g_condition);
+    pthread_mutex_unlock(&this->g_mutex);
 }

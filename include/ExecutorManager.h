@@ -18,7 +18,7 @@ class ExecutorManager
 {
 private:
     list<Executor*> execs;
-    // unsigned int: id, QUEUE* QUEUE
+    // unsigned int: id, QUEUE* QUEUE.. 자료구조 바꿔야함.. Global id가 확정적인 것으로.. 
     list<QUEUE*> ques;
     // QUEUE의 글로벌 아이디 관리
     int new_gid = 0;

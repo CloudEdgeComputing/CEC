@@ -3,16 +3,6 @@
 #include "Task.h"
 #include "Data.h"
 
-static void debug_packet(char* packet, unsigned int len)
-{
-    printf("packet: ");
-    for(int i = 0; i < len; i++)
-    {
-        printf("0x%x ", packet[i]);
-    }
-    printf("\n");
-}
-
 OPERATOR::OPERATOR( Task* parent, FUNC pfunc )
 {
     this->parent = parent;

@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include "ExecutorManager.h"
 #include "Migration.h"
+#include <Executor.h>
+#include <Task.h>
+#include "Data.h"
+#include "Queue.h"
+#include <Connection.h>
 
 using namespace std;
 
@@ -37,7 +42,43 @@ int main ( int argc, char **argv )
     
     printf("completion of basis\n");
     
-    while(1);
+    
+    // For debug
+    while(1)
+    {
+        scanf("%c", &cp);
+        if(cp == 'd')
+            executormanager.startMigration();
+        else if(cp == 'p')
+        {
+            Executor* executor = executormanager.getExecutorbyId(0);
+            // 모든 Task를 블럭한다.
+            auto list = executor->getTask();
+            for(auto iter = list.begin(); iter != list.end(); ++iter)
+            {
+                Task* task = *iter;
+                task->SchedulerSleep();
+            }
+            
+            // Conection을 블럭한다.
+            Connection* conn = executor->getConnection();
+            conn->sleepConnection();
+            
+            // 데이터를 삽입한다.
+            int value = 4;
+            DATA* data = new DATA(4, 1, 0);
+            data->push(&value, 4);
+            data->sealing();
+            
+            for(auto iter = list.begin(); iter != list.end(); ++iter)
+            {
+                Task* task = *iter;
+                lockfreeq* que = task->getinq()->getQueue();
+                que->push(data);
+            }
+            printf("data insertion for debugging completed!\n");            
+        }
+    }
     
     printf("main thread is terminated!\n");
 

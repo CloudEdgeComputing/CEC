@@ -48,6 +48,7 @@ DATA::DATA ( char* packet, bool isSpecial )
         
         memcpy ( &this->owner_fd, &packet[4], 4 );
         this->pointer = 0;
+        this->content = this->data + 4;
     }
     else
     {

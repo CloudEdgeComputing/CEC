@@ -4,6 +4,7 @@
 #include "Executor.h"
 #include "Connection.h"
 #include "Data.h"
+#include "Debug.h"
 
 QUEUE::QUEUE( lockfreeq* queue, void* owner, int type, int id)
 {
@@ -91,17 +92,21 @@ bool QUEUE::sendQueue ( int fd )
         char cfd[4] = "";
         memcpy(cfd, &fd, 4);
         // 0xAA
-        bytearray.push_back('0xAA');
+        bytearray.push_back(0xAA);
         // Size [2byte]
         // 사이즈는 현재 원래의 content에 총 8바이트가 더 더해짐
-        unsigned short size = data->getLen() + 8;
-        bytearray.insert(bytearray.end(), &size, &size + 2);
+        ushort size = data->getLen() + 8;
+        printf("size: %d\n", size);
+        bytearray.insert(bytearray.end(), (char*)&size, (char*)&size + 2);
+        
         // type
         bytearray.push_back(data->gettype());
+
         // content [fd 4byte]
-        bytearray.insert(bytearray.end(), cfd, cfd + 4);
+        int fd = data->getfd();
+        bytearray.insert(bytearray.end(), ((char*)&fd), ((char*)&fd) + 4);
         // content [queue number 4byte]
-        bytearray.insert(bytearray.end(), this->id, this->id + 4);
+        bytearray.insert(bytearray.end(), ((char*)&this->id), ((char*)&this->id) + 4);
         // real content
         bytearray.insert(bytearray.end(), data->getcontent(), data->getcontent() + data->getLen());
         //bytearray.insert(bytearray.end(), data->getdata(), data->getdata() + data->getLen());
@@ -118,7 +123,7 @@ bool QUEUE::sendQueue ( int fd )
     wrapper_bytearray.push_back(0xAA);
     
     // 2바이트는 short형태의 사이즈 표시
-    ushort size = bytearray.size() - 4; // size는 컨텐츠의 사이즈만 넣음
+    ushort size = bytearray.size(); // size는 컨텐츠의 사이즈만 넣음
     char csize[2] = "";
     memcpy(csize, &size, 2);
     wrapper_bytearray.insert(wrapper_bytearray.end(), csize, csize + 2);
@@ -128,6 +133,8 @@ bool QUEUE::sendQueue ( int fd )
     
     // 컨텐츠 바이트
     wrapper_bytearray.insert(wrapper_bytearray.end(), bytearray.data(), bytearray.data() + bytearray.size());
+    
+    debug_packet(wrapper_bytearray.data(), wrapper_bytearray.size());
     
     // 보내기 단계
     int result = send(fd, wrapper_bytearray.data(), wrapper_bytearray.size(), 0);

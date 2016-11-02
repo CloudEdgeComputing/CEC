@@ -17,7 +17,9 @@ void ExecutorManager::createExecutor(ushort recvport)
     printf("Executor inputqueue and outputqueue creation...\n");
     // 익스큐터 전체의 인풋 아웃풋 큐 생성
     executor->setinq( this->makeQueue( UNDEFINED, TYPE_CONNECTION ) );
+    printf("global id for inq: %d\n", executor->getinq()->getid());
     executor->setoutq( this->makeQueue( executor, TYPE_EXECUTOR ) );
+    printf("global id for outq: %d\n", executor->getoutq()->getid());
     
     printf("Executor connection setting...\n");
     
@@ -40,6 +42,7 @@ void ExecutorManager::createExecutor(ushort recvport)
 
     // Task 생성
     QUEUE* task1que = this->makeQueue( UNDEFINED, TYPE_TASK );
+    printf("global id for task1que : %d\n", task1que->getid());
     Task* task1 = new Task ( executor->getinq(), task1que, 3, func1, executor );
     Task* task2 = new Task ( task1que, executor->getoutq(), 3, func2, executor );
     
