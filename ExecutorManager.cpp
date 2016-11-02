@@ -5,7 +5,7 @@
 #include "Connection.h"
 #include "Functions.h"
 #include "Data.h"
-#include <errno.h>
+#include "Migration.h"
 
 void ExecutorManager::createExecutor(ushort recvport)
 {
@@ -16,15 +16,18 @@ void ExecutorManager::createExecutor(ushort recvport)
 
     printf("Executor inputqueue and outputqueue creation...\n");
     // 익스큐터 전체의 인풋 아웃풋 큐 생성
-    executor->setinq( new QUEUE ( new lockfreeq(0), NULL, 0 ) );
-    executor->setoutq( new QUEUE ( new lockfreeq(0), NULL, 0 ) );
+    executor->setinq( this->makeQueue( UNDEFINED, TYPE_CONNECTION ) );
+    executor->setoutq( this->makeQueue( executor, TYPE_EXECUTOR ) );
     
     printf("Executor connection setting...\n");
+    
     // 익스큐터에 연결할 커넥션 생성
-    executor->setConnection(new Connection(recvport));
+    executor->setConnection(new Connection(recvport, executor));
     executor->getConnection()->serverStart(executor->getinq(), executor->getoutq());
-    executor->getinq()->registerDependency(executor->getConnection(), TYPE_CONNECTION);
-    executor->getoutq()->registerDependency(executor, TYPE_EXECUTOR);
+
+    executor->getinq()->registerbackDependency(executor->getConnection(), TYPE_CONNECTION);
+    executor->getinq()->registerforwardDependency(executor, TYPE_EXECUTOR);
+    executor->getoutq()->registerforwardDependency(executor->getConnection(), TYPE_CONNECTION);
     
     printf("Task creation...\n");
     /*
@@ -36,10 +39,14 @@ void ExecutorManager::createExecutor(ushort recvport)
     printf("registred func1 %p, %p\n", func1, func2);
 
     // Task 생성
-    QUEUE* task1que = new QUEUE ( new lockfreeq(0), NULL );
+    QUEUE* task1que = this->makeQueue( UNDEFINED, TYPE_TASK );
     Task* task1 = new Task ( executor->getinq(), task1que, 3, func1, executor );
     Task* task2 = new Task ( task1que, executor->getoutq(), 3, func2, executor );
-    task1que->registerDependency(task1, TYPE_TASK);
+    
+    printf("registered task1 %p, %p\n", task1, task2);
+    
+    task1que->registerbackDependency(task1, TYPE_TASK);
+    task1que->registerforwardDependency(task2, TYPE_TASK);
     
     printf("Operation creation for each task...\n");
     // Task 내부 오퍼레이터 생성
@@ -62,4 +69,58 @@ void ExecutorManager::executorRunAll()
         Executor* executor = *iter;
         executor->executorStart();
     }
+}
+
+Executor* ExecutorManager::getExecutorbyId ( int id )
+{
+    int cnt = 0;
+    
+    for (auto iter = this->execs.begin(); iter != this->execs.end(); ++iter)
+    {
+        if(cnt == id)
+            return *iter;
+        else
+            cnt++;
+    }
+    printf("Unrecognized executor id!\n");
+    exit(0);
+    return NULL;
+}
+
+QUEUE* ExecutorManager::makeQueue(void* powner, int type)
+{
+    int id = this->new_gid++;
+    QUEUE* que = new QUEUE ( new lockfreeq(0), powner, type, id );
+    ques.push_back( que );
+    
+    return que;
+}
+
+QUEUE* ExecutorManager::findQueue ( unsigned int id )
+{
+    for(auto iter = ques.begin(); iter != ques.end(); ++iter)
+    {
+        QUEUE* que = *iter;
+        if(id == que->getid())
+            return que;
+    }
+    
+    printf("Queue is not found!\n");
+    exit(0);
+    return NULL;
+}
+
+void ExecutorManager::setMigrationModule ( Migration* mig )
+{
+    this->migration = mig;
+}
+
+Migration* ExecutorManager::getMigrationModule()
+{
+    return this->migration;
+}
+
+void ExecutorManager::startMigration()
+{
+    this->migration->startMigration(0, *this->execs.begin());
 }

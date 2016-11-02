@@ -6,6 +6,7 @@
 class Connection;
 class Task;
 class Queue;
+class DATA;
 
 using namespace std;
 
@@ -40,4 +41,8 @@ public:
     bool getExecutorState();
     // Executor 상태 변경 1, running 2, blocked
     bool setExecutorState(bool state);
+    // Install received data
+    void installReceivedData(DATA* data);
+    // Debug
+    void printtasks();
 };

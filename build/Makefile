@@ -275,6 +275,30 @@ Functions.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Functions.cpp.s
 .PHONY : Functions.cpp.s
 
+Migration.o: Migration.cpp.o
+.PHONY : Migration.o
+
+# target to build an object file
+Migration.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o
+.PHONY : Migration.cpp.o
+
+Migration.i: Migration.cpp.i
+.PHONY : Migration.i
+
+# target to preprocess a source file
+Migration.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.i
+.PHONY : Migration.cpp.i
+
+Migration.s: Migration.cpp.s
+.PHONY : Migration.s
+
+# target to generate assembly for a file
+Migration.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.s
+.PHONY : Migration.cpp.s
+
 Operator.o: Operator.cpp.o
 .PHONY : Operator.o
 
@@ -399,6 +423,9 @@ help:
 	@echo "... Functions.o"
 	@echo "... Functions.i"
 	@echo "... Functions.s"
+	@echo "... Migration.o"
+	@echo "... Migration.i"
+	@echo "... Migration.s"
 	@echo "... Operator.o"
 	@echo "... Operator.i"
 	@echo "... Operator.s"

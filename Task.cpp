@@ -6,18 +6,18 @@
 // Task는 inq 링크, outq 링크, 스케줄러, 오퍼레이터풀로 이루어져 있다.
 Task::Task ( QUEUE* inq, QUEUE* outq, ushort count, FUNC func, Executor* parent )
 {
+    printf("inq: %p outq: %p\n", inq, outq);
     this->inq = inq;
     this->outq = outq;
     this->count = count;
     this->func = func;
     this->parent = parent;
-    this->isrun = false;
+    this->isrun = true;
     this->isEnd = false;
 }
 
 void Task::MakeOperators()
 {
-    this->isrun = false;
     // Operator를 count만큼 만든다.
     for ( int i = 0; i < count; i++ )
     {
@@ -38,7 +38,6 @@ void Task::MakeOperators()
 
 void Task::SchedulingStart()
 {
-    this->isrun = true;
     pthread_create ( &this->scheduling_tid, NULL, &Task::scheduling_wrapper, this );
 }
 
@@ -49,6 +48,7 @@ void* Task::Scheduling ( void* arg )
         // 태스크 스케줄링 종료 요청이 있으면 종료한다.
         if ( this->isEnd )
         {
+            printf("exit in task scheduling!\n");
             exit ( 0 );
         }
 
@@ -87,12 +87,15 @@ void* Task::scheduling_wrapper ( void* context )
 
 bool Task::getTaskState()
 {
-    return this->isrun;
-}
-
-bool Task::setTaskState(bool state)
-{
-    this->isrun = state;
+    bool checker = false;
+    // 모든 오퍼레이터 검색하여 작동하고 있는 오퍼레이터가 없는 경우 false, 하나라도 있는 경우 true
+    for(auto iter = ops.begin(); iter != ops.end(); ++iter)
+    {
+        OPERATOR* op = *iter;
+        checker |= op->getinUse();
+    }
+    
+    return checker;
 }
 
 QUEUE* Task::getoutq()

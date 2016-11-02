@@ -1,8 +1,11 @@
 #include "Connection.h"
 #include "Data.h"
 #include "Queue.h"
+#include "Executor.h"
+#include "ExecutorManager.h"
+#include <Migration.h>
 
-Connection::Connection ( int recvport )
+Connection::Connection ( int recvport, Executor* executor )
 {
     int ret = 0;
 
@@ -25,19 +28,21 @@ Connection::Connection ( int recvport )
         printf ( "Listen error!\n" );
         exit ( 0 );
     }
-    this->state = true;
-    
+    this->state = false;
+
+    this->executor = executor;
+
     printf ( "Server initialized!\n" );
-    
+
 }
 
 Connection::~Connection()
 {
-    close(this->_broker_sock);
-    for(auto iter = this->clientlists.begin(); iter != this->clientlists.end(); ++iter)
+    close ( this->_broker_sock );
+    for ( auto iter = this->clientlists.begin(); iter != this->clientlists.end(); ++iter )
     {
         CLIENT* clnt = *iter;
-        close(clnt->fd);
+        close ( clnt->fd );
     }
 }
 
@@ -56,11 +61,11 @@ pthread_t Connection::serverStart ( QUEUE* inq, QUEUE* outq )
     serverdata->thispointer = this;
     serverdata->inq = inq;
     serverdata->outq = outq;
-    
-    
+
+
     pthread_t server_tid;
-    pthread_create(&server_tid, NULL, &Connection::serverStart_wrapper, (void*) serverdata);
-    
+    pthread_create ( &server_tid, NULL, &Connection::serverStart_wrapper, ( void* ) serverdata );
+
     return server_tid;
 }
 
@@ -68,40 +73,40 @@ void* Connection::serverStart_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ((Connection*)thispointer)->serverStart_internal(context);
+    return ( ( Connection* ) thispointer )->serverStart_internal ( context );
 }
 
-void* Connection::serverStart_internal(void* arg)
+void* Connection::serverStart_internal ( void* arg )
 {
-    struct CONNDATA* serverdata = (struct CONNDATA*) arg;
+    struct CONNDATA* serverdata = ( struct CONNDATA* ) arg;
     QUEUE* inq = serverdata->inq;
     QUEUE* outq = serverdata->outq;
-    
+
     // Dispatcher Install
     struct CONNDATA* dispatcherdata = new struct CONNDATA;
     dispatcherdata->fd = 0;
     dispatcherdata->inq = inq;
-    dispatcherdata->dispatchq = new QUEUE(new lockfreeq(0), NULL);
+    dispatcherdata->dispatchq = new QUEUE ( new lockfreeq ( 0 ), NULL, 2, 0 );
     dispatcherdata->thispointer = this;
-    pthread_create(&this->dispatcher_tid, NULL, &Connection::dispatcher_wrapper, (void*) dispatcherdata );
-    
+    pthread_create ( &this->dispatcher_tid, NULL, &Connection::dispatcher_wrapper, ( void* ) dispatcherdata );
+
     // Sender Install
     pthread_t sender_tid;
     struct CONNDATA* senderdata = new struct CONNDATA;
     senderdata->fd = 0;
     senderdata->outq = outq;
     senderdata->thispointer = this;
-    pthread_create(&this->sender_tid, NULL, &Connection::sender_wrapper, (void*) senderdata);
-    
+    pthread_create ( &this->sender_tid, NULL, &Connection::sender_wrapper, ( void* ) senderdata );
+
     while ( 1 )
     {
         struct sockaddr_storage client_addr;
         char address[20];
         socklen_t sin_size = sizeof client_addr;
         pthread_t id;
-        
-        printf("Ready to accept clients!\n");
-        
+
+        printf ( "Ready to accept clients!\n" );
+
         int fd = accept ( _broker_sock, ( struct sockaddr * ) &client_addr, &sin_size );
         if ( fd == -1 )
         {
@@ -119,46 +124,46 @@ void* Connection::serverStart_internal(void* arg)
         receiverdata->outq = outq;
         receiverdata->dispatchq = dispatcherdata->dispatchq;
         receiverdata->thispointer = this;
-        
+
         pthread_t receiver_tid;
         pthread_create ( &receiver_tid, NULL, &Connection::receiver_wrapper, ( void* ) receiverdata );
-        this->receiver_tids.push_back(receiver_tid);
+        this->receiver_tids.push_back ( receiver_tid );
     }
-    
+
     return NULL;
 }
 
-void* Connection::receiver( void* arg)
+void* Connection::receiver ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* dispatchq = conndata->dispatchq->getQueue();
     char buffer[4096] = "";
 
-    while(1)
+    while ( 1 )
     {
         // 데이터를 받는다.
-        unsigned int size = recv(conndata->fd, buffer, sizeof buffer, 0);
-        if(size == -1)
+        unsigned int size = recv ( conndata->fd, buffer, sizeof buffer, 0 );
+        if ( size == -1 )
             break;
-        
+
         // 데이터를 DATA 구조체로 바꾼다.
         char* pdata = new char[size];
-        memset(pdata, 0, size);
-        memcpy(pdata, buffer, size);
-        
-        DATA* data = new DATA(pdata, size, 0, conndata->fd);
-        
+        memset ( pdata, 0, size );
+        memcpy ( pdata, buffer, size );
+
+        DATA* data = new DATA ( pdata, size - 4, 0, conndata->fd );
+
         // DATA 구조체를 넣는다.
-        if(!dispatchq->push(data))
+        if ( !dispatchq->push ( data ) )
         {
-            printf("fail to receive (Push error!)\n");
-            exit(0);
+            printf ( "fail to receive (Push error!)\n" );
+            exit ( 0 );
         }
-        
+
         // 내부 변수 초기화
-        memset(buffer, 0, sizeof buffer);
+        memset ( buffer, 0, sizeof buffer );
     }
-    printf("Error occured in receiverr or exited\n");
+    printf ( "Error occured in receiverr or exited\n" );
     return NULL;
 }
 
@@ -166,40 +171,40 @@ void* Connection::receiver_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ((Connection*)thispointer)->receiver(context);
+    return ( ( Connection* ) thispointer )->receiver ( context );
 }
 
 void* Connection::sender ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* outq = conndata->outq->getQueue();
-    
+
     while ( 1 )
     {
         // outq에서 데이터를 꺼냄 계속
         // 꺼낸뒤에 보냄
         // 데이터 메모리 해제
-        while(!outq->empty())
+        while ( !outq->empty() )
         {
             DATA* data;
-            if(!outq->pop(data))
+            if ( !outq->pop ( data ) )
             {
-                printf("outq pop error!\n");
-                exit(0);
+                printf ( "outq pop error!\n" );
+                exit ( 0 );
             }
-            
-            if(data->getcontent() == NULL)
+
+            if ( data->getcontent() == NULL )
             {
-                printf("No contents!\n");
-                exit(0);
+                printf ( "No contents!\n" );
+                exit ( 0 );
             }
-            
-            if(send(data->getfd(), data->getdata(), data->getLen(), 0) == -1)
+
+            if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
             {
-                printf("Error occured in send function!\n");
-                exit(0);
+                printf ( "Error occured in send function!\n" );
+                exit ( 0 );
             }
-            
+
             delete[] data->getdata();
             delete data;
         }
@@ -207,10 +212,10 @@ void* Connection::sender ( void* arg )
 }
 
 void* Connection::sender_wrapper ( void* context )
-{    
+{
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ((Connection*)thispointer)->sender(context);
+    return ( ( Connection* ) thispointer )->sender ( context );
 }
 
 void* Connection::dispatcher ( void* arg )
@@ -218,48 +223,43 @@ void* Connection::dispatcher ( void* arg )
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* dispatchq = conndata->dispatchq->getQueue();
     lockfreeq* inq = conndata->inq->getQueue();
-    while(1)
+    while ( 1 )
     {
-        if(!dispatchq->empty())
+        if ( !dispatchq->empty() )
         {
             DATA* data;
-            dispatchq->pop(data);
-            
+            dispatchq->pop ( data );
+
             // packet validity check
-            if(!data->validity())
+            if ( !data->validity() )
             {
-                printf("data is not valid in dispatch\n");
+                printf ( "data is not valid in dispatch, size: %d\n", data->getLen() );
                 continue;
             }
-            
-            switch(data->gettype())
+
+            switch ( data->gettype() )
             {
-                // 데이터
+                    // 데이터
                 case 0x00:
                 {
                     // inq에 넣음
-                    inq->push(data);
+                    inq->push ( data );
                     break;
                 }
-                // 커맨드
+                // 마이그레이션 실행
                 case 0x01:
                 {
-                    // 마이그레이션 설치 되어 있는가?
-                    
-                    break;
-                }
-                // 특수: 마이그레이션
-                case 0x02:
-                {
+                    Migration* mig = executormanager.getMigrationModule();
+                    // 0번 아이디에 executor에 해당하는곳에 마이그레이션 시작
+                    mig->startMigration ( 0, this->executor );
                     break;
                 }
                 default:
                 {
-                    printf("Invalid type data in dispatcher!\n");
+                    printf ( "Invalid type data in dispatcher!\n" );
                     break;
                 }
             }
-            
         }
     }
 }
@@ -268,7 +268,7 @@ void* Connection::dispatcher_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ((Connection*)thispointer)->dispatcher(context);
+    return ( ( Connection* ) thispointer )->dispatcher ( context );
 }
 
 /*
@@ -277,17 +277,17 @@ void Connection::register_user(pthread_t send_tid, pthread_t recv_tid, int fd, s
     struct CLIENT* client = new struct CLIENT;
     struct sockaddr_storage* pclient_addr = new struct sockaddr_storage;
     memcpy(pclient_addr, &client_addr, sizeof(sockaddr_storage));
-    
+
     client->fd = fd;
     client->send_tid = send_tid;
     client->recv_tid = recv_tid;
     client->sockaddr = pclient_addr;
-    
+
     clientlists.push_back(client);
 }*/
 
 void Connection::setsender_tid ( pthread_t tid )
-{    
+{
     this->sender_tid = tid;
 }
 
@@ -296,7 +296,7 @@ void Connection::setdispatcher_tid ( pthread_t tid )
     this->dispatcher_tid = tid;
 }
 
-void Connection::getConnState()
+bool Connection::getConnState()
 {
     return this->state;
 }

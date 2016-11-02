@@ -20,6 +20,10 @@ public:
     DATA(char* data, ushort nLen, ushort seq, int fd);
     // Don't use getInt, string, short, char methods with DATA(ushort nLen, int fd);
     DATA(ushort nLen, int fd, int type);
+    // packet을 데이터로 변환. 다만, isSpecial이 true면 packet에 fd와 content가 포함되어있는것으로 가정하여 그 부분은 데이터 컨텐츠에서 뺀다.
+    DATA ( char* packet, bool isSpecial );
+    
+    
     bool validity();
     uchar gettype();
     char* getcontent();

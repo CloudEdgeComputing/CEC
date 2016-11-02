@@ -24,6 +24,7 @@
 using namespace std;
 
 class QUEUE;
+class Executor;
 
 class Connection
 {
@@ -31,13 +32,14 @@ private:
     pthread_t dispatcher_tid, sender_tid;
     list<pthread_t> receiver_tids;
     bool state;
+    Executor* executor;
 public:
     int _broker_sock;
     sockaddr_in _broker_addr;
     list<struct CLIENT*> clientlists;
     
     // Executor에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
-    Connection(int recvport);
+    Connection(int recvport, Executor* executor);
     // Connection 해제
     ~Connection();
     // serverStart wrapper
@@ -65,6 +67,6 @@ public:
     void setdispatcher_tid ( pthread_t tid );
     //void register_user(pthread_t tid, int fd, struct sockaddr_storage client_addr);
     // Connection 모듈이 동작하고 있는가? true: 동작중 false: blocking
-    void getConnState();
+    bool getConnState();
     
 };

@@ -10,6 +10,9 @@ DATA* task_1(DATA* data)
     result->push(&value, 4);
     result->sealing();
     
+    // 프로세싱
+    usleep(1000);
+    
     // data 정리
     delete[] data->getdata();
     delete data;
@@ -24,6 +27,9 @@ DATA* task_2(DATA* data)
     DATA* result = new DATA(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
+    
+    // 프로세싱
+    usleep(1000);
     
     // data 정리
     delete[] data->getdata();
