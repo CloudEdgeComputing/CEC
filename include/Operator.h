@@ -33,8 +33,6 @@ public:
     QUEUE* getinq();
     // 오퍼레이터 결과 큐를 받는다.
     QUEUE* getouq();
-    // 오퍼레이터 실행 여부를 설정한다.
-    void setinUse(bool sw);
     // 오퍼레이터가 실행중인지 묻는다.
     bool getinUse();
     // 오퍼레이터 실행 쓰레드를 만든다.
@@ -49,6 +47,8 @@ public:
     pthread_mutex_t* getmutex();
     // 오퍼레이터가 실행할 함수 포인터를 가져온다.
     FUNC getpfunc();
+    // 오퍼레이터의 부모 태스크 entity를 가져온다.
+    Task* getParenttask();
 };
 
 static void* wrapper_thread(void* arg);

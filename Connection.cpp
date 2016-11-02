@@ -175,7 +175,7 @@ void* Connection::receiver ( void* arg )
         // 내부 변수 초기화
         memset ( buffer, 0, sizeof buffer );
     }
-    printf ( "Error occured in receiverr or exited\n" );
+    //printf ( "Error occured in receiverr or exited\n" );
     return NULL;
 }
 
@@ -183,7 +183,9 @@ void* Connection::receiver_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ( ( Connection* ) thispointer )->receiver ( context );
+    void* result = ( ( Connection* ) thispointer )->receiver ( context );
+    
+    return result;
 }
 
 void* Connection::sender ( void* arg )
@@ -211,7 +213,7 @@ void* Connection::sender ( void* arg )
                 exit ( 0 );
             }
             
-            debug_packet(data->getdata(), data->getLen() + 4);
+            //debug_packet(data->getdata(), data->getLen() + 4);
 
             if ( data->getcontent() == NULL )
             {
@@ -219,12 +221,12 @@ void* Connection::sender ( void* arg )
                 exit ( 0 );
             }
 
-            if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
+            /*if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
             {
                 printf ( "Error occured in send function!\n" );
                 while(1);
                 exit ( 0 );
-            }
+            }*/
 
             delete[] data->getdata();
             delete data;

@@ -38,16 +38,16 @@ public:
     void* Scheduling(void* arg);
     // 스케쥴링 래퍼 함수
     static void* scheduling_wrapper(void* context);
-    // Task가 running중인가?
-    bool getTaskState();
-    // Task의 상태를 변경한다.
-    bool setTaskState(bool state);
+    // Task안의 하나 이상의 OP들이 러닝중인가?
+    bool getOPsState();
     // inq를 가져온다.
     QUEUE* getinq();
     // outq를 가져온다.
     QUEUE* getoutq();
-    // 태스크 스케줄러 쓰레드를 블럭한다.
+    // 태스크 스케줄러 쓰레드를 블럭한러다.
     void SchedulerSleep();
     // 태스크 스케줄러 쓰레드를 깨운다.
     void SchedulerWakeup();
+    // 현재 태스크 스케줄러가 블럭 상태인가?
+    bool getTaskState();
 };

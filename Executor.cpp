@@ -78,6 +78,8 @@ void Executor::installReceivedData ( DATA* data )
     // 데이터 분해
     char* p = data->getcontent();
     ushort size = 0;
+
+    debug_packet(data->getcontent(), data->getLen() + 4);
     
     // 오직 한번에 하나의 큐 데이터만 들어옴
     QUEUE* que = NULL;
@@ -93,7 +95,7 @@ void Executor::installReceivedData ( DATA* data )
             
             // unit data가 스페셜 형식을 가짐
             DATA* unitdata = new DATA(p, true);
-            
+                        
             printf("queue id: %d\n", qid);
             //printf("received packet!\n");
             //debug_packet(unitdata->getdata(), unitdata->getLen() + 4);
@@ -104,9 +106,10 @@ void Executor::installReceivedData ( DATA* data )
             // queue에 데이터를 푸시함
             que->getQueue()->push(unitdata);
             
-            p = p + unitdata->getLen() + 8;
+            p = p + unitdata->getLen() + 8 + 4;
             size += unitdata->getLen() + 8 + 4;
-            printf("size: %d Len: %d\n", size, data->getLen());
+            //printf("size: %d Len: %d\n", size, data->getLen());
+            //printf("unitdata->getLen() + 8: %d\n", unitdata->getLen() + 8 + 4);
         }
         
         que->install_comp_signal();

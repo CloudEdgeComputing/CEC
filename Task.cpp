@@ -24,7 +24,6 @@ void Task::MakeOperators()
         OPERATOR* op = new OPERATOR ( this, this->func );
         op->setinq ( this->inq );
         op->setoutq ( this->outq );
-        op->setinUse ( this->isrun );
         ops.push_back ( op );
     }
 
@@ -59,6 +58,7 @@ void* Task::Scheduling ( void* arg )
             pthread_cond_wait ( &this->g_condition, &this->g_mutex );
             printf("Task scheduler released!\n");
         }
+        
 
         /*
          * 오퍼레이터의 블럭킹 해제 조건
@@ -71,8 +71,10 @@ void* Task::Scheduling ( void* arg )
             for ( ; iter != this->ops.end(); ++iter )
             {
                 OPERATOR* op = *iter;
+                //printf("op->getinUse: %d\n", op->getinUse());
                 if ( !op->getinUse() )
                 {
+                    //printf("woke up!\n");
                     op->wakeup();
                 }
             }
@@ -85,15 +87,20 @@ void* Task::scheduling_wrapper ( void* context )
     return ((Task*)context)->Scheduling(context);
 }
 
-bool Task::getTaskState()
+bool Task::getOPsState()
 {
     bool checker = false;
+    int cnt = 0;
     // 모든 오퍼레이터 검색하여 작동하고 있는 오퍼레이터가 없는 경우 false, 하나라도 있는 경우 true
     for(auto iter = ops.begin(); iter != ops.end(); ++iter)
     {
         OPERATOR* op = *iter;
         checker |= op->getinUse();
+        if(op->getinUse() == true)
+            cnt++;
     }
+    
+    //printf("inUse operator: %d\n", cnt);
     
     return checker;
 }
@@ -122,4 +129,9 @@ void Task::SchedulerWakeup()
     pthread_cond_signal(&this->g_condition);
     //printf("Op wake up...\n");
     pthread_mutex_unlock(&this->g_mutex);
+}
+
+bool Task::getTaskState()
+{
+    return this->isrun;
 }

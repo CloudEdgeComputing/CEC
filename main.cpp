@@ -70,11 +70,17 @@ int main ( int argc, char **argv )
             data->push(&value, 4);
             data->sealing();
             
+            int value2 = 5;
+            DATA* data2 = new DATA(4, 1, 0);
+            data2->push(&value2, 4);
+            data2->sealing();
+            
             for(auto iter = list.begin(); iter != list.end(); ++iter)
             {
                 Task* task = *iter;
                 lockfreeq* que = task->getinq()->getQueue();
                 que->push(data);
+                que->push(data2);
             }
             printf("data insertion for debugging completed!\n");            
         }

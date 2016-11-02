@@ -102,11 +102,13 @@ void Migration::startMigration ( int id, Executor* executor )
         
         printf("from inq\n");
         checker |= !inq->sendQueue ( sockfd );
+        usleep(500);
         
         // executor outq
         QUEUE* outq = executor->getoutq();
         printf("from outq\n");
         checker |= !outq->sendQueue ( sockfd );
+        usleep(500);
         
         auto list = executor->getTask();
         
@@ -117,6 +119,7 @@ void Migration::startMigration ( int id, Executor* executor )
             QUEUE* queue = task->getoutq();
             printf("from task\n");
             checker |= !queue->sendQueue ( sockfd );
+            usleep(500);
         }
         
         if ( checker == false )

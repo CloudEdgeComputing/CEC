@@ -58,7 +58,7 @@ bool QUEUE::sendQueue ( int fd )
         else if(type == 1)
         {
             Task* task = (Task*)powner;
-            if(task->getTaskState() == true)
+            if(task->getOPsState() && task->getTaskState())
             {
                 printf("Task state is running\n");
                 return false;
@@ -68,11 +68,11 @@ bool QUEUE::sendQueue ( int fd )
         else if(type == 2)
         {
             Connection* conn = (Connection*)powner;
-            if(conn->getConnState() == true)
+            /*if(conn->getConnState() == true)
             {
                 printf("Connection state is running\n");
                 return false;
-            }
+            }*/
         }
         else
         {
@@ -85,6 +85,7 @@ bool QUEUE::sendQueue ( int fd )
     lockfreeq* q = this->getQueue();
     vector<char> bytearray;
     // packet full data와 fd를 넣는다.
+    
     while(!q->empty())
     {
         DATA* data;

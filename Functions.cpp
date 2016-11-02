@@ -4,14 +4,18 @@
 DATA* task_1(DATA* data)
 {
     int value = data->getInt();
-    printf("value: %d\n", value);
+    printf("value1: %d\n", value);
+    
+    
     value += 1;
+    
+    
     DATA* result = new DATA(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
     
     // 프로세싱
-    usleep(1000);
+    sleep(2);
     
     // data 정리
     delete[] data->getdata();
@@ -22,17 +26,19 @@ DATA* task_1(DATA* data)
 DATA* task_2(DATA* data)
 { 
     int value = data->getInt();
-    printf("value: %d\n", value);
+    printf("value2: %d\n", value);
+    
     value += 1;
     DATA* result = new DATA(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
     
     // 프로세싱
-    usleep(1000);
+    sleep(2);
     
     // data 정리
     delete[] data->getdata();
     delete data;
+    printf("value 2 comp!\n");
     return result;
 }

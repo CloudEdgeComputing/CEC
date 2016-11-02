@@ -43,8 +43,8 @@ void ExecutorManager::createExecutor(ushort recvport)
     // Task 생성
     QUEUE* task1que = this->makeQueue( UNDEFINED, TYPE_TASK );
     printf("global id for task1que : %d\n", task1que->getid());
-    Task* task1 = new Task ( executor->getinq(), task1que, 3, func1, executor );
-    Task* task2 = new Task ( task1que, executor->getoutq(), 3, func2, executor );
+    Task* task1 = new Task ( executor->getinq(), task1que, 2, func1, executor );
+    Task* task2 = new Task ( task1que, executor->getoutq(), 2, func2, executor );
     
     printf("registered task1 %p, %p\n", task1, task2);
     
