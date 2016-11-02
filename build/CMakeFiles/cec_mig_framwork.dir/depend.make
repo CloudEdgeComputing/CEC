@@ -3,6 +3,7 @@
 
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/Connection.h
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/Data.h
+CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/Debug.h
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/Executor.h
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/ExecutorManager.h
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../include/Migration.h
@@ -14,8 +15,12 @@ CMakeFiles/cec_mig_framwork.dir/Data.cpp.o: ../include/Data.h
 CMakeFiles/cec_mig_framwork.dir/Data.cpp.o: ../include/Type.h
 CMakeFiles/cec_mig_framwork.dir/Data.cpp.o: ../Data.cpp
 
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o: ../include/Debug.h
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o: ../Debug.cpp
+
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/Connection.h
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/Data.h
+CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/Debug.h
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/Executor.h
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/ExecutorManager.h
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../include/Functions.h
@@ -60,6 +65,7 @@ CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o: ../Operator.cpp
 
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Connection.h
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Data.h
+CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Debug.h
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Executor.h
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Functions.h
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../include/Operator.h
@@ -76,7 +82,14 @@ CMakeFiles/cec_mig_framwork.dir/Task.cpp.o: ../include/Task.h
 CMakeFiles/cec_mig_framwork.dir/Task.cpp.o: ../include/Type.h
 CMakeFiles/cec_mig_framwork.dir/Task.cpp.o: ../Task.cpp
 
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Connection.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Data.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Executor.h
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/ExecutorManager.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Functions.h
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Migration.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Queue.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Task.h
+CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../include/Type.h
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../main.cpp
 

@@ -49,9 +49,32 @@ include CMakeFiles/cec_mig_framwork.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/cec_mig_framwork.dir/flags.make
 
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o: ../Debug.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp
+
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/cec_mig_framwork.dir/Debug.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp > CMakeFiles/cec_mig_framwork.dir/Debug.cpp.i
+
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/cec_mig_framwork.dir/Debug.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp -o CMakeFiles/cec_mig_framwork.dir/Debug.cpp.s
+
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.requires:
+.PHONY : CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.requires
+
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.provides: CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.requires
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.provides.build
+.PHONY : CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.provides
+
+CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.provides.build: CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o
+
 CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o: ../Migration.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Migration.cpp
 
@@ -74,7 +97,7 @@ CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o.provides.build: CMakeFiles/cec_m
 
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/main.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/main.cpp
 
@@ -97,7 +120,7 @@ CMakeFiles/cec_mig_framwork.dir/main.cpp.o.provides.build: CMakeFiles/cec_mig_fr
 
 CMakeFiles/cec_mig_framwork.dir/Task.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Task.cpp.o: ../Task.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Task.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Task.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Task.cpp
 
@@ -120,7 +143,7 @@ CMakeFiles/cec_mig_framwork.dir/Task.cpp.o.provides.build: CMakeFiles/cec_mig_fr
 
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o: ../Connection.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Connection.cpp
 
@@ -143,7 +166,7 @@ CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o.provides.build: CMakeFiles/cec_
 
 CMakeFiles/cec_mig_framwork.dir/Data.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Data.cpp.o: ../Data.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Data.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Data.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Data.cpp
 
@@ -166,7 +189,7 @@ CMakeFiles/cec_mig_framwork.dir/Data.cpp.o.provides.build: CMakeFiles/cec_mig_fr
 
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o: ../Executor.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Executor.cpp
 
@@ -189,7 +212,7 @@ CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o.provides.build: CMakeFiles/cec_mi
 
 CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o: ../ExecutorManager.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/ExecutorManager.cpp
 
@@ -212,7 +235,7 @@ CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o: ../Operator.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Operator.cpp
 
@@ -235,7 +258,7 @@ CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o.provides.build: CMakeFiles/cec_mi
 
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o: ../Queue.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Queue.cpp
 
@@ -258,7 +281,7 @@ CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o.provides.build: CMakeFiles/cec_mig_f
 
 CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o: CMakeFiles/cec_mig_framwork.dir/flags.make
 CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o: ../Functions.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/ysmoon/projects/CEC_Mig_framwork/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Functions.cpp
 
@@ -281,6 +304,7 @@ CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o.provides.build: CMakeFiles/cec_m
 
 # Object files for target cec_mig_framwork
 cec_mig_framwork_OBJECTS = \
+"CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o" \
 "CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o" \
 "CMakeFiles/cec_mig_framwork.dir/main.cpp.o" \
 "CMakeFiles/cec_mig_framwork.dir/Task.cpp.o" \
@@ -295,6 +319,7 @@ cec_mig_framwork_OBJECTS = \
 # External object files for target cec_mig_framwork
 cec_mig_framwork_EXTERNAL_OBJECTS =
 
+cec_mig_framwork: CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o
 cec_mig_framwork: CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o
 cec_mig_framwork: CMakeFiles/cec_mig_framwork.dir/main.cpp.o
 cec_mig_framwork: CMakeFiles/cec_mig_framwork.dir/Task.cpp.o
@@ -314,6 +339,7 @@ cec_mig_framwork: CMakeFiles/cec_mig_framwork.dir/link.txt
 CMakeFiles/cec_mig_framwork.dir/build: cec_mig_framwork
 .PHONY : CMakeFiles/cec_mig_framwork.dir/build
 
+CMakeFiles/cec_mig_framwork.dir/requires: CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o.requires
 CMakeFiles/cec_mig_framwork.dir/requires: CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o.requires
 CMakeFiles/cec_mig_framwork.dir/requires: CMakeFiles/cec_mig_framwork.dir/main.cpp.o.requires
 CMakeFiles/cec_mig_framwork.dir/requires: CMakeFiles/cec_mig_framwork.dir/Task.cpp.o.requires

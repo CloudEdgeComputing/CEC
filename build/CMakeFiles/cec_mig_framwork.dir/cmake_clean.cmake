@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/main.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/Task.cpp.o"

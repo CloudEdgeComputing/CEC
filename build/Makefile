@@ -203,6 +203,30 @@ Data.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Data.cpp.s
 .PHONY : Data.cpp.s
 
+Debug.o: Debug.cpp.o
+.PHONY : Debug.o
+
+# target to build an object file
+Debug.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o
+.PHONY : Debug.cpp.o
+
+Debug.i: Debug.cpp.i
+.PHONY : Debug.i
+
+# target to preprocess a source file
+Debug.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Debug.cpp.i
+.PHONY : Debug.cpp.i
+
+Debug.s: Debug.cpp.s
+.PHONY : Debug.s
+
+# target to generate assembly for a file
+Debug.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Debug.cpp.s
+.PHONY : Debug.cpp.s
+
 Executor.o: Executor.cpp.o
 .PHONY : Executor.o
 
@@ -414,6 +438,9 @@ help:
 	@echo "... Data.o"
 	@echo "... Data.i"
 	@echo "... Data.s"
+	@echo "... Debug.o"
+	@echo "... Debug.i"
+	@echo "... Debug.s"
 	@echo "... Executor.o"
 	@echo "... Executor.i"
 	@echo "... Executor.s"
