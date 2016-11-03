@@ -7,29 +7,31 @@
 #include "Data.h"
 #include "Migration.h"
 
+// Task, Connection에 outq는 2개 이상이 붙을 수 있고, inq는 항상 하나다.
 void ExecutorManager::createExecutor(ushort recvport)
 {
-    printf("Executor instance creation...\n");
     // 익스큐터 인스턴스 생성 및 등록
+    printf("Executor instance creation...\n");
     Executor* executor = new Executor;
     this->execs.push_back ( executor );
 
-    printf("Executor inputqueue and outputqueue creation...\n");
     // 익스큐터 전체의 인풋 아웃풋 큐 생성
+    printf("Executor inputqueue and outputqueue creation...\n");
     executor->setinq( this->makeQueue( UNDEFINED, TYPE_CONNECTION ) );
     printf("global id for inq: %d\n", executor->getinq()->getid());
     executor->setoutq( this->makeQueue( executor, TYPE_EXECUTOR ) );
-    printf("global id for outq: %d\n", executor->getoutq()->getid());
     
-    printf("Executor connection setting...\n");
+    auto outqlist = executor->getoutqlist();
+    for(auto iter = outqlist->begin(); iter != outqlist->end(); ++iter)
+    {
+        QUEUE* que = *iter;
+        printf("global id for outq: %d\n", que->getid());
+    }
     
     // 익스큐터에 연결할 커넥션 생성
+    printf("Executor connection setting...\n");
     executor->setConnection(new Connection(recvport, executor));
-    executor->getConnection()->serverStart(executor->getinq(), executor->getoutq());
-
-    executor->getinq()->registerbackDependency(executor->getConnection(), TYPE_CONNECTION);
-    executor->getinq()->registerforwardDependency(executor, TYPE_EXECUTOR);
-    executor->getoutq()->registerforwardDependency(executor->getConnection(), TYPE_CONNECTION);
+    executor->getConnection()->serverStart(executor->getinq(), executor->getoutqlist());
     
     printf("Task creation...\n");
     /*
@@ -44,12 +46,8 @@ void ExecutorManager::createExecutor(ushort recvport)
     QUEUE* task1que = this->makeQueue( UNDEFINED, TYPE_TASK );
     printf("global id for task1que : %d\n", task1que->getid());
     Task* task1 = new Task ( executor->getinq(), task1que, 2, func1, executor );
-    Task* task2 = new Task ( task1que, executor->getoutq(), 2, func2, executor );
-    
+    Task* task2 = new Task ( task1que, executor->getoutqlist(), 2, func2, executor );
     printf("registered task1 %p, %p\n", task1, task2);
-    
-    task1que->registerbackDependency(task1, TYPE_TASK);
-    task1que->registerforwardDependency(task2, TYPE_TASK);
     
     printf("Operation creation for each task...\n");
     // Task 내부 오퍼레이터 생성

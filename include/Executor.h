@@ -13,11 +13,17 @@ using namespace std;
 class Executor
 {
 private:
-    QUEUE* inq, *outq;
+    QUEUE* inq;
+    list<QUEUE*>* outqlist;
     list<Task*> tasks;
     Connection* conn;
     bool state;
 public:
+    // Executor 생성자
+    Executor();
+    // Executor 파괴자
+    ~Executor();
+    
     // 익스큐터 내의 오퍼레이터들을 스케줄링 한다.
     void executorStart();
     
@@ -32,7 +38,7 @@ public:
     // Executor의 outq를 세팅한다.
     void setoutq(QUEUE* outq);
     // Executor outq를 받는다.
-    QUEUE* getoutq();
+    list<QUEUE*>* getoutqlist();
     // Executor의 tasks 리스트를 받는다.
     list<Task*> getTask();
     // Task를 executor에 등록한다.

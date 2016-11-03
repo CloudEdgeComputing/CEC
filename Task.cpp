@@ -6,9 +6,44 @@
 // Task는 inq 링크, outq 링크, 스케줄러, 오퍼레이터풀로 이루어져 있다.
 Task::Task ( QUEUE* inq, QUEUE* outq, ushort count, FUNC func, Executor* parent )
 {
-    printf("inq: %p outq: %p\n", inq, outq);
-    this->inq = inq;
-    this->outq = outq;
+    this->outqlist = new list<QUEUE*>;
+    
+    if(inq != NULL)
+    {
+        this->inq = inq;
+        inq->registerforwardDependency(this, TYPE_TASK);
+    }
+    
+    if(outq != NULL)
+    {
+        this->outqlist->push_back(outq);
+        outq->registerbackDependency(this, TYPE_TASK);
+    }
+    
+    this->count = count;
+    this->func = func;
+    this->parent = parent;
+    this->isrun = true;
+    this->isEnd = false;
+}
+
+Task::Task ( QUEUE* inq, list<QUEUE*>* outqlist, ushort count, FUNC func, Executor* parent )
+{
+    this->outqlist = new list<QUEUE*>;
+    
+    if(inq != NULL)
+    {
+        this->inq = inq;
+        inq->registerforwardDependency(this, TYPE_TASK);
+    }
+    
+    for(auto iter = outqlist->begin(); iter != outqlist->end(); ++iter)
+    {
+        QUEUE* que = *iter;
+        this->outqlist->push_back(que);
+        que->registerbackDependency(this, TYPE_TASK);
+    }
+    
     this->count = count;
     this->func = func;
     this->parent = parent;
@@ -22,8 +57,6 @@ void Task::MakeOperators()
     for ( int i = 0; i < count; i++ )
     {
         OPERATOR* op = new OPERATOR ( this, this->func );
-        op->setinq ( this->inq );
-        op->setoutq ( this->outq );
         ops.push_back ( op );
     }
 
@@ -110,9 +143,9 @@ QUEUE* Task::getinq()
     return this->inq;
 }
 
-QUEUE* Task::getoutq()
+list<QUEUE*>* Task::getoutqlist()
 {
-    return this->outq;
+    return this->outqlist;
 }
 
 void Task::SchedulerSleep()

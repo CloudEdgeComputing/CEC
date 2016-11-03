@@ -39,6 +39,5 @@ DATA* task_2(DATA* data)
     // data 정리
     delete[] data->getdata();
     delete data;
-    printf("value 2 comp!\n");
     return result;
 }

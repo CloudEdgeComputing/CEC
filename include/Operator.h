@@ -2,17 +2,22 @@
 
 #include <pthread.h>
 #include <iostream>
+#include <list>
 #include "Functions.h"
 
 class QUEUE;
 class Task;
+
+using namespace std;
 
 // operator는 thread이다.
 class OPERATOR
 {
 private:
     pthread_t tid;
-    QUEUE *inqueue, *outqueue;
+    // inq와 outq는 부모 Task entity의 inq, outq를 공유한다.
+    QUEUE *inq;
+    list<QUEUE*>* outqlist;
     Task* parent;
     FUNC pfunc;
     // 현재 operator가 처리중인가?
@@ -25,14 +30,12 @@ public:
     
     // 오퍼레이터를 생성한다. 단, 인자로 실제 실행 함수가 주어져야 한다.
     OPERATOR(Task* parent, FUNC pfunc);
-    // 오퍼레이터 인풋 큐를 지정한다.
-    void setinq(QUEUE* inq);
-    // 오퍼레이터 결과 큐를 지정한다.
-    void setoutq(QUEUE* outq);
+    // 오퍼레이터 결과 큐들을 지정한다.
+    void setoutqlist(list<QUEUE*> outqlist);
     // 오퍼레이터 인풋 큐를 받는다.
     QUEUE* getinq();
     // 오퍼레이터 결과 큐를 받는다.
-    QUEUE* getouq();
+    list<QUEUE*>* getouqlist();
     // 오퍼레이터가 실행중인지 묻는다.
     bool getinUse();
     // 오퍼레이터 실행 쓰레드를 만든다.

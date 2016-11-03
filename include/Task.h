@@ -10,10 +10,13 @@ class QUEUE;
 class OPERATOR;
 class Executor;
 
+using namespace std;
+
 class Task
 {
 private:
-    QUEUE* inq, *outq;
+    QUEUE* inq;
+    list<QUEUE*>* outqlist;
     ushort count;
     FUNC func;
     Executor* parent;
@@ -30,6 +33,7 @@ private:
 public:
     // inq, outq를 갖는 taskpool을 만든다.
     Task( QUEUE* inq, QUEUE* outq, ushort count, FUNC func, Executor* parent );
+    Task( QUEUE* inq, list<QUEUE*>* outq, ushort count, FUNC func, Executor* parent );
     // 오퍼레이터를 만든다.
     void MakeOperators();
     // 오퍼레이터를 스케줄링 한다.
@@ -43,7 +47,7 @@ public:
     // inq를 가져온다.
     QUEUE* getinq();
     // outq를 가져온다.
-    QUEUE* getoutq();
+    list<QUEUE*>* getoutqlist();
     // 태스크 스케줄러 쓰레드를 블럭한러다.
     void SchedulerSleep();
     // 태스크 스케줄러 쓰레드를 깨운다.

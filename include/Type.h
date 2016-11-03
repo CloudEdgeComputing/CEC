@@ -2,8 +2,10 @@
 
 #include <boost/lockfree/queue.hpp>
 #include <sys/socket.h> 
+#include <list>
 
 using namespace boost;
+using namespace std;
 
 class QUEUE;
 class DATA;
@@ -25,7 +27,7 @@ struct CLIENT
 struct CONNDATA
 {
     QUEUE* inq;
-    QUEUE* outq;
+    list<QUEUE*>* outqlist;
     QUEUE* dispatchq;
     int fd;
     void* thispointer;

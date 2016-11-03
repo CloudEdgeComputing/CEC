@@ -99,6 +99,8 @@ pthread.h
 -
 iostream
 -
+list
+-
 Functions.h
 ../include/Functions.h
 
@@ -128,6 +130,8 @@ Functions.h
 boost/lockfree/queue.hpp
 -
 sys/socket.h
+-
+list
 -
 
 /home/ysmoon/projects/CEC_Mig_framwork/Connection.cpp

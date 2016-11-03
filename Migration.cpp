@@ -62,8 +62,8 @@ int Migration::makeConnection ( unsigned int ip, ushort port, bool isInstalled )
             printf ( "connection failed to CEC\n" );
             exit ( 0 );
         }
-        
-        printf("connecting fd: %d\n", sockfd);
+
+        printf ( "connecting fd: %d\n", sockfd );
         this->registerServer ( sockfd );
     }
 }
@@ -75,68 +75,85 @@ int Migration::makeServer ( ushort port )
     pthread_t tid;
     pthread_create ( &tid, NULL, internal_makeServer, ( void* ) this );
     // nLen은 전체 사이즈가 들어가야 함
-    
+
 }
 
 void Migration::startMigration ( int id, Executor* executor )
 {
     int sockfd = this->getClienctCEC ( id );
-    
+
     // executor에 해당하는 모든 task들을 블럭시킨다.
     // Task scheduler task 블럭, 웨이크업
-    
+
     auto list = executor->getTask();
-    
-    for( auto iter = list.begin(); iter != list.end(); ++iter)
+
+    for ( auto iter = list.begin(); iter != list.end(); ++iter )
     {
-        Task* task = (*iter);
+        Task* task = ( *iter );
         task->SchedulerSleep();
     }
-    printf("all tasks in an executor goes to sleep\n");
-    
+    printf ( "all tasks in an executor goes to sleep\n" );
+
     // 블럭 되어있으니 이제 큐에 있는 데이터들을 전송한다.
     while ( 1 )
     {
         bool checker = false;
         QUEUE* inq = executor->getinq();
-        
-        printf("from inq\n");
+
+        printf ( "from inq\n" );
         checker |= !inq->sendQueue ( sockfd );
-        usleep(500);
-        
+        usleep ( 500 );
+
         // executor outq
-        QUEUE* outq = executor->getoutq();
-        printf("from outq\n");
-        checker |= !outq->sendQueue ( sockfd );
-        usleep(500);
-        
+        auto outqlist = executor->getoutqlist();
+        printf ( "from outqs\n" );
+        for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+        {
+            auto outq = *iter;
+            checker |= !outq->sendQueue ( sockfd );
+            usleep ( 500 );
+        }
+
         auto list = executor->getTask();
-        
+
+        printf ( "from task\n" );
         for ( auto iter = list.begin(); iter != list.end(); ++iter )
         {
             Task* task = *iter;
             // task에 있는 큐를 빼냄
-            QUEUE* queue = task->getoutq();
-            printf("from task\n");
-            checker |= !queue->sendQueue ( sockfd );
-            usleep(500);
+            auto outqlist = task->getoutqlist();
+            for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+            {
+                auto outq = *iter;
+                checker |= !outq->sendQueue ( sockfd );
+                usleep ( 500 );
+            }
         }
-        
+
         if ( checker == false )
         {
             QUEUE* inq = executor->getinq();
             inq->clearMigration();
-            QUEUE* outq = executor->getoutq();
-            outq->clearMigration();
-            
-            for( auto iter = list.begin(); iter != list.end(); ++iter )
+            auto outqlist = executor->getoutqlist();
+
+            for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+            {
+                auto outq = *iter;
+                outq->clearMigration();
+            }
+
+            for ( auto iter = list.begin(); iter != list.end(); ++iter )
             {
                 Task* task = *iter;
-                QUEUE* que = task->getoutq();
-                que->clearMigration();
+                auto outqlist = task->getoutqlist();
+                for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+                {
+                    auto outq = *iter;
+                    outq->clearMigration();
+                }
                 task->SchedulerWakeup();
             }
-            printf("all tasks in an executor goes to wake up\n");
+            printf ( "all tasks in an executor goes to wake up\n" );
             break;
         }
     }
@@ -152,22 +169,22 @@ void Migration::waitforMigration()
 
 int Migration::getClienctCEC ( int n )
 {
-    printf("wait for connecting...!\n");
-    while(1)
+    printf ( "wait for connecting...!\n" );
+    while ( 1 )
     {
         int cnt = 0;
         for ( auto iter = this->connected_clients.begin(); iter != this->connected_clients.end(); ++iter )
         {
             if ( cnt == n )
             {
-                printf("got client cec fd!\n");
+                printf ( "got client cec fd!\n" );
                 return *iter;
             }
             else
                 cnt++;
         }
     }
-    
+
     return 0;
 }
 
@@ -203,22 +220,22 @@ int Migration::getserver_fd()
 
 int Migration::getServerCEC ( int n )
 {
-    printf("searching servers conntected with me!\n");
-    while(1)
+    printf ( "searching servers conntected with me!\n" );
+    while ( 1 )
     {
         int cnt = 0;
         for ( auto iter = this->connecting_cecs.begin(); iter != this->connecting_cecs.end(); ++iter )
         {
             if ( cnt == n )
             {
-                printf("Found server cec fd!\n");
+                printf ( "Found server cec fd!\n" );
                 return *iter;
             }
             else
                 cnt++;
         }
     }
-    
+
     return 0;
 }
 
@@ -235,10 +252,10 @@ void* internal_makeServer ( void* context )
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
     addr.sin_port = htons ( mig->getport() );
-    
+
     int nSockOpt = 1;
-    setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &nSockOpt, sizeof(nSockOpt));
-    
+    setsockopt ( sfd, SOL_SOCKET, SO_REUSEADDR, &nSockOpt, sizeof ( nSockOpt ) );
+
     ret = ::bind ( sfd, ( struct sockaddr* ) &addr, sizeof ( addr ) );
     if ( ret != 0 )
     {
@@ -273,13 +290,13 @@ void* internal_waitforMigration ( void* context )
     // 첫번째 등록된 엣지노드의 파일디스크립터
     // 제대로 하려면 select를 이용하여 입력다중화 시켜야 함
     // TODO
-    int fd = migration->getServerCEC(0);
-    
+    int fd = migration->getServerCEC ( 0 );
+
     while ( 1 )
     {
         // 데이터를 받는다.
         unsigned int size = recv ( fd, buffer, sizeof buffer, 0 );
-        printf("migration data is received size: %d\n", size);
+        printf ( "migration data is received size: %d\n", size );
         if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
@@ -291,11 +308,11 @@ void* internal_waitforMigration ( void* context )
         DATA* data = new DATA ( pdata, size - 4, 0, 0 );
         // 어떤 익스큐터인가?
         // 하드코딩;; 0번 익스큐터!
-        Executor* executor = executormanager.getExecutorbyId(0);
-        
+        Executor* executor = executormanager.getExecutorbyId ( 0 );
+
         // 설치한다.
-        executor->installReceivedData(data);
-        
+        executor->installReceivedData ( data );
+
         // 내부 변수 초기화
         delete data;
         delete []pdata;

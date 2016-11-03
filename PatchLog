@@ -1,28 +1,6 @@
-2016.10.21
 
-완료
-- Executor, Operator, Connection, Task 정의 완료
-    하나의 App당 Executor 인스턴스를 하나 가지며, 이는 Executor의 디바이스와의 커넥션을 위해 Connection 인스턴스를 갖는다.
-    Connection 인스턴스는 dispatcher queue를 가지고 있으며 하나의 App에 연결된 모든 클라이언트는 dispatcher queue에 소켓 디스크립터와 데이터를 넣는다.
-    Dispatcher module은 dispatch queue에 있는 모든 데이터들을 커맨드 큐 또는 executor inqueue에 넣는다.
-    Task는 하나의 기능 단위이며 다수개의 operator (구현 단위 쓰레드)를 갖는다.
-    Task scheduler는 executor inqueue를 보고 data가 있으면 operator를 시그널링 한다. (Operator는 쓰레드 블로킹 상태)
-    operator는 task에 붙어있는 inqueue에 데이터를 하나 읽고 처리하여 task의 output queue에 넣는다.
-    
-    다음 task는 처리결과가 있는 outputqueue를 inqueue로 써서 위와 똑같은 방법으로 처리한다.
-    -작성중-
+Note
 
-- 프로그램 기본 틀 완성
-- 오퍼레이터 생성 및 오퍼레이터 스케줄링까지 완성
-
-TODO
-- Task 내부 구현 및 테스트 클라이언트 디바이스
-- 커맨드 및 마이그레이션 구현
-
-아이디어 노트
-- 마이그레이션
-    마이그레이션 커맨드가 오면 일단 task를 중단시킨다. 그러면 task scheduler가 중지되며 inqueue에서 데이터를 그만 꺼내온다.
-    모든 task 내부에 있는 operator가 완료 경우, 그 task의 output queue에서 데이터를 serialization 시킨다.
-    그 뒤, 그 데이터들을 다른 엣지노드로 보낸다.
-    
-    받은 엣지노드는 데이터를 역직렬화 후, queue에 다시 넣는다. 그 뒤 그 queue를 inqueue로 갖고 있는 task를 동작시킨다.
+1. Send 살리기
+2. 받은 데이터의 파일 디스크립터를 현재 노드의 파일 디스크립터로 교환 How?
+3. data sequence 고치기

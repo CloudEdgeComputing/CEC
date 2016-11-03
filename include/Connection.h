@@ -52,7 +52,7 @@ public:
     // serverStart internal
     void* serverStart_internal(void* arg);
     // sender, receivers, dispatcher 생성
-    pthread_t serverStart(QUEUE* inq, QUEUE* outq);
+    pthread_t serverStart(QUEUE* inq, list<QUEUE*>* outqlist);
     // ip주소를 뽑는 함수
     void* get_in_addr( struct sockaddr *sa );
     // 패킷을 보내는 함수

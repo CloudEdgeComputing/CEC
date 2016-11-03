@@ -57,14 +57,21 @@ void* Connection::get_in_addr ( sockaddr* sa )
     return & ( ( ( struct sockaddr_in6* ) sa )->sin6_addr );
 }
 
-pthread_t Connection::serverStart ( QUEUE* inq, QUEUE* outq )
+pthread_t Connection::serverStart ( QUEUE* inq, list<QUEUE*>* outqlist )
 {
     struct CONNDATA* serverdata = new struct CONNDATA;
     serverdata->thispointer = this;
     serverdata->inq = inq;
-    serverdata->outq = outq;
-
-
+    serverdata->outqlist = outqlist;
+    
+    // que dependency 설정
+    inq->registerbackDependency(this, TYPE_CONNECTION);
+    for(auto iter = outqlist->begin(); iter != outqlist->end(); ++iter)
+    {
+        auto que = *iter;
+        que->registerforwardDependency(this, TYPE_CONNECTION);
+    }
+    
     pthread_t server_tid;
     pthread_create ( &server_tid, NULL, &Connection::serverStart_wrapper, ( void* ) serverdata );
 
@@ -82,7 +89,7 @@ void* Connection::serverStart_internal ( void* arg )
 {
     struct CONNDATA* serverdata = ( struct CONNDATA* ) arg;
     QUEUE* inq = serverdata->inq;
-    QUEUE* outq = serverdata->outq;
+    list<QUEUE*>* outqlist = serverdata->outqlist;
 
     // Dispatcher Install
     struct CONNDATA* dispatcherdata = new struct CONNDATA;
@@ -96,7 +103,7 @@ void* Connection::serverStart_internal ( void* arg )
     pthread_t sender_tid;
     struct CONNDATA* senderdata = new struct CONNDATA;
     senderdata->fd = 0;
-    senderdata->outq = outq;
+    senderdata->outqlist = outqlist;
     senderdata->thispointer = this;
     pthread_create ( &this->sender_tid, NULL, &Connection::sender_wrapper, ( void* ) senderdata );
 
@@ -119,14 +126,14 @@ void* Connection::serverStart_internal ( void* arg )
         inet_ntop ( client_addr.ss_family, get_in_addr ( ( struct sockaddr * ) &client_addr ), address, sizeof address );
 
         printf ( "[NOTICE] Got connection from %s\n", address );
-        
+
         // STATE 변경 to TRUE
         this->state = true;
 
         struct CONNDATA* receiverdata = new struct CONNDATA;
         receiverdata->fd = fd;
-        receiverdata->inq = inq;
-        receiverdata->outq = outq;
+        //receiverdata->inq = inq;
+        //receiverdata->outq = outq;
         receiverdata->dispatchq = dispatcherdata->dispatchq;
         receiverdata->thispointer = this;
 
@@ -146,13 +153,13 @@ void* Connection::receiver ( void* arg )
 
     while ( 1 )
     {
-        if(this->shouldbeSleep == true)
+        if ( this->shouldbeSleep == true )
         {
-            printf("receiver goes to sleep\n");
+            printf ( "receiver goes to sleep\n" );
             pthread_cond_wait ( &this->g_condition, &this->g_mutex );
-            printf("receiver goes to wakeup\n");
+            printf ( "receiver goes to wakeup\n" );
         }
-        
+
         // 데이터를 받는다.
         unsigned int size = recv ( conndata->fd, buffer, sizeof buffer, 0 );
         if ( ( size == -1 ) || ( size == 0 ) )
@@ -184,52 +191,58 @@ void* Connection::receiver_wrapper ( void* context )
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
     void* result = ( ( Connection* ) thispointer )->receiver ( context );
-    
+
     return result;
 }
 
 void* Connection::sender ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
-    lockfreeq* outq = conndata->outq->getQueue();
+    auto outqlist = conndata->outqlist;
+    //lockfreeq* outq = conndata->outq->getQueue();
 
     while ( 1 )
     {
-        if(this->shouldbeSleep == true)
+        if ( this->shouldbeSleep == true )
         {
-            printf("sender goes to sleep\n");
+            printf ( "sender goes to sleep\n" );
             pthread_cond_wait ( &this->g_condition, &this->g_mutex );
-            printf("sender goes to wakeup\n");
+            printf ( "sender goes to wakeup\n" );
         }
-        // outq에서 데이터를 꺼냄 계속
-        // 꺼낸뒤에 보냄
-        // 데이터 메모리 해제
-        while ( !outq->empty() )
+        
+        // outq 모두에 대해 검사 및 전송
+        
+        for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
         {
-            DATA* data;
-            if ( !outq->pop ( data ) )
+            lockfreeq* outq = (*iter)->getQueue();
+            while ( !outq->empty() )
             {
-                printf ( "outq pop error!\n" );
-                exit ( 0 );
+                DATA* data;
+                if ( !outq->pop ( data ) )
+                {
+                    printf ( "outq pop error!\n" );
+                    exit ( 0 );
+                }
+
+                //debug_packet(data->getdata(), data->getLen() + 4);
+
+                if ( data->getcontent() == NULL )
+                {
+                    printf ( "No contents!\n" );
+                    exit ( 0 );
+                }
+
+                /*if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
+                {
+                    printf ( "Error occured in send function!\n" );
+                    while(1);
+                    exit ( 0 );
+                }*/
+
+                delete[] data->getdata();
+                delete data;
             }
-            
-            //debug_packet(data->getdata(), data->getLen() + 4);
 
-            if ( data->getcontent() == NULL )
-            {
-                printf ( "No contents!\n" );
-                exit ( 0 );
-            }
-
-            /*if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
-            {
-                printf ( "Error occured in send function!\n" );
-                while(1);
-                exit ( 0 );
-            }*/
-
-            delete[] data->getdata();
-            delete data;
         }
     }
 }
@@ -262,26 +275,26 @@ void* Connection::dispatcher ( void* arg )
 
             switch ( data->gettype() )
             {
-                    // 데이터
-                case 0x00:
-                {
-                    // inq에 넣음
-                    inq->push ( data );
-                    break;
-                }
-                // 마이그레이션 실행
-                case 0x01:
-                {
-                    Migration* mig = executormanager.getMigrationModule();
-                    // 0번 아이디에 executor에 해당하는곳에 마이그레이션 시작
-                    mig->startMigration ( 0, this->executor );
-                    break;
-                }
-                default:
-                {
-                    printf ( "Invalid type data in dispatcher!\n" );
-                    break;
-                }
+                // 데이터
+            case 0x00:
+            {
+                // inq에 넣음
+                inq->push ( data );
+                break;
+            }
+            // 마이그레이션 실행
+            case 0x01:
+            {
+                Migration* mig = executormanager.getMigrationModule();
+                // 0번 아이디에 executor에 해당하는곳에 마이그레이션 시작
+                mig->startMigration ( 0, this->executor );
+                break;
+            }
+            default:
+            {
+                printf ( "Invalid type data in dispatcher!\n" );
+                break;
+            }
             }
         }
     }
@@ -326,15 +339,15 @@ bool Connection::getConnState()
 
 void Connection::sleepConnection()
 {
-    pthread_mutex_lock(&this->g_mutex);
+    pthread_mutex_lock ( &this->g_mutex );
     this->shouldbeSleep = true;
-    pthread_mutex_unlock(&this->g_mutex);
+    pthread_mutex_unlock ( &this->g_mutex );
 }
 
 void Connection::wakeupConnection()
 {
-    pthread_mutex_lock(&this->g_mutex);
+    pthread_mutex_lock ( &this->g_mutex );
     this->shouldbeSleep = false;
-    pthread_cond_broadcast(&this->g_condition);
-    pthread_mutex_unlock(&this->g_mutex);
+    pthread_cond_broadcast ( &this->g_condition );
+    pthread_mutex_unlock ( &this->g_mutex );
 }

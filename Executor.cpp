@@ -6,6 +6,11 @@
 #include "ExecutorManager.h"
 #include "Debug.h"
 
+Executor::Executor()
+{
+    this->outqlist = new list<QUEUE*>;
+}
+
 void Executor::executorStart()
 {
     printf("For an executor, registered task: %d\n", this->tasks.size());
@@ -30,11 +35,13 @@ void Executor::setConnection ( Connection* conn )
 void Executor::setinq ( QUEUE* inq )
 {
     this->inq = inq;
+    inq->registerforwardDependency(this, TYPE_EXECUTOR);
 }
 
 void Executor::setoutq ( QUEUE* outq )
 {
-    this->outq = outq;
+    this->outqlist->push_back(outq);
+    outq->registerbackDependency(this, TYPE_EXECUTOR);
 }
 
 QUEUE* Executor::getinq()
@@ -42,9 +49,9 @@ QUEUE* Executor::getinq()
     return this->inq;
 }
 
-QUEUE* Executor::getoutq()
+list<QUEUE*>* Executor::getoutqlist()
 {
-    return this->outq;
+    return this->outqlist;
 }
 
 list< Task* > Executor::getTask()
