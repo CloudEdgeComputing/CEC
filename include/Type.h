@@ -7,15 +7,15 @@
 using namespace boost;
 using namespace std;
 
-class QUEUE;
-class DATA;
+class PIPE;
+class TUPLE;
 
 typedef unsigned long DWORD;
 typedef unsigned short WORD;
 typedef unsigned char BYTE;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
-typedef boost::lockfree::queue<DATA*> lockfreeq;
+typedef boost::lockfree::queue<TUPLE*> lockfreeq;
 
 struct CLIENT
 {
@@ -26,9 +26,9 @@ struct CLIENT
 
 struct CONNDATA
 {
-    QUEUE* inq;
-    list<QUEUE*>* outqlist;
-    QUEUE* dispatchq;
+    PIPE* inpipe;
+    list<PIPE*>* outpipelist;
+    PIPE* dispatchpipe;
     int fd;
     void* thispointer;
 };

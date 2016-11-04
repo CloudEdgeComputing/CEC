@@ -10,9 +10,9 @@
 
 using namespace std;
 
-class Executor;
-class QUEUE;
-class ExecutorManager;
+class STREAMFACTORY;
+class PIPE;
+class FACTORYBUILDER;
 
 typedef struct SERVER
 {
@@ -21,7 +21,7 @@ typedef struct SERVER
     bool isInstalled;
 } Server;
 
-class Migration
+class MIGRATION
 {
 private:
     bool isInstalled;
@@ -30,11 +30,11 @@ private:
     sockaddr_in addr;
     list<Server*> nearserver;
     list<int> connected_clients;
-    list<int> connecting_cecs;
+    list<int> connecting_servers;
 public:
     // 마이그레이션 모듈을 설치한다.
     // 이 모듈은 현재 CEC Framework과 다른 CEC framework간의 커넥션을 생성한다.
-    Migration(int port, char comm);
+    MIGRATION(int port, char comm);
     // 인접 CEC의 서버 정보들을 받아온다.
     list<Server*> getnearserver();
     // 커넥션을 받을 수 있는 서버 생성
@@ -42,10 +42,8 @@ public:
     // 커넥션 생성
     int makeConnection(unsigned int ip, ushort port, bool isInstalled);
     // 모든 큐 데이터들을 긁어 마이그레이션을 시작한다. input: target node id
-    void startMigration(int id, Executor* executor);
-    // Queue의 데이터를 Serialization 및 지정된 소켓 디스크립터로 보낸다.
-    void sendQueue(QUEUE* Q, int fd);
-    // Migration data를 받을 쓰레드를 수행
+    void startMIGRATION(int id, STREAMFACTORY* factory);
+    // MIGRATION data를 받을 쓰레드를 수행
     void waitforMigration();
     
     // methods
@@ -72,4 +70,4 @@ public:
 };
 
 void* internal_makeServer ( void* context );
-void* internal_waitforMigration ( void* context);
+void* internal_waitforMIGRATION ( void* context);

@@ -23,36 +23,36 @@
 
 using namespace std;
 
-class QUEUE;
-class Executor;
+class PIPE;
+class STREAMFACTORY;
 
-class Connection
+class CONNECTION
 {
 private:
     pthread_t dispatcher_tid, sender_tid;
     list<pthread_t> receiver_tids;
     bool state;
-    Executor* executor;
-    // Connection 모듈 시그널 컨디션 변수
-    pthread_cond_t g_condition;
-    // Connection 모듈 시그널 컨디션 변수의 락
-    pthread_mutex_t g_mutex;
+    STREAMFACTORY* factory;
+    // CONNECTION 모듈 시그널 컨디션 변수
+    pthread_cond_t condition;
+    // CONNECTION 모듈 시그널 컨디션 변수의 락
+    pthread_mutex_t mutex;
     bool shouldbeSleep;
-public:
     int _broker_sock;
     sockaddr_in _broker_addr;
     list<struct CLIENT*> clientlists;
+public:
     
-    // Executor에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
-    Connection(int recvport, Executor* executor);
-    // Connection 해제
-    ~Connection();
+    // STREAMFACTORY에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
+    CONNECTION(int recvport, STREAMFACTORY* factory);
+    // CONNECTION 해제
+    ~CONNECTION();
     // serverStart wrapper
     static void* serverStart_wrapper(void* context);
     // serverStart internal
     void* serverStart_internal(void* arg);
     // sender, receivers, dispatcher 생성
-    pthread_t serverStart(QUEUE* inq, list<QUEUE*>* outqlist);
+    pthread_t serverStart(PIPE* inpipe, list<PIPE*>* outpipelist);
     // ip주소를 뽑는 함수
     void* get_in_addr( struct sockaddr *sa );
     // 패킷을 보내는 함수
@@ -71,11 +71,11 @@ public:
     void setsender_tid ( pthread_t tid );
     void setdispatcher_tid ( pthread_t tid );
     //void register_user(pthread_t tid, int fd, struct sockaddr_storage client_addr);
-    // Connection 모듈이 동작하고 있는가? true: 동작중 false: blocking
+    // CONNECTION 모듈이 동작하고 있는가? true: 동작중 false: blocking
     bool getConnState();
-    // Connection을 재운다 (Sender 및 Receiver).
-    void sleepConnection();
-    // Connection을 깨운다 (Sender 및 Receiver).
-    void wakeupConnection();
+    // CONNECTION을 재운다 (Sender 및 Receiver).
+    void sleepCONNECTOR();
+    // CONNECTION을 깨운다 (Sender 및 Receiver).
+    void wakeupCONNECTOR();
     
 };

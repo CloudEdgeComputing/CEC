@@ -1,12 +1,14 @@
-#include "Connection.h"
-#include "Data.h"
-#include "Queue.h"
-#include "Executor.h"
-#include "ExecutorManager.h"
+#include "CONNECTION.h"
+#include "TUPLE.h"
+#include "PIPE.h"
+#include "STREAMFACTORY.h"
+#include "FACTORYBUILDER.h"
 #include "Debug.h"
-#include "Migration.h"
+#include "MIGRATION.h"
+#include <errno.h>
+#include <string.h>
 
-Connection::Connection ( int recvport, Executor* executor )
+CONNECTION::CONNECTION ( int recvport, STREAMFACTORY* factory )
 {
     int ret = 0;
 
@@ -20,7 +22,7 @@ Connection::Connection ( int recvport, Executor* executor )
     ret = ::bind ( _broker_sock, ( struct sockaddr* ) &_broker_addr, sizeof ( _broker_addr ) );
     if ( ret != 0 )
     {
-        printf ( "Bind error!\n" );
+        printf ( "Bind error! %s port: %d\n", strerror(errno), recvport );
         exit ( 0 );
     }
     ret = ::listen ( _broker_sock, 5 );
@@ -32,13 +34,13 @@ Connection::Connection ( int recvport, Executor* executor )
     this->state = false;
     this->shouldbeSleep = false;
 
-    this->executor = executor;
+    this->factory = factory;
 
     printf ( "Server initialized!\n" );
 
 }
 
-Connection::~Connection()
+CONNECTION::~CONNECTION()
 {
     close ( this->_broker_sock );
     for ( auto iter = this->clientlists.begin(); iter != this->clientlists.end(); ++iter )
@@ -48,7 +50,7 @@ Connection::~Connection()
     }
 }
 
-void* Connection::get_in_addr ( sockaddr* sa )
+void* CONNECTION::get_in_addr ( sockaddr* sa )
 {
     if ( sa->sa_family == AF_INET )
     {
@@ -57,55 +59,56 @@ void* Connection::get_in_addr ( sockaddr* sa )
     return & ( ( ( struct sockaddr_in6* ) sa )->sin6_addr );
 }
 
-pthread_t Connection::serverStart ( QUEUE* inq, list<QUEUE*>* outqlist )
+pthread_t CONNECTION::serverStart ( PIPE* inpipe, list< PIPE* >* outpipelist )
 {
     struct CONNDATA* serverdata = new struct CONNDATA;
     serverdata->thispointer = this;
-    serverdata->inq = inq;
-    serverdata->outqlist = outqlist;
-    
+    serverdata->inpipe = inpipe;
+    serverdata->outpipelist = outpipelist;
+
     // que dependency 설정
-    inq->registerbackDependency(this, TYPE_CONNECTION);
-    for(auto iter = outqlist->begin(); iter != outqlist->end(); ++iter)
+    inpipe->registerbackDependency ( this, TYPE_CONNECTION );
+    for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
     {
-        auto que = *iter;
-        que->registerforwardDependency(this, TYPE_CONNECTION);
+        auto pipe = *iter;
+        pipe->registerforwardDependency ( this, TYPE_CONNECTION );
     }
-    
+
     pthread_t server_tid;
-    pthread_create ( &server_tid, NULL, &Connection::serverStart_wrapper, ( void* ) serverdata );
+    pthread_create ( &server_tid, NULL, &CONNECTION::serverStart_wrapper, ( void* ) serverdata );
 
     return server_tid;
 }
 
-void* Connection::serverStart_wrapper ( void* context )
+void* CONNECTION::serverStart_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ( ( Connection* ) thispointer )->serverStart_internal ( context );
+    return ( ( CONNECTION* ) thispointer )->serverStart_internal ( context );
 }
 
-void* Connection::serverStart_internal ( void* arg )
+void* CONNECTION::serverStart_internal ( void* arg )
 {
     struct CONNDATA* serverdata = ( struct CONNDATA* ) arg;
-    QUEUE* inq = serverdata->inq;
-    list<QUEUE*>* outqlist = serverdata->outqlist;
+    PIPE* inpipe = serverdata->inpipe;
+    list<PIPE*>* outpipelist = serverdata->outpipelist;
 
     // Dispatcher Install
     struct CONNDATA* dispatcherdata = new struct CONNDATA;
     dispatcherdata->fd = 0;
-    dispatcherdata->inq = inq;
-    dispatcherdata->dispatchq = new QUEUE ( new lockfreeq ( 0 ), NULL, 2, 0 );
+    dispatcherdata->inpipe = inpipe;
+    dispatcherdata->dispatchpipe = new PIPE ( new lockfreeq ( 0 ), NULL, 2, 0 );
     dispatcherdata->thispointer = this;
-    pthread_create ( &this->dispatcher_tid, NULL, &Connection::dispatcher_wrapper, ( void* ) dispatcherdata );
+    pthread_create ( &this->dispatcher_tid, NULL, &CONNECTION::dispatcher_wrapper, ( void* ) dispatcherdata );
 
+    
     // Sender Install
     pthread_t sender_tid;
     struct CONNDATA* senderdata = new struct CONNDATA;
     senderdata->fd = 0;
-    senderdata->outqlist = outqlist;
+    senderdata->outpipelist = outpipelist;
     senderdata->thispointer = this;
-    pthread_create ( &this->sender_tid, NULL, &Connection::sender_wrapper, ( void* ) senderdata );
+    pthread_create ( &this->sender_tid, NULL, &CONNECTION::sender_wrapper, ( void* ) senderdata );
 
     while ( 1 )
     {
@@ -132,23 +135,21 @@ void* Connection::serverStart_internal ( void* arg )
 
         struct CONNDATA* receiverdata = new struct CONNDATA;
         receiverdata->fd = fd;
-        //receiverdata->inq = inq;
-        //receiverdata->outq = outq;
-        receiverdata->dispatchq = dispatcherdata->dispatchq;
+        receiverdata->dispatchpipe = dispatcherdata->dispatchpipe;
         receiverdata->thispointer = this;
 
         pthread_t receiver_tid;
-        pthread_create ( &receiver_tid, NULL, &Connection::receiver_wrapper, ( void* ) receiverdata );
+        pthread_create ( &receiver_tid, NULL, &CONNECTION::receiver_wrapper, ( void* ) receiverdata );
         this->receiver_tids.push_back ( receiver_tid );
     }
 
     return NULL;
 }
 
-void* Connection::receiver ( void* arg )
+void* CONNECTION::receiver ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
-    lockfreeq* dispatchq = conndata->dispatchq->getQueue();
+    lockfreeq* dispatchq = conndata->dispatchpipe->getQueue();
     char buffer[4096] = "";
 
     while ( 1 )
@@ -156,7 +157,7 @@ void* Connection::receiver ( void* arg )
         if ( this->shouldbeSleep == true )
         {
             printf ( "receiver goes to sleep\n" );
-            pthread_cond_wait ( &this->g_condition, &this->g_mutex );
+            pthread_cond_wait ( &this->condition, &this->mutex );
             printf ( "receiver goes to wakeup\n" );
         }
 
@@ -170,7 +171,7 @@ void* Connection::receiver ( void* arg )
         memset ( pdata, 0, size );
         memcpy ( pdata, buffer, size );
 
-        DATA* data = new DATA ( pdata, size - 4, 0, conndata->fd );
+        TUPLE* data = new TUPLE ( pdata, size - 4, 0, conndata->fd );
 
         // DATA 구조체를 넣는다.
         if ( !dispatchq->push ( data ) )
@@ -186,19 +187,19 @@ void* Connection::receiver ( void* arg )
     return NULL;
 }
 
-void* Connection::receiver_wrapper ( void* context )
+void* CONNECTION::receiver_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    void* result = ( ( Connection* ) thispointer )->receiver ( context );
+    void* result = ( ( CONNECTION* ) thispointer )->receiver ( context );
 
     return result;
 }
 
-void* Connection::sender ( void* arg )
+void* CONNECTION::sender ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
-    auto outqlist = conndata->outqlist;
+    auto outpipelist = conndata->outpipelist;
     //lockfreeq* outq = conndata->outq->getQueue();
 
     while ( 1 )
@@ -206,19 +207,19 @@ void* Connection::sender ( void* arg )
         if ( this->shouldbeSleep == true )
         {
             printf ( "sender goes to sleep\n" );
-            pthread_cond_wait ( &this->g_condition, &this->g_mutex );
+            pthread_cond_wait ( &this->condition, &this->mutex );
             printf ( "sender goes to wakeup\n" );
         }
-        
+
         // outq 모두에 대해 검사 및 전송
-        
-        for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+
+        for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
         {
-            lockfreeq* outq = (*iter)->getQueue();
+            lockfreeq* outq = ( *iter )->getQueue();
             while ( !outq->empty() )
             {
-                DATA* data;
-                if ( !outq->pop ( data ) )
+                TUPLE* tuple;
+                if ( !outq->pop ( tuple ) )
                 {
                     printf ( "outq pop error!\n" );
                     exit ( 0 );
@@ -226,7 +227,7 @@ void* Connection::sender ( void* arg )
 
                 //debug_packet(data->getdata(), data->getLen() + 4);
 
-                if ( data->getcontent() == NULL )
+                if ( tuple->getcontent() == NULL )
                 {
                     printf ( "No contents!\n" );
                     exit ( 0 );
@@ -239,55 +240,55 @@ void* Connection::sender ( void* arg )
                     exit ( 0 );
                 }*/
 
-                delete[] data->getdata();
-                delete data;
+                delete[] tuple->getdata();
+                delete tuple;
             }
 
         }
     }
 }
 
-void* Connection::sender_wrapper ( void* context )
+void* CONNECTION::sender_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ( ( Connection* ) thispointer )->sender ( context );
+    return ( ( CONNECTION* ) thispointer )->sender ( context );
 }
 
-void* Connection::dispatcher ( void* arg )
+void* CONNECTION::dispatcher ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
-    lockfreeq* dispatchq = conndata->dispatchq->getQueue();
-    lockfreeq* inq = conndata->inq->getQueue();
+    lockfreeq* dispatchq = conndata->dispatchpipe->getQueue();
+    lockfreeq* inq = conndata->inpipe->getQueue();
     while ( 1 )
     {
         if ( !dispatchq->empty() )
         {
-            DATA* data;
-            dispatchq->pop ( data );
+            TUPLE* tuple;
+            dispatchq->pop ( tuple );
 
             // packet validity check
-            if ( !data->validity() )
+            if ( !tuple->validity() )
             {
-                printf ( "data is not valid in dispatch, size: %d\n", data->getLen() );
+                printf ( "data is not valid in dispatch, size: %d\n", tuple->getLen() );
                 continue;
             }
 
-            switch ( data->gettype() )
+            switch ( tuple->gettype() )
             {
                 // 데이터
             case 0x00:
             {
                 // inq에 넣음
-                inq->push ( data );
+                inq->push ( tuple );
                 break;
             }
             // 마이그레이션 실행
             case 0x01:
             {
-                Migration* mig = executormanager.getMigrationModule();
+                MIGRATION* mig = factorymanager.getMIGRATION();
                 // 0번 아이디에 executor에 해당하는곳에 마이그레이션 시작
-                mig->startMigration ( 0, this->executor );
+                mig->startMIGRATION(0, this->factory);
                 break;
             }
             default:
@@ -300,11 +301,11 @@ void* Connection::dispatcher ( void* arg )
     }
 }
 
-void* Connection::dispatcher_wrapper ( void* context )
+void* CONNECTION::dispatcher_wrapper ( void* context )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) context;
     void* thispointer = conndata->thispointer;
-    return ( ( Connection* ) thispointer )->dispatcher ( context );
+    return ( ( CONNECTION* ) thispointer )->dispatcher ( context );
 }
 
 /*
@@ -322,32 +323,32 @@ void Connection::register_user(pthread_t send_tid, pthread_t recv_tid, int fd, s
     clientlists.push_back(client);
 }*/
 
-void Connection::setsender_tid ( pthread_t tid )
+void CONNECTION::setsender_tid ( pthread_t tid )
 {
     this->sender_tid = tid;
 }
 
-void Connection::setdispatcher_tid ( pthread_t tid )
+void CONNECTION::setdispatcher_tid ( pthread_t tid )
 {
     this->dispatcher_tid = tid;
 }
 
-bool Connection::getConnState()
+bool CONNECTION::getConnState()
 {
     return this->state;
 }
 
-void Connection::sleepConnection()
+void CONNECTION::sleepCONNECTOR()
 {
-    pthread_mutex_lock ( &this->g_mutex );
+    pthread_mutex_lock ( &this->mutex );
     this->shouldbeSleep = true;
-    pthread_mutex_unlock ( &this->g_mutex );
+    pthread_mutex_unlock ( &this->mutex );
 }
 
-void Connection::wakeupConnection()
+void CONNECTION::wakeupCONNECTOR()
 {
-    pthread_mutex_lock ( &this->g_mutex );
+    pthread_mutex_lock ( &this->mutex );
     this->shouldbeSleep = false;
-    pthread_cond_broadcast ( &this->g_condition );
-    pthread_mutex_unlock ( &this->g_mutex );
+    pthread_cond_broadcast ( &this->condition );
+    pthread_mutex_unlock ( &this->mutex );
 }

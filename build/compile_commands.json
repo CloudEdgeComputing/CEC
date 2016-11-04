@@ -1,0 +1,67 @@
+[
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/UNIONCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/UNIONCELL.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/UNIONCELL.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/CELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/CELL.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/CELL.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/MIGRATION.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/MIGRATION.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/main.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/main.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/main.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/BASICCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/BASICCELL.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/BASICCELL.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/TUPLE.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/TUPLE.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/TUPLE.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/FACTORYBUILDER.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/FACTORYBUILDER.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/WORKER.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/WORKER.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/PIPE.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/PIPE.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/Functions.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/Functions.cpp"
+}
+]

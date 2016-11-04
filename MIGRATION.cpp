@@ -1,11 +1,11 @@
-#include "Migration.h"
-#include "Executor.h"
-#include "Queue.h"
-#include "Task.h"
-#include "ExecutorManager.h"
-#include "Data.h"
+#include "MIGRATION.h"
+#include "STREAMFACTORY.h"
+#include "PIPE.h"
+#include "BASICCELL.h"
+#include "FACTORYBUILDER.h"
+#include "TUPLE.h"
 
-Migration::Migration ( int port, char comm )
+MIGRATION::MIGRATION ( int port, char comm )
 {
     // 접속을 기다릴 수 있는 서버를 만듦
     if ( comm == 's' )
@@ -15,7 +15,7 @@ Migration::Migration ( int port, char comm )
     // 서버에 접속함
     else if ( comm == 'c' )
     {
-        // Get Migration server list
+        // Get MIGRATION server list
         list<SERVER*> _list = this->getnearserver();
 
         // 인접한 서버 리스트에 대하여 커넥션 생성 (내가 서버인가 클라이언트인가를 지정)
@@ -26,12 +26,12 @@ Migration::Migration ( int port, char comm )
         }
     }
 
-    // Migration 관한 데이터를 받을 쓰레드를 생성함
+    // MIGRATION 관한 데이터를 받을 쓰레드를 생성함
     // Data migration을 일으키는 데이터는 Connection 쓰레드에서 알아서 함
     this->waitforMigration();
 }
 
-list< SERVER* > Migration::getnearserver()
+list< SERVER* > MIGRATION::getnearserver()
 {
     // 현재 하드코딩 TODO
     // 원래 설계는 전체 엣지 노드들을 관리하는 파라미터 서버같은것이 있고 거기에서 받아와야 함
@@ -45,7 +45,7 @@ list< SERVER* > Migration::getnearserver()
     return this->nearserver;
 }
 
-int Migration::makeConnection ( unsigned int ip, ushort port, bool isInstalled )
+int MIGRATION::makeConnection ( unsigned int ip, ushort port, bool isInstalled )
 {
     if ( isInstalled == true )
     {
@@ -68,7 +68,7 @@ int Migration::makeConnection ( unsigned int ip, ushort port, bool isInstalled )
     }
 }
 
-int Migration::makeServer ( ushort port )
+int MIGRATION::makeServer ( ushort port )
 {
     this->server_port = port;
 
@@ -78,19 +78,19 @@ int Migration::makeServer ( ushort port )
 
 }
 
-void Migration::startMigration ( int id, Executor* executor )
+void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
 {
     int sockfd = this->getClienctCEC ( id );
 
     // executor에 해당하는 모든 task들을 블럭시킨다.
     // Task scheduler task 블럭, 웨이크업
 
-    auto list = executor->getTask();
+    auto list = factory->getCELLs();
 
     for ( auto iter = list.begin(); iter != list.end(); ++iter )
     {
-        Task* task = ( *iter );
-        task->SchedulerSleep();
+        BASICCELL* cell = ( *iter );
+        cell->schedulerSleep();
     }
     printf ( "all tasks in an executor goes to sleep\n" );
 
@@ -98,76 +98,78 @@ void Migration::startMigration ( int id, Executor* executor )
     while ( 1 )
     {
         bool checker = false;
-        QUEUE* inq = executor->getinq();
+        PIPE* inpipe = factory->getinpipe();
 
         printf ( "from inq\n" );
-        checker |= !inq->sendQueue ( sockfd );
+        checker |= !inpipe->sendQueue ( sockfd );
         usleep ( 500 );
 
         // executor outq
-        auto outqlist = executor->getoutqlist();
+        auto outpipelist = factory->getoutpipelist();
         printf ( "from outqs\n" );
-        for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+        for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
         {
-            auto outq = *iter;
-            checker |= !outq->sendQueue ( sockfd );
+            auto outpipe = *iter;
+            checker |= !outpipe->sendQueue ( sockfd );
             usleep ( 500 );
         }
 
-        auto list = executor->getTask();
+        auto list = factory->getCELLs();
 
         printf ( "from task\n" );
         for ( auto iter = list.begin(); iter != list.end(); ++iter )
         {
-            Task* task = *iter;
+            BASICCELL* cell = *iter;
             // task에 있는 큐를 빼냄
-            auto outqlist = task->getoutqlist();
-            for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+            auto outpipelist = cell->getoutpipelist();
+            for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
             {
-                auto outq = *iter;
-                checker |= !outq->sendQueue ( sockfd );
+                auto outpipe = *iter;
+                checker |= !outpipe->sendQueue ( sockfd );
                 usleep ( 500 );
             }
         }
 
         if ( checker == false )
         {
-            QUEUE* inq = executor->getinq();
-            inq->clearMigration();
-            auto outqlist = executor->getoutqlist();
+            PIPE* inpipe = factory->getinpipe();
+            
+            inpipe->clearMigration();
+            
+            auto outpipelist = factory->getoutpipelist();
 
-            for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+            for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
             {
-                auto outq = *iter;
-                outq->clearMigration();
+                auto outpipe = *iter;
+                outpipe->clearMigration();
             }
 
             for ( auto iter = list.begin(); iter != list.end(); ++iter )
             {
-                Task* task = *iter;
-                auto outqlist = task->getoutqlist();
-                for ( auto iter = outqlist->begin(); iter != outqlist->end(); ++iter )
+                BASICCELL* cell = *iter;
+                auto outpipelist = cell->getoutpipelist();
+                for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
                 {
-                    auto outq = *iter;
-                    outq->clearMigration();
+                    auto outpipe = *iter;
+                    outpipe->clearMigration();
                 }
-                task->SchedulerWakeup();
+                cell->schedulerWakeup();
             }
-            printf ( "all tasks in an executor goes to wake up\n" );
+            printf ( "all cells in a factory goes to wake up\n" );
             break;
         }
     }
 
-    printf ( "Migration completed!\n" );
+    printf ( "MIGRATION completed!\n" );
 }
 
-void Migration::waitforMigration()
+void MIGRATION::waitforMigration()
 {
     pthread_t tid;
-    pthread_create ( &tid, NULL, internal_waitforMigration, ( void* ) this );
+    pthread_create ( &tid, NULL, internal_waitforMIGRATION, ( void* ) this );
 }
 
-int Migration::getClienctCEC ( int n )
+int MIGRATION::getClienctCEC ( int n )
 {
     printf ( "wait for connecting...!\n" );
     while ( 1 )
@@ -188,43 +190,43 @@ int Migration::getClienctCEC ( int n )
     return 0;
 }
 
-void Migration::registerClient ( int fd )
+void MIGRATION::registerClient ( int fd )
 {
     this->connected_clients.push_back ( fd );
 }
 
-void Migration::registerServer ( int fd )
+void MIGRATION::registerServer ( int fd )
 {
-    this->connecting_cecs.push_back ( fd );
+    this->connecting_servers.push_back ( fd );
 }
 
-bool Migration::getisInstalled()
+bool MIGRATION::getisInstalled()
 {
     return this->isInstalled;
 }
 
-void Migration::setisInstalled ( bool sw )
+void MIGRATION::setisInstalled ( bool sw )
 {
     this->isInstalled = sw;
 }
 
-ushort Migration::getport()
+ushort MIGRATION::getport()
 {
     return this->server_port;
 }
 
-int Migration::getserver_fd()
+int MIGRATION::getserver_fd()
 {
     return this->server_fd;
 }
 
-int Migration::getServerCEC ( int n )
+int MIGRATION::getServerCEC ( int n )
 {
     printf ( "searching servers conntected with me!\n" );
     while ( 1 )
     {
         int cnt = 0;
-        for ( auto iter = this->connecting_cecs.begin(); iter != this->connecting_cecs.end(); ++iter )
+        for ( auto iter = this->connecting_servers.begin(); iter != this->connecting_servers.end(); ++iter )
         {
             if ( cnt == n )
             {
@@ -241,7 +243,7 @@ int Migration::getServerCEC ( int n )
 
 void* internal_makeServer ( void* context )
 {
-    Migration* mig = ( Migration* ) context;
+    MIGRATION* mig = ( MIGRATION* ) context;
 
     int ret = 0;
 
@@ -259,17 +261,17 @@ void* internal_makeServer ( void* context )
     ret = ::bind ( sfd, ( struct sockaddr* ) &addr, sizeof ( addr ) );
     if ( ret != 0 )
     {
-        printf ( "bind error in Migration server!\n" );
+        printf ( "bind error in MIGRATION server!\n" );
         exit ( 0 );
     }
 
     ret = ::listen ( sfd, 5 );
     if ( ret != 0 )
     {
-        printf ( "listen error in Migration server!\n" );
+        printf ( "listen error in MIGRATION server!\n" );
         exit ( 0 );
     }
-    printf ( "Migration server initialized ip : %d port: %d!\n", addr.sin_addr.s_addr, mig->getport() );
+    printf ( "MIGRATION server initialized ip : %d port: %d!\n", addr.sin_addr.s_addr, mig->getport() );
 
     while ( 1 )
     {
@@ -281,10 +283,10 @@ void* internal_makeServer ( void* context )
     }
 }
 
-void* internal_waitforMigration ( void* context )
+void* internal_waitforMIGRATION ( void* context )
 {
     char buffer[4096] = "";
-    Migration* migration = ( Migration* ) context;
+    MIGRATION* migration = ( MIGRATION* ) context;
 
     // 여기는 0번째인걸 아니까.. 그냥 하드코딩..
     // 첫번째 등록된 엣지노드의 파일디스크립터
@@ -305,13 +307,13 @@ void* internal_waitforMigration ( void* context )
         memset ( pdata, 0, size );
         memcpy ( pdata, buffer, size );
 
-        DATA* data = new DATA ( pdata, size - 4, 0, 0 );
+        TUPLE* data = new TUPLE ( pdata, size - 4, 0, 0 );
         // 어떤 익스큐터인가?
         // 하드코딩;; 0번 익스큐터!
-        Executor* executor = executormanager.getExecutorbyId ( 0 );
+        STREAMFACTORY* factory = factorymanager.getStreamFactorybyid(0);
 
         // 설치한다.
-        executor->installReceivedData ( data );
+        factory->installReceivedData( data );
 
         // 내부 변수 초기화
         delete data;

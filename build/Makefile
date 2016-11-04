@@ -155,53 +155,77 @@ cec_mig_framwork/fast:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/build
 .PHONY : cec_mig_framwork/fast
 
-Connection.o: Connection.cpp.o
-.PHONY : Connection.o
+BASICCELL.o: BASICCELL.cpp.o
+.PHONY : BASICCELL.o
 
 # target to build an object file
-Connection.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Connection.cpp.o
-.PHONY : Connection.cpp.o
+BASICCELL.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/BASICCELL.cpp.o
+.PHONY : BASICCELL.cpp.o
 
-Connection.i: Connection.cpp.i
-.PHONY : Connection.i
+BASICCELL.i: BASICCELL.cpp.i
+.PHONY : BASICCELL.i
 
 # target to preprocess a source file
-Connection.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Connection.cpp.i
-.PHONY : Connection.cpp.i
+BASICCELL.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/BASICCELL.cpp.i
+.PHONY : BASICCELL.cpp.i
 
-Connection.s: Connection.cpp.s
-.PHONY : Connection.s
+BASICCELL.s: BASICCELL.cpp.s
+.PHONY : BASICCELL.s
 
 # target to generate assembly for a file
-Connection.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Connection.cpp.s
-.PHONY : Connection.cpp.s
+BASICCELL.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/BASICCELL.cpp.s
+.PHONY : BASICCELL.cpp.s
 
-Data.o: Data.cpp.o
-.PHONY : Data.o
+CELL.o: CELL.cpp.o
+.PHONY : CELL.o
 
 # target to build an object file
-Data.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Data.cpp.o
-.PHONY : Data.cpp.o
+CELL.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CELL.cpp.o
+.PHONY : CELL.cpp.o
 
-Data.i: Data.cpp.i
-.PHONY : Data.i
+CELL.i: CELL.cpp.i
+.PHONY : CELL.i
 
 # target to preprocess a source file
-Data.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Data.cpp.i
-.PHONY : Data.cpp.i
+CELL.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CELL.cpp.i
+.PHONY : CELL.cpp.i
 
-Data.s: Data.cpp.s
-.PHONY : Data.s
+CELL.s: CELL.cpp.s
+.PHONY : CELL.s
 
 # target to generate assembly for a file
-Data.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Data.cpp.s
-.PHONY : Data.cpp.s
+CELL.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CELL.cpp.s
+.PHONY : CELL.cpp.s
+
+CONNECTION.o: CONNECTION.cpp.o
+.PHONY : CONNECTION.o
+
+# target to build an object file
+CONNECTION.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.o
+.PHONY : CONNECTION.cpp.o
+
+CONNECTION.i: CONNECTION.cpp.i
+.PHONY : CONNECTION.i
+
+# target to preprocess a source file
+CONNECTION.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.i
+.PHONY : CONNECTION.cpp.i
+
+CONNECTION.s: CONNECTION.cpp.s
+.PHONY : CONNECTION.s
+
+# target to generate assembly for a file
+CONNECTION.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.s
+.PHONY : CONNECTION.cpp.s
 
 Debug.o: Debug.cpp.o
 .PHONY : Debug.o
@@ -227,53 +251,29 @@ Debug.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Debug.cpp.s
 .PHONY : Debug.cpp.s
 
-Executor.o: Executor.cpp.o
-.PHONY : Executor.o
+FACTORYBUILDER.o: FACTORYBUILDER.cpp.o
+.PHONY : FACTORYBUILDER.o
 
 # target to build an object file
-Executor.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Executor.cpp.o
-.PHONY : Executor.cpp.o
+FACTORYBUILDER.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.o
+.PHONY : FACTORYBUILDER.cpp.o
 
-Executor.i: Executor.cpp.i
-.PHONY : Executor.i
-
-# target to preprocess a source file
-Executor.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Executor.cpp.i
-.PHONY : Executor.cpp.i
-
-Executor.s: Executor.cpp.s
-.PHONY : Executor.s
-
-# target to generate assembly for a file
-Executor.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Executor.cpp.s
-.PHONY : Executor.cpp.s
-
-ExecutorManager.o: ExecutorManager.cpp.o
-.PHONY : ExecutorManager.o
-
-# target to build an object file
-ExecutorManager.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.o
-.PHONY : ExecutorManager.cpp.o
-
-ExecutorManager.i: ExecutorManager.cpp.i
-.PHONY : ExecutorManager.i
+FACTORYBUILDER.i: FACTORYBUILDER.cpp.i
+.PHONY : FACTORYBUILDER.i
 
 # target to preprocess a source file
-ExecutorManager.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.i
-.PHONY : ExecutorManager.cpp.i
+FACTORYBUILDER.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.i
+.PHONY : FACTORYBUILDER.cpp.i
 
-ExecutorManager.s: ExecutorManager.cpp.s
-.PHONY : ExecutorManager.s
+FACTORYBUILDER.s: FACTORYBUILDER.cpp.s
+.PHONY : FACTORYBUILDER.s
 
 # target to generate assembly for a file
-ExecutorManager.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/ExecutorManager.cpp.s
-.PHONY : ExecutorManager.cpp.s
+FACTORYBUILDER.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.s
+.PHONY : FACTORYBUILDER.cpp.s
 
 Functions.o: Functions.cpp.o
 .PHONY : Functions.o
@@ -299,101 +299,149 @@ Functions.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Functions.cpp.s
 .PHONY : Functions.cpp.s
 
-Migration.o: Migration.cpp.o
-.PHONY : Migration.o
+MIGRATION.o: MIGRATION.cpp.o
+.PHONY : MIGRATION.o
 
 # target to build an object file
-Migration.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.o
-.PHONY : Migration.cpp.o
+MIGRATION.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.o
+.PHONY : MIGRATION.cpp.o
 
-Migration.i: Migration.cpp.i
-.PHONY : Migration.i
+MIGRATION.i: MIGRATION.cpp.i
+.PHONY : MIGRATION.i
 
 # target to preprocess a source file
-Migration.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.i
-.PHONY : Migration.cpp.i
+MIGRATION.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.i
+.PHONY : MIGRATION.cpp.i
 
-Migration.s: Migration.cpp.s
-.PHONY : Migration.s
+MIGRATION.s: MIGRATION.cpp.s
+.PHONY : MIGRATION.s
 
 # target to generate assembly for a file
-Migration.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Migration.cpp.s
-.PHONY : Migration.cpp.s
+MIGRATION.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.s
+.PHONY : MIGRATION.cpp.s
 
-Operator.o: Operator.cpp.o
-.PHONY : Operator.o
+PIPE.o: PIPE.cpp.o
+.PHONY : PIPE.o
 
 # target to build an object file
-Operator.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Operator.cpp.o
-.PHONY : Operator.cpp.o
+PIPE.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.o
+.PHONY : PIPE.cpp.o
 
-Operator.i: Operator.cpp.i
-.PHONY : Operator.i
+PIPE.i: PIPE.cpp.i
+.PHONY : PIPE.i
 
 # target to preprocess a source file
-Operator.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Operator.cpp.i
-.PHONY : Operator.cpp.i
+PIPE.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.i
+.PHONY : PIPE.cpp.i
 
-Operator.s: Operator.cpp.s
-.PHONY : Operator.s
+PIPE.s: PIPE.cpp.s
+.PHONY : PIPE.s
 
 # target to generate assembly for a file
-Operator.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Operator.cpp.s
-.PHONY : Operator.cpp.s
+PIPE.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.s
+.PHONY : PIPE.cpp.s
 
-Queue.o: Queue.cpp.o
-.PHONY : Queue.o
+STREAMFACTORY.o: STREAMFACTORY.cpp.o
+.PHONY : STREAMFACTORY.o
 
 # target to build an object file
-Queue.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Queue.cpp.o
-.PHONY : Queue.cpp.o
+STREAMFACTORY.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.o
+.PHONY : STREAMFACTORY.cpp.o
 
-Queue.i: Queue.cpp.i
-.PHONY : Queue.i
+STREAMFACTORY.i: STREAMFACTORY.cpp.i
+.PHONY : STREAMFACTORY.i
 
 # target to preprocess a source file
-Queue.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Queue.cpp.i
-.PHONY : Queue.cpp.i
+STREAMFACTORY.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.i
+.PHONY : STREAMFACTORY.cpp.i
 
-Queue.s: Queue.cpp.s
-.PHONY : Queue.s
+STREAMFACTORY.s: STREAMFACTORY.cpp.s
+.PHONY : STREAMFACTORY.s
 
 # target to generate assembly for a file
-Queue.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Queue.cpp.s
-.PHONY : Queue.cpp.s
+STREAMFACTORY.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.s
+.PHONY : STREAMFACTORY.cpp.s
 
-Task.o: Task.cpp.o
-.PHONY : Task.o
+TUPLE.o: TUPLE.cpp.o
+.PHONY : TUPLE.o
 
 # target to build an object file
-Task.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Task.cpp.o
-.PHONY : Task.cpp.o
+TUPLE.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/TUPLE.cpp.o
+.PHONY : TUPLE.cpp.o
 
-Task.i: Task.cpp.i
-.PHONY : Task.i
+TUPLE.i: TUPLE.cpp.i
+.PHONY : TUPLE.i
 
 # target to preprocess a source file
-Task.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Task.cpp.i
-.PHONY : Task.cpp.i
+TUPLE.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/TUPLE.cpp.i
+.PHONY : TUPLE.cpp.i
 
-Task.s: Task.cpp.s
-.PHONY : Task.s
+TUPLE.s: TUPLE.cpp.s
+.PHONY : TUPLE.s
 
 # target to generate assembly for a file
-Task.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/Task.cpp.s
-.PHONY : Task.cpp.s
+TUPLE.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/TUPLE.cpp.s
+.PHONY : TUPLE.cpp.s
+
+UNIONCELL.o: UNIONCELL.cpp.o
+.PHONY : UNIONCELL.o
+
+# target to build an object file
+UNIONCELL.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/UNIONCELL.cpp.o
+.PHONY : UNIONCELL.cpp.o
+
+UNIONCELL.i: UNIONCELL.cpp.i
+.PHONY : UNIONCELL.i
+
+# target to preprocess a source file
+UNIONCELL.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/UNIONCELL.cpp.i
+.PHONY : UNIONCELL.cpp.i
+
+UNIONCELL.s: UNIONCELL.cpp.s
+.PHONY : UNIONCELL.s
+
+# target to generate assembly for a file
+UNIONCELL.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/UNIONCELL.cpp.s
+.PHONY : UNIONCELL.cpp.s
+
+WORKER.o: WORKER.cpp.o
+.PHONY : WORKER.o
+
+# target to build an object file
+WORKER.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.o
+.PHONY : WORKER.cpp.o
+
+WORKER.i: WORKER.cpp.i
+.PHONY : WORKER.i
+
+# target to preprocess a source file
+WORKER.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.i
+.PHONY : WORKER.cpp.i
+
+WORKER.s: WORKER.cpp.s
+.PHONY : WORKER.s
+
+# target to generate assembly for a file
+WORKER.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.s
+.PHONY : WORKER.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -432,36 +480,42 @@ help:
 	@echo "... list_install_components"
 	@echo "... cec_mig_framwork"
 	@echo "... install/local"
-	@echo "... Connection.o"
-	@echo "... Connection.i"
-	@echo "... Connection.s"
-	@echo "... Data.o"
-	@echo "... Data.i"
-	@echo "... Data.s"
+	@echo "... BASICCELL.o"
+	@echo "... BASICCELL.i"
+	@echo "... BASICCELL.s"
+	@echo "... CELL.o"
+	@echo "... CELL.i"
+	@echo "... CELL.s"
+	@echo "... CONNECTION.o"
+	@echo "... CONNECTION.i"
+	@echo "... CONNECTION.s"
 	@echo "... Debug.o"
 	@echo "... Debug.i"
 	@echo "... Debug.s"
-	@echo "... Executor.o"
-	@echo "... Executor.i"
-	@echo "... Executor.s"
-	@echo "... ExecutorManager.o"
-	@echo "... ExecutorManager.i"
-	@echo "... ExecutorManager.s"
+	@echo "... FACTORYBUILDER.o"
+	@echo "... FACTORYBUILDER.i"
+	@echo "... FACTORYBUILDER.s"
 	@echo "... Functions.o"
 	@echo "... Functions.i"
 	@echo "... Functions.s"
-	@echo "... Migration.o"
-	@echo "... Migration.i"
-	@echo "... Migration.s"
-	@echo "... Operator.o"
-	@echo "... Operator.i"
-	@echo "... Operator.s"
-	@echo "... Queue.o"
-	@echo "... Queue.i"
-	@echo "... Queue.s"
-	@echo "... Task.o"
-	@echo "... Task.i"
-	@echo "... Task.s"
+	@echo "... MIGRATION.o"
+	@echo "... MIGRATION.i"
+	@echo "... MIGRATION.s"
+	@echo "... PIPE.o"
+	@echo "... PIPE.i"
+	@echo "... PIPE.s"
+	@echo "... STREAMFACTORY.o"
+	@echo "... STREAMFACTORY.i"
+	@echo "... STREAMFACTORY.s"
+	@echo "... TUPLE.o"
+	@echo "... TUPLE.i"
+	@echo "... TUPLE.s"
+	@echo "... UNIONCELL.o"
+	@echo "... UNIONCELL.i"
+	@echo "... UNIONCELL.s"
+	@echo "... WORKER.o"
+	@echo "... WORKER.i"
+	@echo "... WORKER.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

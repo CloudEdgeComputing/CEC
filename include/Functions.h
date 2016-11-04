@@ -1,8 +1,13 @@
 #pragma once
+#include <list>
+#include "Type.h"
 
-class DATA;
+using namespace std;
 
-typedef DATA* (*FUNC)(DATA*);
+class TUPLE;
 
-DATA* task_1(DATA* data);
-DATA* task_2(DATA* data);
+typedef TUPLE* (*FUNC)(TUPLE*);
+typedef TUPLE* (*MERGE_FUNC)(list<TUPLE*>*, uint dominantpipeid);
+
+TUPLE* task_1(TUPLE* data);
+TUPLE* task_2(TUPLE* data);

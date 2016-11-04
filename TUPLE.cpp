@@ -1,4 +1,4 @@
-#include "Data.h"
+#include "TUPLE.h"
 
 /*
  * Packet protocol
@@ -6,7 +6,7 @@
  * nLen은 전체 패킷사이즈
  */
 
-DATA::DATA ( char* data, ushort nLen, ushort seq, int fd )
+TUPLE::TUPLE ( char* data, ushort nLen, ushort seq, int fd )
 {
     this->data = data;
     this->nLen = nLen;
@@ -16,7 +16,7 @@ DATA::DATA ( char* data, ushort nLen, ushort seq, int fd )
     this->pointer = 0;
 }
 
-DATA::DATA ( ushort nLen, int fd, int type )
+TUPLE::TUPLE ( ushort nLen, int fd, int type )
 {
     this->data = new char [nLen + 4];
     this->data[0] = 0xAA;
@@ -27,7 +27,7 @@ DATA::DATA ( ushort nLen, int fd, int type )
     this->content = this->data + 4;
 }
 
-DATA::DATA ( char* packet, bool isSpecial )
+TUPLE::TUPLE ( char* packet, bool isSpecial )
 {
     if ( isSpecial == true )
     {
@@ -57,7 +57,7 @@ DATA::DATA ( char* packet, bool isSpecial )
     }
 }
 
-bool DATA::validity()
+bool TUPLE::validity()
 {
     if ( ( unsigned char ) this->data[0] != 0xaa )
     {
@@ -72,37 +72,47 @@ bool DATA::validity()
     return true;
 }
 
-uchar DATA::gettype()
+uchar TUPLE::gettype()
 {
     return this->data[3];
 }
 
-char* DATA::getcontent()
+char* TUPLE::getcontent()
 {
     return this->content;
 }
 
-int DATA::getfd()
+int TUPLE::getfd()
 {
     return this->owner_fd;
 }
 
-char* DATA::getdata()
+char* TUPLE::getdata()
 {
     return this->data;
 }
 
-ushort DATA::getLen()
+ushort TUPLE::getLen()
 {
     return this->nLen;
 }
 
-void DATA::setfd ( int fd )
+void TUPLE::setpipeid ( uint pipeid )
+{
+    this->pipeid = pipeid;
+}
+
+uint TUPLE::getpipeid()
+{
+    return this->pipeid;
+}
+
+void TUPLE::setfd ( int fd )
 {
     this->owner_fd = fd;
 }
 
-int DATA::getInt()
+int TUPLE::getInt()
 {
     int result = 0;
     memcpy ( &result, &this->content[pointer], 4 );
@@ -110,7 +120,7 @@ int DATA::getInt()
     return result;
 }
 
-short int DATA::getShort()
+short int TUPLE::getShort()
 {
     short result = 0;
     memcpy ( &result, &this->content[pointer], 2 );
@@ -118,7 +128,7 @@ short int DATA::getShort()
     return result;
 }
 
-char DATA::getChar()
+char TUPLE::getChar()
 {
     char result = 0;
     result = this->content[pointer];
@@ -126,19 +136,19 @@ char DATA::getChar()
     return result;
 }
 
-void DATA::getString ( char* str, int nSize )
+void TUPLE::getString ( char* str, int nSize )
 {
     memcpy ( str, &this->content[pointer], nSize );
     pointer += nSize;
 }
 
-void DATA::push ( void* data, ushort size )
+void TUPLE::push ( void* data, ushort size )
 {
     memcpy ( &this->content[pointer], data, size );
     pointer += size;
 }
 
-void DATA::sealing()
+void TUPLE::sealing()
 {
     this->nLen = pointer;
     this->pointer = 0;

@@ -1,7 +1,7 @@
 #include "Functions.h"
-#include "Data.h"
+#include "TUPLE.h"
 
-DATA* task_1(DATA* data)
+TUPLE* task_1(TUPLE* data)
 {
     int value = data->getInt();
     printf("value1: %d\n", value);
@@ -10,7 +10,7 @@ DATA* task_1(DATA* data)
     value += 1;
     
     
-    DATA* result = new DATA(4, data->getfd(), data->gettype());
+    TUPLE* result = new TUPLE(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
     
@@ -23,13 +23,13 @@ DATA* task_1(DATA* data)
     return result;
 }
 
-DATA* task_2(DATA* data)
+TUPLE* task_2(TUPLE* data)
 { 
     int value = data->getInt();
     printf("value2: %d\n", value);
     
     value += 1;
-    DATA* result = new DATA(4, data->getfd(), data->gettype());
+    TUPLE* result = new TUPLE(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
     
