@@ -1,12 +1,4 @@
 
 Note
 
-1. Send 살리기
-2. 받은 데이터의 파일 디스크립터를 현재 노드의 파일 디스크립터로 교환 How?
-3. data sequence 고치기
-4. Basic Cell: SISO Union Cell: MISO 유니언 셀 도입
-
-Operator -> Worker
-Executor -> StreamFactory
-Edge -> Pipe
-Task -> Cell
+3. 두번째 migration 동작 안함 << third important

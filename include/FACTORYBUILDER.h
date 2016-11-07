@@ -30,7 +30,7 @@ public:
     void runSTREAMFACTORY(STREAMFACTORY* factory);
     STREAMFACTORY* getStreamFactorybyid(int id);
     // 현재 lockfreequeue로 내부 구현, 바꿀 수 있음!
-    PIPE* makePIPE(void* powner, int type);
+    PIPE* makePIPE(void* powner, int type, STREAMFACTORY* parent);
     PIPE* findPIPE(unsigned int id);
     
     // 마이그레이션 모듈과 연결

@@ -4,6 +4,8 @@
 #include "BASICCELL.h"
 #include "FACTORYBUILDER.h"
 #include "TUPLE.h"
+#include "PACKET.h"
+#include "Debug.h"
 
 MIGRATION::MIGRATION ( int port, char comm )
 {
@@ -89,65 +91,54 @@ void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
 
     for ( auto iter = list.begin(); iter != list.end(); ++iter )
     {
-        BASICCELL* cell = ( *iter );
+        CELL* cell = ( *iter );
         cell->schedulerSleep();
     }
-    printf ( "all tasks in an executor goes to sleep\n" );
+    printf ( "all tasks in an executor go sleep!\n" );
 
     // 블럭 되어있으니 이제 큐에 있는 데이터들을 전송한다.
     while ( 1 )
     {
-        bool checker = false;
-        PIPE* inpipe = factory->getinpipe();
-
-        printf ( "from inq\n" );
-        checker |= !inpipe->sendQueue ( sockfd );
-        usleep ( 500 );
-
-        // executor outq
-        auto outpipelist = factory->getoutpipelist();
-        printf ( "from outqs\n" );
-        for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
-        {
-            auto outpipe = *iter;
-            checker |= !outpipe->sendQueue ( sockfd );
-            usleep ( 500 );
-        }
+        bool checker = true;
 
         auto list = factory->getCELLs();
 
-        printf ( "from task\n" );
+        //printf ( "from cells\n" );
         for ( auto iter = list.begin(); iter != list.end(); ++iter )
         {
-            BASICCELL* cell = *iter;
-            // task에 있는 큐를 빼냄
+            CELL* cell = *iter;
+            // 셀에 있는 아웃풋 파이프 리스트
             auto outpipelist = cell->getoutpipelist();
+            
+            // DESTCELL의 경우 아웃풋 리스트가 없을 수 있음
+            if(outpipelist == NULL)
+            {
+                continue;
+            }
+            
+            int cnt = 0 ;
             for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
             {
                 auto outpipe = *iter;
-                checker |= !outpipe->sendQueue ( sockfd );
+                checker &= outpipe->sendQueue ( sockfd );
                 usleep ( 500 );
             }
         }
 
-        if ( checker == false )
+        if ( checker == true )
         {
-            PIPE* inpipe = factory->getinpipe();
-            
-            inpipe->clearMigration();
-            
-            auto outpipelist = factory->getoutpipelist();
-
-            for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
-            {
-                auto outpipe = *iter;
-                outpipe->clearMigration();
-            }
 
             for ( auto iter = list.begin(); iter != list.end(); ++iter )
             {
-                BASICCELL* cell = *iter;
+                CELL* cell = *iter;
                 auto outpipelist = cell->getoutpipelist();
+                
+                // DESTCELL의 경우 아웃풋 리스트가 없을 수 있음
+                if(outpipelist == NULL)
+                {
+                    continue;
+                }
+                
                 for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
                 {
                     auto outpipe = *iter;
@@ -285,7 +276,7 @@ void* internal_makeServer ( void* context )
 
 void* internal_waitforMIGRATION ( void* context )
 {
-    char buffer[4096] = "";
+    char buffer[60000] = "";
     MIGRATION* migration = ( MIGRATION* ) context;
 
     // 여기는 0번째인걸 아니까.. 그냥 하드코딩..
@@ -293,6 +284,11 @@ void* internal_waitforMIGRATION ( void* context )
     // 제대로 하려면 select를 이용하여 입력다중화 시켜야 함
     // TODO
     int fd = migration->getServerCEC ( 0 );
+
+    // 패킷 어셈블, 연결된 서버 CEC당 생성
+    deque<PACKET*>* packetque = new deque<PACKET*>;
+    unsigned char* seq = new unsigned char;
+    *seq = 0;
 
     while ( 1 )
     {
@@ -302,22 +298,143 @@ void* internal_waitforMIGRATION ( void* context )
         if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
-        // 받은 데이터를 큐에 설치한다.
-        char* pdata = new char[size];
-        memset ( pdata, 0, size );
-        memcpy ( pdata, buffer, size );
+        // 받은 데이터를 쌓는다.
+        assemblePacket ( buffer, size, packetque, seq );
 
-        TUPLE* data = new TUPLE ( pdata, size - 4, 0, 0 );
-        // 어떤 익스큐터인가?
-        // 하드코딩;; 0번 익스큐터!
-        STREAMFACTORY* factory = factorymanager.getStreamFactorybyid(0);
+        // 받은 데이터를 잘라 받는다.
+        while ( 1 )
+        {
+            uint outsize = 0;
+            char* result = getassembledPacket ( &outsize, packetque );
 
-        // 설치한다.
-        factory->installReceivedData( data );
+            if ( result == NULL )
+            {
+                //printf ( "All flushed or not full packet!\n" );
+                break;
+            }
 
-        // 내부 변수 초기화
-        delete data;
-        delete []pdata;
+            TUPLE* tuple = new TUPLE ( result, outsize - 4, 0, 0 );
+
+            // 하드코딩;; 0번 익스큐터!
+            STREAMFACTORY* factory = factorymanager.getStreamFactorybyid ( 0 );
+
+            factory->installReceivedData ( tuple );
+        }
         memset ( buffer, 0, sizeof buffer );
     }
+}
+
+void assemblePacket ( char* input, uint insize, deque< PACKET* >* packetque, unsigned char* seq )
+{
+    PACKET* pkt = new PACKET ( input, insize, *seq++ );
+
+    packetque->push_back ( pkt );
+
+    if ( packetque->size() > 5 )
+    {
+        printf ( "packet has loss\n" );
+        // 패킷 로스 날 경우 패킷을 앞에서 모두 훍어 0xaa를 찾은 뒤, 사이즈를 검사 해봐야 한다. 아마 n^2 알고리즘일듯
+        exit ( 0 );
+    }
+}
+
+char* getassembledPacket ( uint* outsize, deque< PACKET* >* packetque )
+{
+    vector<char> byte_array;
+    deque<PACKET*> candidate;
+
+    // 아무것도 없으면 나옴
+    if ( packetque->size() == 0 )
+    {
+        *outsize = 0;
+        return NULL;
+    }
+
+
+    PACKET* firstpkt = packetque->at ( 0 );
+
+    char* byte = firstpkt->getArray();
+
+    if ( ( unsigned char ) *byte != 0xAA )
+    {
+        *outsize = 0;
+        return NULL;
+    }
+
+    unsigned short expectedsize = 0;
+    memcpy ( &expectedsize, &byte[1], 2 );
+
+    expectedsize += 4;
+    // 전체 패킷 양이 아직 풀패킷을 만들지 못할 정도일 때,
+    unsigned int total_size = 0;
+    for ( auto iter = packetque->begin(); iter != packetque->end(); ++iter )
+    {
+        PACKET* pkt = *iter;
+        total_size += pkt->getSize();
+    }
+
+    if ( total_size < expectedsize )
+    {
+        return NULL;
+    }
+
+
+    candidate.clear();
+
+    unsigned int accumulatedsize = 0;
+
+    // 예상 패킷 사이즈만큼 모든 패킷 청크를 다 꺼내 candidate로 보냄
+    while ( accumulatedsize < expectedsize )
+    {
+        PACKET* pkt = packetque->front();
+        candidate.push_back ( pkt );
+        accumulatedsize += pkt->getSize();
+        packetque->pop_front();
+        if ( packetque->size() == 0 )
+            break;
+        printf ( "accumulatedsize: %d expectedsize: %d\n", accumulatedsize, expectedsize );
+    }
+
+    accumulatedsize = 0;
+
+    for ( auto iter = candidate.begin(); iter != candidate.end(); )
+    {
+        PACKET* pkt = *iter;
+        // expected size만큼 꺼냄
+        accumulatedsize += pkt->getSize();
+
+        unsigned int min_size = accumulatedsize <= expectedsize ? accumulatedsize : expectedsize;
+
+        byte_array.insert ( byte_array.end(), pkt->getArray(), pkt->getArray() + min_size );
+
+        if ( accumulatedsize > expectedsize )
+        {
+            // 다시 packetque에 넣어야 함.. 하지만 min_size는 이미 나갔으므로 그만큼의 패킷을 빼줘야 함
+            char* array = pkt->getArray();
+            char* new_array = new char[ pkt->getSize() - min_size ];
+            memcpy ( new_array, &array[min_size], pkt->getSize() - min_size );
+            pkt->setArray ( new_array );
+            pkt->setSize ( pkt->getSize() - min_size );
+            packetque->push_front ( pkt );
+            delete[] array;
+            break;
+        }
+        else if ( accumulatedsize == expectedsize )
+        {
+            iter = candidate.erase ( iter );
+            break;
+        }
+        else
+        {
+            iter = candidate.erase ( iter );
+        }
+    }
+
+    *outsize = byte_array.size();
+
+    char* result = new char[*outsize];
+
+    memcpy ( result, byte_array.data(), byte_array.size() );
+
+    return result;
 }

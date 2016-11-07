@@ -5,7 +5,7 @@
 #include "BASICCELL.h"
 #include "TUPLE.h"
 #include "PIPE.h"
-#include "CONNECTION.h"
+#include <signal.h>
 
 using namespace std;
 
@@ -14,6 +14,7 @@ FACTORYBUILDER factorymanager;
 
 int main ( int argc, char **argv )
 {
+    signal(SIGPIPE, SIG_IGN);
     
     printf ( "Put 's' for server, 'c' for client\n" );
     char cp;
@@ -51,41 +52,6 @@ int main ( int argc, char **argv )
         scanf ( "%c", &cp );
         if ( cp == 'd' )
             factorymanager.startMIGRATION();
-        else if ( cp == 'p' )
-        {
-            STREAMFACTORY* factory = factorymanager.getStreamFactorybyid(0);
-                            // 모든 Task를 블럭한다.
-            auto list = factory->getCELLs();
-            for ( auto iter = list.begin(); iter != list.end(); ++iter )
-            {
-                BASICCELL* cell = *iter;
-                cell->schedulerSleep();
-            }
-
-            // Conection을 블럭한다.
-            CONNECTION* conn = factory->getCONNECTOR();
-            conn->sleepCONNECTOR();
-
-                            // 데이터를 삽입한다.
-            int value = 4;
-            TUPLE* data = new TUPLE ( 4, 1, 0 );
-            data->push ( &value, 4 );
-            data->sealing();
-
-            int value2 = 5;
-            TUPLE* data2 = new TUPLE ( 4, 1, 0 );
-            data2->push ( &value2, 4 );
-            data2->sealing();
-
-            for ( auto iter = list.begin(); iter != list.end(); ++iter )
-            {
-                BASICCELL* cell = *iter;
-                lockfreeq* que = cell->getinpipe()->getQueue();
-                que->push ( data );
-                que->push ( data2 );
-            }
-            printf ( "data insertion for debugging completed!\n" );
-        }
     }
 
     return 0;

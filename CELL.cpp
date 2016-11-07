@@ -2,24 +2,24 @@
 #include "PIPE.h"
 #include "WORKER.h"
 
-CELL::CELL (PIPE* inpipe, list< PIPE* >* outpipelist, ushort count, STREAMFACTORY* parent, uint XIXO )
+CELL::CELL ( PIPE* inpipe, list< PIPE* >* outpipes, ushort count, STREAMFACTORY* parent, uint XIXO )
 {
     this->inpipelist = new list<PIPE*>;
     this->outpipelist = new list<PIPE*>;
 
-    if(inpipe != NULL)
+    if ( inpipe != NULL )
     {
-        this->inpipelist->push_back(inpipe);
-        inpipe->registerforwardDependency(this, TYPE_CELL);
+        this->inpipelist->push_back ( inpipe );
+        inpipe->registerforwardDependency ( this, TYPE_CELL );
     }
-    
-    for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
+
+    for ( auto iter = outpipes->begin(); iter != outpipes->end(); ++iter )
     {
         PIPE* pipe = *iter;
         pipe->registerbackDependency ( this, TYPE_CELL );
         this->outpipelist->push_back ( pipe );
     }
-    
+
     this->count = count;
     this->parent = parent;
     this->isrun = true;
@@ -27,6 +27,42 @@ CELL::CELL (PIPE* inpipe, list< PIPE* >* outpipelist, ushort count, STREAMFACTOR
     this->XIXO = XIXO;
     this->mutex = PTHREAD_MUTEX_INITIALIZER;
     this->condition = PTHREAD_COND_INITIALIZER;
+}
+
+CELL::CELL ( PIPE* inoutpipe, ushort count, STREAMFACTORY* parent, uint XIXO )
+{
+    if ( XIXO == SO )
+    {
+        this->inpipelist = NULL;
+        this->outpipelist = new list<PIPE*>;
+
+        inoutpipe->registerbackDependency ( this, TYPE_CELL );
+        this->outpipelist->push_back ( inoutpipe );
+
+        this->count = count;
+        this->parent = parent;
+        this->isrun = true;
+        this->isEnd = false;
+        this->XIXO = XIXO;
+        this->mutex = PTHREAD_MUTEX_INITIALIZER;
+        this->condition = PTHREAD_COND_INITIALIZER;
+    }
+    else if ( XIXO == SI )
+    {
+        this->inpipelist = new list<PIPE*>;
+        this->outpipelist = NULL;
+
+        inoutpipe->registerforwardDependency ( this, TYPE_CELL );
+        this->inpipelist->push_back ( inoutpipe );
+
+        this->count = count;
+        this->parent = parent;
+        this->isrun = true;
+        this->isEnd = false;
+        this->XIXO = XIXO;
+        this->mutex = PTHREAD_MUTEX_INITIALIZER;
+        this->condition = PTHREAD_COND_INITIALIZER;
+    }
 }
 
 CELL::CELL ( PIPE* inpipe, PIPE* outpipe, ushort count, STREAMFACTORY* parent, uint XIXO )
@@ -39,11 +75,11 @@ CELL::CELL ( PIPE* inpipe, PIPE* outpipe, ushort count, STREAMFACTORY* parent, u
         this->outpipelist->push_back ( outpipe );
         outpipe->registerbackDependency ( this, TYPE_CELL );
     }
-    
-    if(inpipe != NULL)
+
+    if ( inpipe != NULL )
     {
-        this->inpipelist->push_back(inpipe);
-        inpipe->registerforwardDependency(this, TYPE_CELL);
+        this->inpipelist->push_back ( inpipe );
+        inpipe->registerforwardDependency ( this, TYPE_CELL );
     }
 
     this->count = count;
@@ -55,25 +91,69 @@ CELL::CELL ( PIPE* inpipe, PIPE* outpipe, ushort count, STREAMFACTORY* parent, u
     this->condition = PTHREAD_COND_INITIALIZER;
 }
 
+CELL::CELL ( list< PIPE* >* inoutpipes, ushort count, STREAMFACTORY* parent, uint XIXO )
+{
+    if ( XIXO == SO )
+    {
+        this->inpipelist = NULL;
+        this->outpipelist = new list<PIPE*>;
+
+        for ( auto iter = inoutpipes->begin(); iter != inoutpipes->end(); ++iter )
+        {
+            PIPE* pipe = *iter;
+            pipe->registerbackDependency ( this, TYPE_CELL );
+            this->outpipelist->push_back ( pipe );
+        }
+
+        this->count = count;
+        this->parent = parent;
+        this->isrun = true;
+        this->isEnd = false;
+        this->XIXO = XIXO;
+        this->mutex = PTHREAD_MUTEX_INITIALIZER;
+        this->condition = PTHREAD_COND_INITIALIZER;
+    }
+    else if ( XIXO == SI )
+    {
+        this->inpipelist = new list<PIPE*>;
+        this->outpipelist = NULL;
+
+        for ( auto iter = inoutpipes->begin(); iter != inoutpipes->end(); ++iter )
+        {
+            PIPE* pipe = *iter;
+            pipe->registerbackDependency ( this, TYPE_CELL );
+            this->inpipelist->push_back ( pipe );
+        }
+
+        this->count = count;
+        this->parent = parent;
+        this->isrun = true;
+        this->isEnd = false;
+        this->XIXO = XIXO;
+        this->mutex = PTHREAD_MUTEX_INITIALIZER;
+        this->condition = PTHREAD_COND_INITIALIZER;
+    }
+}
+
 CELL::CELL ( list< PIPE* >* inpipelist, list< PIPE* >* outpipelist, ushort count, STREAMFACTORY* parent, uint XIXO )
 {
     this->inpipelist = new list<PIPE*>;
     this->outpipelist = new list<PIPE*>;
-    
+
     for ( auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter )
     {
         PIPE* pipe = *iter;
         pipe->registerforwardDependency ( this, TYPE_CELL );
         this->inpipelist->push_back ( pipe );
     }
-    
+
     for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
     {
         PIPE* pipe = *iter;
         pipe->registerbackDependency ( this, TYPE_CELL );
         this->outpipelist->push_back ( pipe );
     }
-    
+
     this->count = count;
     this->parent = parent;
     this->isrun = true;
@@ -90,7 +170,7 @@ void CELL::schedulingStart()
 
 void* CELL::scheduling_wrapper ( void* context )
 {
-    return ( ( CELL* ) context )->scheduling( context );
+    return ( ( CELL* ) context )->scheduling ( context );
 }
 
 list< PIPE* >* CELL::getoutpipelist()
@@ -121,6 +201,12 @@ bool CELL::getCELLState()
 
 bool CELL::getWORKERState()
 {
+    // 워커가 없는 경우 true
+    if(workers.size() == 0)
+    {
+        return false;
+    }
+    
     bool checker = false;
     int cnt = 0;
     // 워커 검색하여 워커중 하나라도 작동하는지 검사함

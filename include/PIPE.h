@@ -14,6 +14,7 @@
 using namespace std;
 
 class BASICCELL;
+class STREAMFACTORY;
 
 // 큐는 operator에 속해 있다.
 // 큐에는 그 큐를 깨우기 위해 wakeup을 할 수 있고, wakeup시, queue의 주인을 깨운다.
@@ -29,9 +30,11 @@ private:
     bool isMigrated;
     // queue의 전역 고유 아이디 // start from 0 to MAX(unsigned integer)
     unsigned int id;
+    // pipe의 parent factory
+    STREAMFACTORY* parent;
 public:
     
-    PIPE(lockfreeq* queue, void* owner, int type, int id);
+    PIPE(lockfreeq* queue, void* owner, int type, int id, STREAMFACTORY* parent);
     lockfreeq* getQueue();
     // owner_type이 0이면 Executor, 1이면 BASICCELL, 2이면 Connection
     void registerbackDependency(void* dependency, int type);

@@ -5,6 +5,7 @@
 #include "FACTORYBUILDER.h"
 #include "Debug.h"
 #include "MIGRATION.h"
+#include "PACKET.h"
 #include <errno.h>
 #include <string.h>
 
@@ -22,7 +23,7 @@ CONNECTION::CONNECTION ( int recvport, STREAMFACTORY* factory )
     ret = ::bind ( _broker_sock, ( struct sockaddr* ) &_broker_addr, sizeof ( _broker_addr ) );
     if ( ret != 0 )
     {
-        printf ( "Bind error! %s port: %d\n", strerror(errno), recvport );
+        printf ( "Bind error! %s port: %d\n", strerror ( errno ), recvport );
         exit ( 0 );
     }
     ret = ::listen ( _broker_sock, 5 );
@@ -97,11 +98,11 @@ void* CONNECTION::serverStart_internal ( void* arg )
     struct CONNDATA* dispatcherdata = new struct CONNDATA;
     dispatcherdata->fd = 0;
     dispatcherdata->inpipe = inpipe;
-    dispatcherdata->dispatchpipe = new PIPE ( new lockfreeq ( 0 ), NULL, 2, 0 );
+    dispatcherdata->dispatchpipe = new PIPE ( new lockfreeq ( 0 ), NULL, 2, 0, NULL );
     dispatcherdata->thispointer = this;
     pthread_create ( &this->dispatcher_tid, NULL, &CONNECTION::dispatcher_wrapper, ( void* ) dispatcherdata );
 
-    
+
     // Sender Install
     pthread_t sender_tid;
     struct CONNDATA* senderdata = new struct CONNDATA;
@@ -112,23 +113,23 @@ void* CONNECTION::serverStart_internal ( void* arg )
 
     while ( 1 )
     {
-        struct sockaddr_storage client_addr;
+        struct sockaddr* client_addr = new struct sockaddr;
         char address[20];
         socklen_t sin_size = sizeof client_addr;
         pthread_t id;
 
         printf ( "Ready to accept clients!\n" );
 
-        int fd = accept ( _broker_sock, ( struct sockaddr * ) &client_addr, &sin_size );
+        int fd = accept ( _broker_sock, client_addr, &sin_size );
         if ( fd == -1 )
         {
             printf ( "Accept error!\n" );
             continue;
         }
 
-        inet_ntop ( client_addr.ss_family, get_in_addr ( ( struct sockaddr * ) &client_addr ), address, sizeof address );
+        //inet_ntop ( client_addr->ss_family, get_in_addr, client_addr, address, sizeof address );
 
-        printf ( "[NOTICE] Got connection from %s\n", address );
+        //printf ( "[NOTICE] Got connection from %s\n", address );
 
         // STATE 변경 to TRUE
         this->state = true;
@@ -140,17 +141,24 @@ void* CONNECTION::serverStart_internal ( void* arg )
 
         pthread_t receiver_tid;
         pthread_create ( &receiver_tid, NULL, &CONNECTION::receiver_wrapper, ( void* ) receiverdata );
+        this->register_user ( fd, client_addr );
         this->receiver_tids.push_back ( receiver_tid );
     }
 
     return NULL;
 }
 
+// 각자 개인당 생성되는 리시버
 void* CONNECTION::receiver ( void* arg )
 {
     struct CONNDATA* conndata = ( struct CONNDATA* ) arg;
     lockfreeq* dispatchq = conndata->dispatchpipe->getQueue();
     char buffer[4096] = "";
+
+    // 패킷 어셈블, 개인당 생성
+    deque<PACKET*>* packetque = new deque<PACKET*>;
+    unsigned char* seq = new unsigned char;
+    *seq = 0;
 
     while ( 1 )
     {
@@ -166,24 +174,36 @@ void* CONNECTION::receiver ( void* arg )
         if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
-        // 데이터를 DATA 구조체로 바꾼다.
-        char* pdata = new char[size];
-        memset ( pdata, 0, size );
-        memcpy ( pdata, buffer, size );
+        // fragmented data를 조립한다.
+        // packet 저장은 (seq(char), bytearray..
 
-        TUPLE* data = new TUPLE ( pdata, size - 4, 0, conndata->fd );
+        this->assemblePacket ( buffer, size, packetque, seq );
 
-        // DATA 구조체를 넣는다.
-        if ( !dispatchq->push ( data ) )
+        while ( 1 )
         {
-            printf ( "fail to receive (Push error!)\n" );
-            exit ( 0 );
+            uint outsize = 0;
+            char* result = this->getassembledPacket ( &outsize, packetque );
+
+            if ( result == NULL )
+            {
+                printf ( "All flushed or not full packet!\n" );
+                break;
+            }
+
+            TUPLE* data = new TUPLE ( result, outsize - 4, 0, conndata->fd );
+
+            // DATA 구조체를 넣는다.
+            if ( !dispatchq->push ( data ) )
+            {
+                printf ( "fail to receive (Push error!)\n" );
+                exit ( 0 );
+            }
         }
 
         // 내부 변수 초기화
         memset ( buffer, 0, sizeof buffer );
     }
-    //printf ( "Error occured in receiverr or exited\n" );
+    printf ( "disconnected!\n" );
     return NULL;
 }
 
@@ -232,13 +252,13 @@ void* CONNECTION::sender ( void* arg )
                     printf ( "No contents!\n" );
                     exit ( 0 );
                 }
-
-                /*if ( send ( data->getfd(), data->getdata(), data->getLen(), 0 ) == -1 )
+                                
+                if ( send ( tuple->getfd(), tuple->getdata(), tuple->getLen() + 4, 0 ) == -1 )
                 {
                     printf ( "Error occured in send function!\n" );
                     while(1);
                     exit ( 0 );
-                }*/
+                }
 
                 delete[] tuple->getdata();
                 delete tuple;
@@ -288,7 +308,7 @@ void* CONNECTION::dispatcher ( void* arg )
             {
                 MIGRATION* mig = factorymanager.getMIGRATION();
                 // 0번 아이디에 executor에 해당하는곳에 마이그레이션 시작
-                mig->startMIGRATION(0, this->factory);
+                mig->startMIGRATION ( 0, this->factory );
                 break;
             }
             default:
@@ -308,20 +328,15 @@ void* CONNECTION::dispatcher_wrapper ( void* context )
     return ( ( CONNECTION* ) thispointer )->dispatcher ( context );
 }
 
-/*
-void Connection::register_user(pthread_t send_tid, pthread_t recv_tid, int fd, struct sockaddr_storage client_addr)
+void CONNECTION::register_user ( int fd, sockaddr* client_addr )
 {
     struct CLIENT* client = new struct CLIENT;
-    struct sockaddr_storage* pclient_addr = new struct sockaddr_storage;
-    memcpy(pclient_addr, &client_addr, sizeof(sockaddr_storage));
-
+    
     client->fd = fd;
-    client->send_tid = send_tid;
-    client->recv_tid = recv_tid;
-    client->sockaddr = pclient_addr;
-
-    clientlists.push_back(client);
-}*/
+    client->var_sockaddr = client_addr;
+    
+    clientlists.push_back ( client );
+}
 
 void CONNECTION::setsender_tid ( pthread_t tid )
 {
@@ -330,6 +345,7 @@ void CONNECTION::setsender_tid ( pthread_t tid )
 
 void CONNECTION::setdispatcher_tid ( pthread_t tid )
 {
+
     this->dispatcher_tid = tid;
 }
 
@@ -351,4 +367,131 @@ void CONNECTION::wakeupCONNECTOR()
     this->shouldbeSleep = false;
     pthread_cond_broadcast ( &this->condition );
     pthread_mutex_unlock ( &this->mutex );
+}
+
+// TODO
+void CONNECTION::assemblePacket ( char* input, uint insize, deque< PACKET* >* packetque, unsigned char* seq )
+{
+    PACKET* pkt = new PACKET ( input, insize, *seq++ );
+
+    packetque->push_back ( pkt );
+
+    if ( packetque->size() > 5 )
+    {
+        printf ( "packet has loss\n" );
+        // 패킷 로스 날 경우 패킷을 앞에서 모두 훍어 0xaa를 찾은 뒤, 사이즈를 검사 해봐야 한다. 아마 n^2 알고리즘일듯
+        exit ( 0 );
+    }
+}
+
+char* CONNECTION::getassembledPacket ( uint* outsize, deque< PACKET* >* packetque )
+{
+    vector<char> byte_array;
+    deque<PACKET*> candidate;
+
+    if ( packetque->size() == 0 )
+    {
+        *outsize = 0;
+        return NULL;
+    }
+
+    PACKET* firstpkt = packetque->at ( 0 );
+
+    char* byte = firstpkt->getArray();
+
+    if ( ( unsigned char ) *byte != 0xAA )
+    {
+        *outsize = 0;
+        return NULL;
+    }
+
+    unsigned short expectedsize = 0;
+    memcpy ( &expectedsize, &byte[1], 2 );
+
+    expectedsize += 4;
+
+
+    candidate.clear();
+
+    unsigned int accumulatedsize = 0;
+
+    // 예상 패킷 사이즈만큼 모든 패킷 청크를 다 꺼내 candidate로 보냄
+    while ( accumulatedsize < expectedsize )
+    {
+        PACKET* pkt = packetque->front();
+        candidate.push_back ( pkt );
+        accumulatedsize += pkt->getSize();
+        packetque->pop_front();
+        //printf("accumulatedsize: %d expectedsize: %d\n", accumulatedsize, expectedsize);
+    }
+
+    accumulatedsize = 0;
+
+    for ( auto iter = candidate.begin(); iter != candidate.end(); )
+    {
+        PACKET* pkt = *iter;
+        // expected size만큼 꺼냄
+        accumulatedsize += pkt->getSize();
+
+        unsigned int min_size = accumulatedsize <= expectedsize ? accumulatedsize : expectedsize;
+
+        byte_array.insert ( byte_array.end(), pkt->getArray(), pkt->getArray() + min_size );
+
+        if ( accumulatedsize > expectedsize )
+        {
+            // 다시 packetque에 넣어야 함.. 하지만 min_size는 이미 나갔으므로 그만큼의 패킷을 빼줘야 함
+            char* array = pkt->getArray();
+            char* new_array = new char[ pkt->getSize() - min_size ];
+            memcpy ( new_array, &array[min_size], pkt->getSize() - min_size );
+            pkt->setArray ( new_array );
+            pkt->setSize ( pkt->getSize() - min_size );
+            packetque->push_front ( pkt );
+            delete[] array;
+            break;
+        }
+        else if ( accumulatedsize == expectedsize )
+        {
+            iter = candidate.erase ( iter );
+            break;
+        }
+        else
+        {
+            iter = candidate.erase ( iter );
+        }
+    }
+
+    *outsize = byte_array.size();
+
+    char* result = new char[*outsize];
+
+    memcpy ( result, byte_array.data(), byte_array.size() );
+
+    return result;
+}
+
+unsigned int CONNECTION::getipbyfd(int fd)
+{
+    for ( auto iter = this->clientlists.begin(); iter != this->clientlists.end(); ++iter )
+    {
+        CLIENT* client = *iter;
+        struct sockaddr_in* sain= (sockaddr_in*)client->var_sockaddr;
+        if(fd == client->fd)
+            return sain->sin_addr.s_addr;
+    }
+    printf("Nothing found..%s\n", __func__);
+    return 0;
+}
+
+unsigned int CONNECTION::getfdbyip ( int ip )
+{
+    for ( auto iter = this->clientlists.begin(); iter != this->clientlists.end(); ++iter )
+    {
+        CLIENT* client = *iter;
+        struct sockaddr_in* sain= (sockaddr_in*)client->var_sockaddr;
+        int _ip = sain->sin_addr.s_addr;
+        if( ip == _ip )
+            return client->fd;
+    }
+    printf("Nothing found..%s\n", __func__);
+    return 0;
 }

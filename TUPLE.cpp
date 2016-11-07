@@ -32,20 +32,25 @@ TUPLE::TUPLE ( char* packet, bool isSpecial )
     if ( isSpecial == true )
     {
         // packet + 0 == 프로토콜
-        // packet + 4 == fd
-        // packet + 8 == queue id;
-        // packet + 12 == real contents
+        // packet + 4 == ip
+        // packet + 8 = port
+        // packet + 12 == queue id;
+        // packet + 16 == real contents
         
         memcpy ( &this->nLen, &packet[1], 2 );
-        this->nLen -= 8; // 현재 컨텐츠에 fd와 큐아이디가 섞여있으므로 빼려고 한다.
+        this->nLen -= 8; // 현재 컨텐츠에 ip와 큐아이디가 섞여있으므로 빼려고 한다.
         this->data = new char[nLen + 4];
         
+        // 0xAA
         this->data[0] = packet[0];
+        // Size
         memcpy(&this->data[1], &this->nLen, 2);
+        // type
         this->data[3] = packet[3];
         
         memcpy(&this->data[4], &packet[12], this->nLen);
         
+        // fd는 쓰레기값.. 변환이 필요함
         memcpy ( &this->owner_fd, &packet[4], 4 );
         this->pointer = 0;
         this->content = this->data + 4;
@@ -60,11 +65,6 @@ TUPLE::TUPLE ( char* packet, bool isSpecial )
 bool TUPLE::validity()
 {
     if ( ( unsigned char ) this->data[0] != 0xaa )
-    {
-        return false;
-    }
-
-    if ( this->nLen > 1024 )
     {
         return false;
     }

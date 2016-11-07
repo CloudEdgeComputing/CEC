@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(cec_mig_framwork)
 
-add_executable(cec_mig_framwork UNIONCELL.cpp CELL.cpp Debug.cpp MIGRATION.cpp main.cpp BASICCELL.cpp CONNECTION.cpp TUPLE.cpp STREAMFACTORY.cpp FACTORYBUILDER.cpp WORKER.cpp PIPE.cpp Functions.cpp)
+add_executable(cec_mig_framwork DESTCELL.cpp SRCCELL.cpp PACKET.cpp UNIONCELL.cpp CELL.cpp Debug.cpp MIGRATION.cpp main.cpp BASICCELL.cpp TUPLE.cpp STREAMFACTORY.cpp FACTORYBUILDER.cpp WORKER.cpp PIPE.cpp Functions.cpp)
 
 link_directories(/usr/lib/x86_64-linux-gnu/)
 

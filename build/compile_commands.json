@@ -1,6 +1,21 @@
 [
 {
   "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/PACKET.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/PACKET.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
   "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/UNIONCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/UNIONCELL.cpp",
   "file": "/home/ysmoon/projects/CEC_Mig_framwork/UNIONCELL.cpp"
 },
@@ -28,11 +43,6 @@
   "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
   "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/BASICCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/BASICCELL.cpp",
   "file": "/home/ysmoon/projects/CEC_Mig_framwork/BASICCELL.cpp"
-},
-{
-  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
-  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp",
-  "file": "/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp"
 },
 {
   "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",

@@ -2,11 +2,11 @@
 #include "BASICCELL.h"
 #include "WORKER.h"
 #include "STREAMFACTORY.h"
-#include "CONNECTION.h"
 #include "TUPLE.h"
+#include "STREAMFACTORY.h"
 #include "Debug.h"
 
-PIPE::PIPE ( lockfreeq* queue, void* owner, int type, int id )
+PIPE::PIPE ( lockfreeq* queue, void* owner, int type, int id, STREAMFACTORY* parent )
 {
     this->queue = queue;
     if ( owner != NULL )
@@ -15,6 +15,7 @@ PIPE::PIPE ( lockfreeq* queue, void* owner, int type, int id )
     }
     this->isMigrated = false;
     this->id = id;
+    this->parent = parent;
 }
 
 lockfreeq* PIPE::getQueue()
@@ -48,7 +49,7 @@ bool PIPE::sendQueue ( int fd )
         void* powner = pair.first;
         int type = pair.second;
 
-        if ( type == 0 )
+        if ( type == TYPE_FACTORY )
         {
             STREAMFACTORY* streamfactory = ( STREAMFACTORY* ) powner;
             if ( streamfactory->getSTREAMFACTORYState() == true )
@@ -57,24 +58,16 @@ bool PIPE::sendQueue ( int fd )
                 return false;
             }
         }
-        else if ( type == 1 )
+        else if ( type == TYPE_CELL )
         {
-            BASICCELL* cell = ( BASICCELL* ) powner;
-            if ( cell->getCELLState() && cell->getWORKERState() )
+            CELL* cell = ( BASICCELL* ) powner;
+            //printf("cellstate %d workerstate: %d\n", cell->getCELLState(), cell->getWORKERState());
+            // 셀은 논러닝 하고 워커가 작동하는건 없어야 한다.
+            if ( cell->getCELLState() || cell->getWORKERState() )
             {
-                printf ( "cell is running\n" );
+                //printf ( "cell is running\n" );
                 return false;
             }
-
-        }
-        else if ( type == 2 )
-        {
-            CONNECTION* conn = ( CONNECTION* ) powner;
-            /*if(conn->getConnState() == true)
-            {
-                printf("Connection state is running\n");
-                return false;
-            }*/
         }
         else
         {
@@ -92,34 +85,38 @@ bool PIPE::sendQueue ( int fd )
     {
         TUPLE* tuple;
         q->pop ( tuple );
-        char cfd[4] = "";
-        memcpy ( cfd, &fd, 4 );
         // 0xAA
         bytearray.push_back ( 0xAA );
         // Size [2byte]
-        // 사이즈는 현재 원래의 content에 총 8바이트가 더 더해짐
+        // 사이즈는 현재 원래의 content에 총 8 (ip, queue number)바이트가 더 더해짐
         ushort size = tuple->getLen() + 8;
-        printf ( "size: %d\n", size );
+        //printf ( "migration size: %d\n", size );
         bytearray.insert ( bytearray.end(), ( char* ) &size, ( char* ) &size + 2 );
 
         // type
         bytearray.push_back ( tuple->gettype() );
 
-        // content [fd 4byte]
+        // [ip 4byte]
         int fd = tuple->getfd();
-        bytearray.insert ( bytearray.end(), ( ( char* ) &fd ), ( ( char* ) &fd ) + 4 );
+        // find ip by fd
+        struct sockaddr_in* sain = (struct sockaddr_in*)(this->parent->getClientbyfd(fd)->var_sockaddr);
+        unsigned int ip = sain->sin_addr.s_addr;
+        //printf("ip: %d queid: %d\n", ip, id);
+        bytearray.insert ( bytearray.end(), ( ( char* ) &ip ), ( ( char* ) &ip ) + 4 );
         // content [queue number 4byte]
         bytearray.insert ( bytearray.end(), ( ( char* ) &this->id ), ( ( char* ) &this->id ) + 4 );
         // real content
         bytearray.insert ( bytearray.end(), tuple->getcontent(), tuple->getcontent() + tuple->getLen() );
         //bytearray.insert(bytearray.end(), data->getdata(), data->getdata() + data->getLen());
     }
-
+    
+    //debug_packet(bytearray.data(), 100);
+    
     vector<char> wrapper_bytearray;
 
     // 패킷 형태
     // 0xAA [size short] [type] [data] [data] [data] [data] ..
-    // [data] = 0xAA [size short] [type] ([contents] == [fd 4byte] [queue number 2byte] [real contents])
+    // [data] = 0xAA [size short] [type] ([contents] == [fd 4byte] [queue number 4byte] [real contents])
     // [data]를 DATA형태로 변환 뒤, 큐에 집어넣으면 됨
 
     // 앞에 0xaa 프로토콜 사용 표시
@@ -141,7 +138,7 @@ bool PIPE::sendQueue ( int fd )
 
     // 보내기 단계
     int result = send ( fd, wrapper_bytearray.data(), wrapper_bytearray.size(), 0 );
-    printf ( "send size: %d\n", result );
+
     // 어레이 클리어
     bytearray.clear();
     wrapper_bytearray.clear();
@@ -168,7 +165,7 @@ void PIPE::install_comp_signal()
         {
             STREAMFACTORY* streamfactory = ( STREAMFACTORY* ) powner;
             // 익스큐터에 연결되어있는 첫번째 태스크를 런 시킨다.
-            BASICCELL* cell = * ( streamfactory->getCELLs().begin() );
+            CELL* cell = * ( streamfactory->getCELLs().begin() );
             if ( cell->getCELLState() == false )
             {
                 cell->schedulingStart();

@@ -19,12 +19,14 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <pthread.h>
+#include <deque>
 #include "Type.h"
 
 using namespace std;
 
 class PIPE;
 class STREAMFACTORY;
+class PACKET;
 
 class CONNECTION
 {
@@ -41,6 +43,7 @@ private:
     int _broker_sock;
     sockaddr_in _broker_addr;
     list<struct CLIENT*> clientlists;
+    
 public:
     
     // STREAMFACTORY에 대한 connection을 만든다. 인자는 recvport로 쓸 숫자를 받는다.
@@ -77,5 +80,14 @@ public:
     void sleepCONNECTOR();
     // CONNECTION을 깨운다 (Sender 및 Receiver).
     void wakeupCONNECTOR();
-    
+    // 패킷을 어셈블 한다.
+    void assemblePacket ( char* input, uint insize, deque<PACKET*>* packetque, unsigned char* seq);
+    // 패킷 어셈블된것을 리턴한다. 어셈블 된 패킷이 없으면 NULL 리턴함
+    char* getassembledPacket(uint* outsize, deque<PACKET*>* packetque);
+    // CLIENT를 등록한다. 등록된 정보는 sender에서 이용된다.
+    void register_user(int fd, sockaddr* client_addr);
+    // fd로 client ip와 port를 찾는다.
+    unsigned int getipbyfd(int fd);
+    // client ip와 port로 fd를 찾는다.
+    unsigned int getfdbyip(int ip);
 };

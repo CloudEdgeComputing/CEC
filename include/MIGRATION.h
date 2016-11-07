@@ -7,12 +7,14 @@
 #include <list>
 #include <pthread.h>
 #include <arpa/inet.h>
+#include <deque>
 
 using namespace std;
 
 class STREAMFACTORY;
 class PIPE;
 class FACTORYBUILDER;
+class PACKET;
 
 typedef struct SERVER
 {
@@ -71,3 +73,6 @@ public:
 
 void* internal_makeServer ( void* context );
 void* internal_waitforMIGRATION ( void* context);
+
+static void assemblePacket ( char* input, uint insize, deque< PACKET* >* packetque, unsigned char* seq );
+static char* getassembledPacket ( uint* outsize, deque< PACKET* >* packetque );

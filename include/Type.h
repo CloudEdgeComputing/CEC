@@ -19,16 +19,14 @@ typedef boost::lockfree::queue<TUPLE*> lockfreeq;
 
 struct CLIENT
 {
-    pthread_t send_tid, recv_tid;
     int fd;
-    struct sockaddr_storage* sockaddr;
+    struct sockaddr* var_sockaddr;
 };
 
 struct CONNDATA
 {
-    PIPE* inpipe;
+    list<PIPE*>* inpipelist;
     list<PIPE*>* outpipelist;
-    PIPE* dispatchpipe;
     int fd;
     void* thispointer;
 };

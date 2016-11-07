@@ -2,10 +2,11 @@
 #include "BASICCELL.h"
 #include "PIPE.h"
 #include "STREAMFACTORY.h"
-#include "CONNECTION.h"
 #include "Functions.h"
 #include "TUPLE.h"
 #include "MIGRATION.h"
+#include "SRCCELL.h"
+#include "DESTCELL.h"
 
 // Task, Connection에 outq는 2개 이상이 붙을 수 있고, inq는 항상 하나다.
 STREAMFACTORY* FACTORYBUILDER::createSTREAMFACTORY ( ushort recvport )
@@ -14,12 +15,12 @@ STREAMFACTORY* FACTORYBUILDER::createSTREAMFACTORY ( ushort recvport )
     printf ( "streamfactory instance creation...\n" );
     STREAMFACTORY* streamfactory = new STREAMFACTORY;
     this->streamfactories.push_back ( streamfactory );
-
+    /*
     // 익스큐터 전체의 인풋 아웃풋 큐 생성
     printf ( "STREAMFACTORY inputqueue and outputqueue creation...\n" );
-    streamfactory->setinpipe ( this->makePIPE ( UNDEFINED, TYPE_CONNECTION ) );
+    streamfactory->setinpipe ( this->makePIPE ( UNDEFINED, TYPE_CONNECTION, streamfactory ) );
     printf ( "global id for inq: %d\n", streamfactory->getinpipe()->getid() );
-    streamfactory->setoutpipe ( this->makePIPE ( streamfactory, TYPE_FACTORY ) );
+    streamfactory->setoutpipe ( this->makePIPE ( streamfactory, TYPE_FACTORY, streamfactory ) );
 
     auto outpipelist = streamfactory->getoutpipelist();
     for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
@@ -32,30 +33,41 @@ STREAMFACTORY* FACTORYBUILDER::createSTREAMFACTORY ( ushort recvport )
     printf ( "STREAMFACTORY connection setting...\n" );
     streamfactory->setCONNECTOR ( new CONNECTION ( recvport, streamfactory ) );
     streamfactory->getCONNECTOR()->serverStart ( streamfactory->getinpipe(), streamfactory->getoutpipelist() );
-
-    printf ( "BASICCELL creation...\n" );
+    */
+    printf( "SRCCELL creation...\n");
+    PIPE* srcpipe = this->makePIPE( UNDEFINED, TYPE_CELL, streamfactory);
+    SRCCELL* srccell = new SRCCELL ( recvport, srcpipe, streamfactory);
+    
+    printf( "DESTCELL creation...\n");
+    PIPE* destpipe = this->makePIPE( UNDEFINED, TYPE_CELL, streamfactory);
+    DESTCELL* destcell = new DESTCELL (destpipe, streamfactory);
+    
     /*
      * 들어오는 함수는 인자로 DATA* 를 써야 하며, DATA*를 쓴 후에는 꼭 메모리 해제가 필요하다.
      */
     // Script 해석부
+    printf ( "BASICCELL creation...\n" );
     FUNC func1 = task_1;
     FUNC func2 = task_2;
-    printf ( "registred func1 %p, %p\n", func1, func2 );
-
+    
     // Task 생성
-    PIPE* task1pipe = this->makePIPE ( UNDEFINED, TYPE_CELL );
+    PIPE* task1pipe = this->makePIPE ( UNDEFINED, TYPE_CELL, streamfactory );
     printf ( "global id for task1pipe : %d\n", task1pipe->getid() );
-    BASICCELL* cell1 = new BASICCELL ( streamfactory->getinpipe(), task1pipe, 2, func1, streamfactory );
-    BASICCELL* cell2 = new BASICCELL ( task1pipe, streamfactory->getoutpipelist(), 2, func2, streamfactory );
-    printf ( "registered task1 %p, %p\n", cell1, cell2 );
+    BASICCELL* cell1 = new BASICCELL ( srcpipe, task1pipe, 2, func1, streamfactory );
+    BASICCELL* cell2 = new BASICCELL ( task1pipe, destpipe, 2, func2, streamfactory );
 
     printf ( "Operation creation for each task...\n" );
     // Task 내부 오퍼레이터 생성
+    srccell->makeWorker();
+    destcell->makeWorker();
     cell1->makeWorker();
     cell2->makeWorker();
+    
 
     printf ( "Task registering to executor instance...\n" );
     // 생성된 task를 executor에 등록시킴
+    streamfactory->registerCELL ( srccell );
+    streamfactory->registerCELL ( destcell );
     streamfactory->registerCELL ( cell1 );
     streamfactory->registerCELL ( cell2 );
 
@@ -88,10 +100,10 @@ STREAMFACTORY* FACTORYBUILDER::getStreamFactorybyid ( int id )
     return NULL;
 }
 
-PIPE* FACTORYBUILDER::makePIPE ( void* powner, int type )
+PIPE* FACTORYBUILDER::makePIPE ( void* powner, int type, STREAMFACTORY* parent )
 {
     int id = this->new_gid++;
-    PIPE* pipe = new PIPE ( new lockfreeq ( 0 ), powner, type, id );
+    PIPE* pipe = new PIPE ( new lockfreeq ( 0 ), powner, type, id, parent );
     this->pipes.push_back ( pipe );
 
     return pipe;

@@ -203,29 +203,29 @@ CELL.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CELL.cpp.s
 .PHONY : CELL.cpp.s
 
-CONNECTION.o: CONNECTION.cpp.o
-.PHONY : CONNECTION.o
+DESTCELL.o: DESTCELL.cpp.o
+.PHONY : DESTCELL.o
 
 # target to build an object file
-CONNECTION.cpp.o:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.o
-.PHONY : CONNECTION.cpp.o
+DESTCELL.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.o
+.PHONY : DESTCELL.cpp.o
 
-CONNECTION.i: CONNECTION.cpp.i
-.PHONY : CONNECTION.i
+DESTCELL.i: DESTCELL.cpp.i
+.PHONY : DESTCELL.i
 
 # target to preprocess a source file
-CONNECTION.cpp.i:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.i
-.PHONY : CONNECTION.cpp.i
+DESTCELL.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.i
+.PHONY : DESTCELL.cpp.i
 
-CONNECTION.s: CONNECTION.cpp.s
-.PHONY : CONNECTION.s
+DESTCELL.s: DESTCELL.cpp.s
+.PHONY : DESTCELL.s
 
 # target to generate assembly for a file
-CONNECTION.cpp.s:
-	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.s
-.PHONY : CONNECTION.cpp.s
+DESTCELL.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.s
+.PHONY : DESTCELL.cpp.s
 
 Debug.o: Debug.cpp.o
 .PHONY : Debug.o
@@ -323,6 +323,30 @@ MIGRATION.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.s
 .PHONY : MIGRATION.cpp.s
 
+PACKET.o: PACKET.cpp.o
+.PHONY : PACKET.o
+
+# target to build an object file
+PACKET.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.o
+.PHONY : PACKET.cpp.o
+
+PACKET.i: PACKET.cpp.i
+.PHONY : PACKET.i
+
+# target to preprocess a source file
+PACKET.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.i
+.PHONY : PACKET.cpp.i
+
+PACKET.s: PACKET.cpp.s
+.PHONY : PACKET.s
+
+# target to generate assembly for a file
+PACKET.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.s
+.PHONY : PACKET.cpp.s
+
 PIPE.o: PIPE.cpp.o
 .PHONY : PIPE.o
 
@@ -346,6 +370,30 @@ PIPE.s: PIPE.cpp.s
 PIPE.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.s
 .PHONY : PIPE.cpp.s
+
+SRCCELL.o: SRCCELL.cpp.o
+.PHONY : SRCCELL.o
+
+# target to build an object file
+SRCCELL.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o
+.PHONY : SRCCELL.cpp.o
+
+SRCCELL.i: SRCCELL.cpp.i
+.PHONY : SRCCELL.i
+
+# target to preprocess a source file
+SRCCELL.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.i
+.PHONY : SRCCELL.cpp.i
+
+SRCCELL.s: SRCCELL.cpp.s
+.PHONY : SRCCELL.s
+
+# target to generate assembly for a file
+SRCCELL.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.s
+.PHONY : SRCCELL.cpp.s
 
 STREAMFACTORY.o: STREAMFACTORY.cpp.o
 .PHONY : STREAMFACTORY.o
@@ -486,9 +534,9 @@ help:
 	@echo "... CELL.o"
 	@echo "... CELL.i"
 	@echo "... CELL.s"
-	@echo "... CONNECTION.o"
-	@echo "... CONNECTION.i"
-	@echo "... CONNECTION.s"
+	@echo "... DESTCELL.o"
+	@echo "... DESTCELL.i"
+	@echo "... DESTCELL.s"
 	@echo "... Debug.o"
 	@echo "... Debug.i"
 	@echo "... Debug.s"
@@ -501,9 +549,15 @@ help:
 	@echo "... MIGRATION.o"
 	@echo "... MIGRATION.i"
 	@echo "... MIGRATION.s"
+	@echo "... PACKET.o"
+	@echo "... PACKET.i"
+	@echo "... PACKET.s"
 	@echo "... PIPE.o"
 	@echo "... PIPE.i"
 	@echo "... PIPE.s"
+	@echo "... SRCCELL.o"
+	@echo "... SRCCELL.i"
+	@echo "... SRCCELL.s"
 	@echo "... STREAMFACTORY.o"
 	@echo "... STREAMFACTORY.i"
 	@echo "... STREAMFACTORY.s"

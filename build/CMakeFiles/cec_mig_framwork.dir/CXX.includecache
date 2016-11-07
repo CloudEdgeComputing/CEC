@@ -32,20 +32,10 @@ pthread.h
 Functions.h
 ../include/Functions.h
 
-../include/CONNECTION.h
-vector
--
-iostream
--
-stdlib.h
--
-unistd.h
--
-errno.h
--
-string.h
--
-sys/types.h
+../include/DESTCELL.h
+CELL.h
+../include/CELL.h
+list
 -
 sys/socket.h
 -
@@ -55,24 +45,12 @@ netdb.h
 -
 arpa/inet.h
 -
-sys/wait.h
+string.h
 -
 pthread.h
 -
-signal.h
+deque
 -
-list
--
-stdio.h
--
-fcntl.h
--
-errno.h
--
-pthread.h
--
-Type.h
-../include/Type.h
 
 ../include/Debug.h
 
@@ -109,6 +87,10 @@ pthread.h
 -
 arpa/inet.h
 -
+deque
+-
+
+../include/PACKET.h
 
 ../include/PIPE.h
 Type.h
@@ -118,6 +100,26 @@ pthread.h
 list
 -
 vector
+-
+
+../include/SRCCELL.h
+CELL.h
+../include/CELL.h
+list
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netdb.h
+-
+arpa/inet.h
+-
+string.h
+-
+pthread.h
+-
+deque
 -
 
 ../include/STREAMFACTORY.h
@@ -184,25 +186,15 @@ PIPE.h
 WORKER.h
 /home/ysmoon/projects/CEC_Mig_framwork/WORKER.h
 
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp
-CONNECTION.h
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.h
-TUPLE.h
-/home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
+/home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp
+DESTCELL.h
+/home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.h
 PIPE.h
 /home/ysmoon/projects/CEC_Mig_framwork/PIPE.h
+TUPLE.h
+/home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
 STREAMFACTORY.h
 /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
-FACTORYBUILDER.h
-/home/ysmoon/projects/CEC_Mig_framwork/FACTORYBUILDER.h
-Debug.h
-/home/ysmoon/projects/CEC_Mig_framwork/Debug.h
-MIGRATION.h
-/home/ysmoon/projects/CEC_Mig_framwork/MIGRATION.h
-errno.h
--
-string.h
--
 
 /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp
 Debug.h
@@ -219,14 +211,16 @@ PIPE.h
 /home/ysmoon/projects/CEC_Mig_framwork/PIPE.h
 STREAMFACTORY.h
 /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
-CONNECTION.h
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.h
 Functions.h
 /home/ysmoon/projects/CEC_Mig_framwork/Functions.h
 TUPLE.h
 /home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
 MIGRATION.h
 /home/ysmoon/projects/CEC_Mig_framwork/MIGRATION.h
+SRCCELL.h
+/home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.h
+DESTCELL.h
+/home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.h
 
 /home/ysmoon/projects/CEC_Mig_framwork/Functions.cpp
 Functions.h
@@ -247,6 +241,16 @@ FACTORYBUILDER.h
 /home/ysmoon/projects/CEC_Mig_framwork/FACTORYBUILDER.h
 TUPLE.h
 /home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
+PACKET.h
+/home/ysmoon/projects/CEC_Mig_framwork/PACKET.h
+Debug.h
+/home/ysmoon/projects/CEC_Mig_framwork/Debug.h
+
+/home/ysmoon/projects/CEC_Mig_framwork/PACKET.cpp
+PACKET.h
+/home/ysmoon/projects/CEC_Mig_framwork/PACKET.h
+string.h
+-
 
 /home/ysmoon/projects/CEC_Mig_framwork/PIPE.cpp
 PIPE.h
@@ -257,8 +261,24 @@ WORKER.h
 /home/ysmoon/projects/CEC_Mig_framwork/WORKER.h
 STREAMFACTORY.h
 /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
-CONNECTION.h
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.h
+TUPLE.h
+/home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
+STREAMFACTORY.h
+/home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
+Debug.h
+/home/ysmoon/projects/CEC_Mig_framwork/Debug.h
+
+/home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.cpp
+SRCCELL.h
+/home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.h
+STREAMFACTORY.h
+/home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
+PIPE.h
+/home/ysmoon/projects/CEC_Mig_framwork/PIPE.h
+Type.h
+/home/ysmoon/projects/CEC_Mig_framwork/Type.h
+PACKET.h
+/home/ysmoon/projects/CEC_Mig_framwork/PACKET.h
 TUPLE.h
 /home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
 Debug.h
@@ -267,8 +287,6 @@ Debug.h
 /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.cpp
 STREAMFACTORY.h
 /home/ysmoon/projects/CEC_Mig_framwork/STREAMFACTORY.h
-CONNECTION.h
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.h
 BASICCELL.h
 /home/ysmoon/projects/CEC_Mig_framwork/BASICCELL.h
 PIPE.h
@@ -323,6 +341,6 @@ TUPLE.h
 /home/ysmoon/projects/CEC_Mig_framwork/TUPLE.h
 PIPE.h
 /home/ysmoon/projects/CEC_Mig_framwork/PIPE.h
-CONNECTION.h
-/home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.h
+signal.h
+-
 

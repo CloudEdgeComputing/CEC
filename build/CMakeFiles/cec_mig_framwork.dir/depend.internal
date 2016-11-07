@@ -17,27 +17,27 @@ CMakeFiles/cec_mig_framwork.dir/CELL.cpp.o
  ../include/Type.h
  ../include/WORKER.h
  /home/ysmoon/projects/CEC_Mig_framwork/CELL.cpp
-CMakeFiles/cec_mig_framwork.dir/CONNECTION.cpp.o
- ../include/CONNECTION.h
- ../include/Debug.h
- ../include/FACTORYBUILDER.h
- ../include/MIGRATION.h
+CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.o
+ ../include/CELL.h
+ ../include/DESTCELL.h
+ ../include/Functions.h
  ../include/PIPE.h
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
- /home/ysmoon/projects/CEC_Mig_framwork/CONNECTION.cpp
+ /home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp
 CMakeFiles/cec_mig_framwork.dir/Debug.cpp.o
  ../include/Debug.h
  /home/ysmoon/projects/CEC_Mig_framwork/Debug.cpp
 CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
- ../include/CONNECTION.h
+ ../include/DESTCELL.h
  ../include/FACTORYBUILDER.h
  ../include/Functions.h
  ../include/MIGRATION.h
  ../include/PIPE.h
+ ../include/SRCCELL.h
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
@@ -50,18 +50,22 @@ CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o
 CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
+ ../include/Debug.h
  ../include/FACTORYBUILDER.h
  ../include/Functions.h
  ../include/MIGRATION.h
+ ../include/PACKET.h
  ../include/PIPE.h
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
  /home/ysmoon/projects/CEC_Mig_framwork/MIGRATION.cpp
+CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.o
+ ../include/PACKET.h
+ /home/ysmoon/projects/CEC_Mig_framwork/PACKET.cpp
 CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
- ../include/CONNECTION.h
  ../include/Debug.h
  ../include/Functions.h
  ../include/PIPE.h
@@ -70,10 +74,20 @@ CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.o
  ../include/Type.h
  ../include/WORKER.h
  /home/ysmoon/projects/CEC_Mig_framwork/PIPE.cpp
+CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o
+ ../include/CELL.h
+ ../include/Debug.h
+ ../include/Functions.h
+ ../include/PACKET.h
+ ../include/PIPE.h
+ ../include/SRCCELL.h
+ ../include/STREAMFACTORY.h
+ ../include/TUPLE.h
+ ../include/Type.h
+ /home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.cpp
 CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
- ../include/CONNECTION.h
  ../include/Debug.h
  ../include/FACTORYBUILDER.h
  ../include/Functions.h
@@ -109,7 +123,6 @@ CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.o
 CMakeFiles/cec_mig_framwork.dir/main.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
- ../include/CONNECTION.h
  ../include/FACTORYBUILDER.h
  ../include/Functions.h
  ../include/MIGRATION.h

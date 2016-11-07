@@ -4,8 +4,6 @@
 TUPLE* task_1(TUPLE* data)
 {
     int value = data->getInt();
-    printf("value1: %d\n", value);
-    
     
     value += 1;
     
@@ -26,15 +24,16 @@ TUPLE* task_1(TUPLE* data)
 TUPLE* task_2(TUPLE* data)
 { 
     int value = data->getInt();
-    printf("value2: %d\n", value);
-    
+        
     value += 1;
     TUPLE* result = new TUPLE(4, data->getfd(), data->gettype());
     result->push(&value, 4);
     result->sealing();
     
+    printf("value: %d from value: %d \n", value, value-2);
+    
     // 프로세싱
-    sleep(2);
+    sleep(3);
     
     // data 정리
     delete[] data->getdata();

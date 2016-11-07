@@ -14,6 +14,8 @@ using namespace std;
 
 #define SISO    0
 #define MISO    1
+#define SO      2
+#define SI      3
 
 class CELL
 {
@@ -36,7 +38,9 @@ protected:
     
 public:
     CELL( PIPE* inpipe, PIPE* outpipe, ushort count, STREAMFACTORY* parent, uint XIXO );
+    CELL( PIPE* inoutpipe, ushort count, STREAMFACTORY* parent, uint XIXO );
     CELL( PIPE* inpipe, list<PIPE*>* outpipelist, ushort count, STREAMFACTORY* parent, uint XIXO );
+    CELL( list<PIPE*>* outpipelist, ushort count, STREAMFACTORY* parent, uint XIXO );
     CELL( list<PIPE*>* inpipelist, list<PIPE*>* outpipelist, ushort count, STREAMFACTORY* parent, uint XIXO );
     
     // 워커를 만든다. 워커를 만들 때, 어떤 일을 할지 넣어야 하므로 순수 가상 함수
@@ -63,7 +67,7 @@ public:
     // 워커 스케줄러 쓰레드를 깨운다.
     void schedulerWakeup();
     
-    // 현재 워커 스케줄러가 블럭 상태인가?
+    // 현재 워커 스케줄러가 러닝 상태인가?
     bool getCELLState();
     
     // 현재 입출력 방식은 무엇인가?
