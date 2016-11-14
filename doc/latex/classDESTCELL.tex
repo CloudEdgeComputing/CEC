@@ -1,0 +1,190 @@
+\hypertarget{classDESTCELL}{}\section{D\+E\+S\+T\+C\+E\+L\+L Class Reference}
+\label{classDESTCELL}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+
+
+destcell을 정의해놓은 클래스. factory에서 나가는 데이터의 종말 지점이다.  
+
+
+
+
+{\ttfamily \#include $<$D\+E\+S\+T\+C\+E\+L\+L.\+h$>$}
+
+
+
+Inheritance diagram for D\+E\+S\+T\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=148pt]{classDESTCELL__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for D\+E\+S\+T\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{classDESTCELL__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDESTCELL_ac00a818070523ebc47f8ed37a5f5e052}{D\+E\+S\+T\+C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em destcell을 만드는 생성자. \end{DoxyCompactList}\item 
+\hyperlink{classDESTCELL_a17a692f1fdb71d88276696a6935032dd}{D\+E\+S\+T\+C\+E\+L\+L} (list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$inpipelist, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em destcell을 만드는 생성자. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classDESTCELL_a98ba282e719612c8dbeaca6037968a6b}{make\+Worker} ()
+\begin{DoxyCompactList}\small\item\em dummy \end{DoxyCompactList}\item 
+virtual void $\ast$ \hyperlink{classDESTCELL_a19366e1b07246beeff944f5c0c3ca520}{scheduling} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em scheduling이지만, worker가 내부적으로 1개이므로 worker의 역할을 할 수 있도록 쓰레드를 생성한다. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{classDESTCELL_aa0a87ac0f210e28a81eda557b86b16d3}{D\+E\+S\+Tbroker\+\_\+start\+\_\+internal} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em 센더 래퍼함수에서 실제로 수행되는 로직이 담긴 함수이다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void $\ast$ \hyperlink{classDESTCELL_a478210dc9fb7c6fc1da37a153772464d}{D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em 센더 스레드를 만들기 위한 래퍼 함수이다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+destcell을 정의해놓은 클래스. factory에서 나가는 데이터의 종말 지점이다. 
+
+destcell을 정의해놓은 클래스. factory에서 나가는 데이터의 종말 지점이다. cell의 형태를 상속하며 S\+I의 형태를 갖는다. 현재는 종말지점은 소스셀에서 연결된 디바이스 중 하나로만 한정한다. 만약 여러개의 pipe가 input으로 연결되면 라운드 로빈으로 처리한다. 이 안에서의 워커는 개념상 1만 존재한다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000001}{Todo}]D\+B로 보내기, src cell에 연결되지 않은 device도 연결을 받아 보내기 \end{DoxyRefDesc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classDESTCELL_ac00a818070523ebc47f8ed37a5f5e052}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{D\+E\+S\+T\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}D\+E\+S\+T\+C\+E\+L\+L\+::\+D\+E\+S\+T\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inpipe, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classDESTCELL_ac00a818070523ebc47f8ed37a5f5e052}
+
+
+destcell을 만드는 생성자. 
+
+destcell을 만드는 생성자. 단일 inpipe로 연결되어 있다. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & destcell로 데이터를 넘겨주기 위한 pipe \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classDESTCELL_a17a692f1fdb71d88276696a6935032dd}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{D\+E\+S\+T\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}D\+E\+S\+T\+C\+E\+L\+L\+::\+D\+E\+S\+T\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{inpipelist, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classDESTCELL_a17a692f1fdb71d88276696a6935032dd}
+
+
+destcell을 만드는 생성자. 
+
+destcell을 만드는 생성자. 단일 inpipe로 연결되어 있다. 
+\begin{DoxyParams}{Parameters}
+{\em inpipelist} & destcell로 데이터를 넘겨주기 위한 pipe의 리스트. 깊은 복사를 하며 사용 이후 inpipelist가 필요가 없으면 해제하는것이 좋다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classDESTCELL_aa0a87ac0f210e28a81eda557b86b16d3}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+Tbroker\+\_\+start\+\_\+internal@{D\+E\+S\+Tbroker\+\_\+start\+\_\+internal}}
+\index{D\+E\+S\+Tbroker\+\_\+start\+\_\+internal@{D\+E\+S\+Tbroker\+\_\+start\+\_\+internal}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{D\+E\+S\+Tbroker\+\_\+start\+\_\+internal}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ D\+E\+S\+T\+C\+E\+L\+L\+::\+D\+E\+S\+Tbroker\+\_\+start\+\_\+internal (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)}\label{classDESTCELL_aa0a87ac0f210e28a81eda557b86b16d3}
+
+
+센더 래퍼함수에서 실제로 수행되는 로직이 담긴 함수이다. 
+
+센더 래퍼함수에서 실제로 수행되는 로직이 담긴 함수이다. 내부에서는 input pipe들을 라운드 로빈으로 읽어 알맞는 디바이스로 데이터를 전송한다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & (D\+E\+S\+T\+C\+E\+L\+L의) this pointer를 넘긴다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$는 의미 없다. 
+\end{DoxyReturn}
+\hypertarget{classDESTCELL_a478210dc9fb7c6fc1da37a153772464d}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper@{D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper}}
+\index{D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper@{D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ D\+E\+S\+T\+C\+E\+L\+L\+::\+D\+E\+S\+Tbroker\+\_\+start\+\_\+wrapper (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classDESTCELL_a478210dc9fb7c6fc1da37a153772464d}
+
+
+센더 스레드를 만들기 위한 래퍼 함수이다. 
+
+센더 스레드를 만들기 위한 래퍼 함수이다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & (D\+E\+S\+T\+C\+E\+L\+L의) this pointer를 넘긴다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$는 의미 없다. 
+\end{DoxyReturn}
+\hypertarget{classDESTCELL_a98ba282e719612c8dbeaca6037968a6b}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!make\+Worker@{make\+Worker}}
+\index{make\+Worker@{make\+Worker}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{make\+Worker}]{\setlength{\rightskip}{0pt plus 5cm}void D\+E\+S\+T\+C\+E\+L\+L\+::make\+Worker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classDESTCELL_a98ba282e719612c8dbeaca6037968a6b}
+
+
+dummy 
+
+dummy 
+
+Implements \hyperlink{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}{C\+E\+L\+L}.
+
+\hypertarget{classDESTCELL_a19366e1b07246beeff944f5c0c3ca520}{}\index{D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}!scheduling@{scheduling}}
+\index{scheduling@{scheduling}!D\+E\+S\+T\+C\+E\+L\+L@{D\+E\+S\+T\+C\+E\+L\+L}}
+\subsubsection[{scheduling}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ D\+E\+S\+T\+C\+E\+L\+L\+::scheduling (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classDESTCELL_a19366e1b07246beeff944f5c0c3ca520}
+
+
+scheduling이지만, worker가 내부적으로 1개이므로 worker의 역할을 할 수 있도록 쓰레드를 생성한다. 
+
+scheduling이지만, worker가 내부적으로 1개이므로 worker의 역할을 할 수 있도록 쓰레드를 생성한다. 이 쓰레드에서 최종적으로 데이터를 읽고 보낸다. 
+\begin{DoxyParams}{Parameters}
+{\em arg} & (D\+E\+S\+T\+C\+E\+L\+L의) this pointer를 넘긴다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$는 의미 없다. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}{C\+E\+L\+L}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{DESTCELL_8h}{D\+E\+S\+T\+C\+E\+L\+L.\+h}\item 
+D\+E\+S\+T\+C\+E\+L\+L.\+cpp\end{DoxyCompactItemize}

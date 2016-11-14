@@ -14,6 +14,7 @@ CMakeFiles/cec_mig_framwork.dir/CELL.cpp.o
  ../include/CELL.h
  ../include/Functions.h
  ../include/PIPE.h
+ ../include/STREAMFACTORY.h
  ../include/Type.h
  ../include/WORKER.h
  /home/ysmoon/projects/CEC_Mig_framwork/CELL.cpp
@@ -41,9 +42,12 @@ CMakeFiles/cec_mig_framwork.dir/FACTORYBUILDER.cpp.o
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
+ ../include/UNIONCELL.h
  /home/ysmoon/projects/CEC_Mig_framwork/FACTORYBUILDER.cpp
 CMakeFiles/cec_mig_framwork.dir/Functions.cpp.o
+ ../include/Debug.h
  ../include/Functions.h
+ ../include/STATEMANAGER.h
  ../include/TUPLE.h
  ../include/Type.h
  /home/ysmoon/projects/CEC_Mig_framwork/Functions.cpp
@@ -56,6 +60,7 @@ CMakeFiles/cec_mig_framwork.dir/MIGRATION.cpp.o
  ../include/MIGRATION.h
  ../include/PACKET.h
  ../include/PIPE.h
+ ../include/STATEMANAGER.h
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
@@ -77,6 +82,7 @@ CMakeFiles/cec_mig_framwork.dir/PIPE.cpp.o
 CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o
  ../include/CELL.h
  ../include/Debug.h
+ ../include/FACTORYBUILDER.h
  ../include/Functions.h
  ../include/PACKET.h
  ../include/PIPE.h
@@ -85,13 +91,21 @@ CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o
  ../include/TUPLE.h
  ../include/Type.h
  /home/ysmoon/projects/CEC_Mig_framwork/SRCCELL.cpp
+CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.o
+ ../include/Debug.h
+ ../include/STATEMANAGER.h
+ ../include/TUPLE.h
+ ../include/Type.h
+ /home/ysmoon/projects/CEC_Mig_framwork/STATEMANAGER.cpp
 CMakeFiles/cec_mig_framwork.dir/STREAMFACTORY.cpp.o
  ../include/BASICCELL.h
  ../include/CELL.h
  ../include/Debug.h
  ../include/FACTORYBUILDER.h
  ../include/Functions.h
+ ../include/MIGRATION.h
  ../include/PIPE.h
+ ../include/STATEMANAGER.h
  ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
@@ -115,6 +129,7 @@ CMakeFiles/cec_mig_framwork.dir/WORKER.cpp.o
  ../include/CELL.h
  ../include/Functions.h
  ../include/PIPE.h
+ ../include/STREAMFACTORY.h
  ../include/TUPLE.h
  ../include/Type.h
  ../include/UNIONCELL.h

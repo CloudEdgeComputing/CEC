@@ -44,7 +44,7 @@ public:
     // 커넥션 생성
     int makeConnection(unsigned int ip, ushort port, bool isInstalled);
     // 모든 큐 데이터들을 긁어 마이그레이션을 시작한다. input: target node id
-    void startMIGRATION(int id, STREAMFACTORY* factory);
+    void startMIGRATION(unsigned int uuid, int cec_id, STREAMFACTORY* factory);
     // MIGRATION data를 받을 쓰레드를 수행
     void waitforMigration();
     

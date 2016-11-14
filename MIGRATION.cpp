@@ -6,6 +6,7 @@
 #include "TUPLE.h"
 #include "PACKET.h"
 #include "Debug.h"
+#include <STATEMANAGER.h>
 
 MIGRATION::MIGRATION ( int port, char comm )
 {
@@ -80,23 +81,27 @@ int MIGRATION::makeServer ( ushort port )
 
 }
 
-void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
+void MIGRATION::startMIGRATION ( unsigned int uuid, int cec_id, STREAMFACTORY* factory )
 {
-    int sockfd = this->getClienctCEC ( id );
+    int sockfd = this->getClienctCEC ( cec_id );
 
     // executor에 해당하는 모든 task들을 블럭시킨다.
     // Task scheduler task 블럭, 웨이크업
 
     auto list = factory->getCELLs();
-
+    
+    printf("migration start!\n");
+    
+    
+    printf("blocking all tuples using uuid: %d\n", uuid);
+    // cell에 specific uuid가 못들어가도록 설정
     for ( auto iter = list.begin(); iter != list.end(); ++iter )
     {
         CELL* cell = ( *iter );
-        cell->schedulerSleep();
+        cell->setignoreuuid(uuid);
     }
-    printf ( "all tasks in an executor go sleep!\n" );
 
-    // 블럭 되어있으니 이제 큐에 있는 데이터들을 전송한다.
+    // 블럭 되어있으니 이제 큐에 있는 데이터들을 전송시도한다.
     while ( 1 )
     {
         bool checker = true;
@@ -120,7 +125,7 @@ void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
             for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
             {
                 auto outpipe = *iter;
-                checker &= outpipe->sendQueue ( sockfd );
+                checker &= outpipe->sendQueue ( sockfd, uuid );
                 usleep ( 500 );
             }
         }
@@ -131,6 +136,7 @@ void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
             for ( auto iter = list.begin(); iter != list.end(); ++iter )
             {
                 CELL* cell = *iter;
+                
                 auto outpipelist = cell->getoutpipelist();
                 
                 // DESTCELL의 경우 아웃풋 리스트가 없을 수 있음
@@ -144,12 +150,15 @@ void MIGRATION::startMIGRATION ( int id, STREAMFACTORY* factory )
                     auto outpipe = *iter;
                     outpipe->clearMigration();
                 }
-                cell->schedulerWakeup();
+                cell->clearignoreuuid();
             }
-            printf ( "all cells in a factory goes to wake up\n" );
             break;
         }
     }
+    
+    // DB migration
+    STATEMANAGER* statemanager = factory->getStatemanager();
+    statemanager->migrateDB(sockfd, uuid);
 
     printf ( "MIGRATION completed!\n" );
 }
@@ -294,7 +303,7 @@ void* internal_waitforMIGRATION ( void* context )
     {
         // 데이터를 받는다.
         unsigned int size = recv ( fd, buffer, sizeof buffer, 0 );
-        printf ( "migration data is received size: %d\n", size );
+        //printf ( "migration data is received size: %d\n", size );
         if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
@@ -314,11 +323,22 @@ void* internal_waitforMIGRATION ( void* context )
             }
 
             TUPLE* tuple = new TUPLE ( result, outsize - 4, 0, 0 );
+            
+            // queue를 통해 처리되는 데이터
+            if(tuple->gettype() == 0x02)
+            {
+                // 하드코딩;; 0번 익스큐터!
+                STREAMFACTORY* factory = factorymanager.getStreamFactorybyid ( 0 );
 
-            // 하드코딩;; 0번 익스큐터!
-            STREAMFACTORY* factory = factorymanager.getStreamFactorybyid ( 0 );
-
-            factory->installReceivedData ( tuple );
+                factory->installReceivedData ( tuple );
+            }
+            // db migration
+            else if(tuple->gettype() == 0x04)
+            {
+                STREAMFACTORY* factory = factorymanager.getStreamFactorybyid ( 0 );
+                STATEMANAGER* statemanager = factory->getStatemanager();
+                statemanager->installDB( tuple );
+            }
         }
         memset ( buffer, 0, sizeof buffer );
     }

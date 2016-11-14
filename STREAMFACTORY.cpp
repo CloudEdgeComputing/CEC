@@ -3,10 +3,14 @@
 #include "PIPE.h"
 #include "TUPLE.h"
 #include "FACTORYBUILDER.h"
+#include "MIGRATION.h"
+#include "STATEMANAGER.h"
 #include "Debug.h"
 
-STREAMFACTORY::STREAMFACTORY()
+STREAMFACTORY::STREAMFACTORY(MIGRATION* mig)
 {
+    this->mig = mig;
+    this->statemanager = new STATEMANAGER("root", "123qwe", "edge1");
 }
 
 void STREAMFACTORY::factoryStart()
@@ -58,8 +62,7 @@ void STREAMFACTORY::installReceivedData ( TUPLE* data )
 
     if ( data->getLen() != 0 )
     {
-
-        // p 4byte protocol  4byte ip 4byte queue real contents ...
+        // p 4byte protocol  4byte uuid 4byte queue real contents ...
         // 단위 데이터를 읽어 설치함
         while ( size < data->getLen() )
         {
@@ -67,17 +70,17 @@ void STREAMFACTORY::installReceivedData ( TUPLE* data )
             unsigned int pipeid = 0;
             memcpy ( &pipeid, p + 8, 4 );
             
-            // ip로 fd를 얻어냄
-            unsigned int ip = 0;
-            memcpy(&ip, p + 4, 4);
-            int fd = this->getClientbyip(ip)->fd;        
+            // uuid를 얻어냄
+            unsigned int uuid = 0;
+            memcpy(&uuid, p + 4, 4);        
 
             // unit data가 스페셜 형식을 가짐
             TUPLE* unitdata = new TUPLE ( p, true );
             
-            unitdata->setfd(fd);
             
-            printf ( "queue id: %d\n", pipeid );
+            unitdata->setuuid(uuid);
+            
+            //printf ( "queue id: %d\n", pipeid );
             //printf("received packet!\n");
             //debug_packet(unitdata->getdata(), unitdata->getLen() + 4);
 
@@ -85,11 +88,11 @@ void STREAMFACTORY::installReceivedData ( TUPLE* data )
             pipe = factorymanager.findPIPE ( pipeid );
 
             // queue에 데이터를 푸시함
-            pipe->getQueue()->push ( unitdata );
-
+            pipe->push(unitdata);
+            
             p = p + unitdata->getLen() + 8 + 4;
             size += unitdata->getLen() + 8 + 4;
-            printf("size: %d Len: %d\n", size, data->getLen());
+            //printf("size: %d Len: %d\n", size, data->getLen());
             //printf("unitdata->getLen() + 8 + 4: %d\n", unitdata->getLen() + 8 + 4);
         }
 
@@ -114,15 +117,27 @@ CLIENT* STREAMFACTORY::getClientbyip ( unsigned int ip )
     }
 }
 
-CLIENT* STREAMFACTORY::getClientbyfd ( unsigned int fd )
+CLIENT* STREAMFACTORY::getClientbyuuid ( unsigned int uuid )
 {
     for(auto iter = this->devices.begin(); iter != this->devices.end(); ++iter)
     {
         CLIENT* client = *iter;
-        unsigned int _fd = client->fd;
-        if(fd == fd)
+        unsigned int _uuid = client->uuid;
+        if(_uuid == uuid)
             return client;
     }
+    printf("uuid not found!\n");
+    return 0;
+}
+
+void STREAMFACTORY::startMIGRATION(unsigned int uuid)
+{
+    this->mig->startMIGRATION(uuid, 0, this);
+}
+
+STATEMANAGER* STREAMFACTORY::getStatemanager()
+{
+    return this->statemanager;
 }
 
 void STREAMFACTORY::printtasks()

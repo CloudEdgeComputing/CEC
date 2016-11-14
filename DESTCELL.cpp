@@ -40,11 +40,12 @@ void* DESTCELL::DESTbroker_start_internal ( void* context )
     
     while(1)
     {
-        // 태스크 스케줄링 블럭 요청이 있으면 블럭한다.
+        // 태스크 스케줄링 블럭 요청이 있으면 블럭한다. 말이 안되는게 전체 서비스가 다 블럭당함
+        // 즉, 블럭할 데이터만 블럭 큐에 옮겨놔야 함?
         if ( !this->isrun )
         {
             printf ( "DESTCELL blocked!\n" );
-            pthread_cond_wait ( &this->condition, &this->mutex );
+            pthread_cond_wait ( &this->condition, &this->cond_mutex );
             printf ( "DESTCELL released!\n" );
         }
         
@@ -52,16 +53,15 @@ void* DESTCELL::DESTbroker_start_internal ( void* context )
         for(auto iter = this->inpipelist->begin(); iter != this->inpipelist->end(); ++iter)
         {
             PIPE* pipe = *iter;
-            lockfreeq* inq = pipe->getQueue();
             
-            if(inq->empty())
+            if(pipe->empty())
                 continue;
             
             TUPLE* tuple;
             
-            if(!inq->pop(tuple))
+            if((tuple = pipe->pop()) == NULL)
             {
-                printf("inq pop error in %s\n", __func__);
+                printf("pipe pop error in %s\n", __func__);
                 exit(0);
             }
             
@@ -70,7 +70,10 @@ void* DESTCELL::DESTbroker_start_internal ( void* context )
                 printf("No content in %s\n", __func__);
             }
             
-            if(send(tuple->getfd(), tuple->getdata(), tuple->getLen() + 4, 0) == -1)
+            //printf("send fd: %d uuid: %d\n", this->parent->getClientbyuuid(tuple->getuuid())->fd, tuple->getuuid());
+            
+            int result = send(this->parent->getClientbyuuid(tuple->getuuid())->fd, tuple->getdata(), tuple->getLen() + 4, 0);
+            if(result == -1)
             {
                 printf("Error occured in send function in %s\n", __func__);
                 while(1);

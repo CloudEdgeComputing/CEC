@@ -1,6 +1,11 @@
 [
 {
   "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
+  "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/STATEMANAGER.cpp",
+  "file": "/home/ysmoon/projects/CEC_Mig_framwork/STATEMANAGER.cpp"
+},
+{
+  "directory": "/home/ysmoon/projects/CEC_Mig_framwork/build",
   "command": "/usr/bin/c++     -std=c++11 -pthread -g -I/usr/local/include -I/home/ysmoon/projects/CEC_Mig_framwork/include    -o CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.o -c /home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp",
   "file": "/home/ysmoon/projects/CEC_Mig_framwork/DESTCELL.cpp"
 },

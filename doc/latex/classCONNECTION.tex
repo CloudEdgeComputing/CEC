@@ -1,0 +1,77 @@
+\hypertarget{classCONNECTION}{}\section{C\+O\+N\+N\+E\+C\+T\+I\+O\+N Class Reference}
+\label{classCONNECTION}\index{C\+O\+N\+N\+E\+C\+T\+I\+O\+N@{C\+O\+N\+N\+E\+C\+T\+I\+O\+N}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classCONNECTION_a5125726f68f007997156b67a9617b5cf}{}{\bfseries C\+O\+N\+N\+E\+C\+T\+I\+O\+N} (int recvport, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$factory)\label{classCONNECTION_a5125726f68f007997156b67a9617b5cf}
+
+\item 
+\hypertarget{classCONNECTION_a7ff7ccbd788bd5f7a47ba99530abf3e0}{}void $\ast$ {\bfseries server\+Start\+\_\+internal} (void $\ast$arg)\label{classCONNECTION_a7ff7ccbd788bd5f7a47ba99530abf3e0}
+
+\item 
+\hypertarget{classCONNECTION_af2740d50366fca10381c135a09785dd8}{}pthread\+\_\+t {\bfseries server\+Start} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist)\label{classCONNECTION_af2740d50366fca10381c135a09785dd8}
+
+\item 
+\hypertarget{classCONNECTION_a43239ade276d44c0a626fe8c4df37a61}{}void $\ast$ {\bfseries get\+\_\+in\+\_\+addr} (struct sockaddr $\ast$sa)\label{classCONNECTION_a43239ade276d44c0a626fe8c4df37a61}
+
+\item 
+\hypertarget{classCONNECTION_ab3a8e718ce95d1df393ab7a0ceca0c94}{}void $\ast$ {\bfseries sender} (void $\ast$arg)\label{classCONNECTION_ab3a8e718ce95d1df393ab7a0ceca0c94}
+
+\item 
+\hypertarget{classCONNECTION_ab164678ba891b7e205027561677fff52}{}void $\ast$ {\bfseries receiver} (void $\ast$arg)\label{classCONNECTION_ab164678ba891b7e205027561677fff52}
+
+\item 
+\hypertarget{classCONNECTION_af515385d3584b6ff051a1c6d33493509}{}void $\ast$ {\bfseries dispatcher} (void $\ast$arg)\label{classCONNECTION_af515385d3584b6ff051a1c6d33493509}
+
+\item 
+\hypertarget{classCONNECTION_ac059a7c53e9f22954b9b2060bb739d25}{}void {\bfseries setsender\+\_\+tid} (pthread\+\_\+t tid)\label{classCONNECTION_ac059a7c53e9f22954b9b2060bb739d25}
+
+\item 
+\hypertarget{classCONNECTION_a9310770dd036dfcaf531e49cad2a91f3}{}void {\bfseries setdispatcher\+\_\+tid} (pthread\+\_\+t tid)\label{classCONNECTION_a9310770dd036dfcaf531e49cad2a91f3}
+
+\item 
+\hypertarget{classCONNECTION_a5858f6269133a43b5dbe7221a78d3d22}{}bool {\bfseries get\+Conn\+State} ()\label{classCONNECTION_a5858f6269133a43b5dbe7221a78d3d22}
+
+\item 
+\hypertarget{classCONNECTION_a58b9e421d09110d58a8ee97a0d55378c}{}void {\bfseries sleep\+C\+O\+N\+N\+E\+C\+T\+O\+R} ()\label{classCONNECTION_a58b9e421d09110d58a8ee97a0d55378c}
+
+\item 
+\hypertarget{classCONNECTION_a42daf1a6d7e4ae33ed142c077eaf173b}{}void {\bfseries wakeup\+C\+O\+N\+N\+E\+C\+T\+O\+R} ()\label{classCONNECTION_a42daf1a6d7e4ae33ed142c077eaf173b}
+
+\item 
+\hypertarget{classCONNECTION_a5820c737079b8699ba43999f45e0f839}{}void {\bfseries assemble\+Packet} (char $\ast$input, uint insize, deque$<$ \hyperlink{classPACKET}{P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$packetque, unsigned char $\ast$seq)\label{classCONNECTION_a5820c737079b8699ba43999f45e0f839}
+
+\item 
+\hypertarget{classCONNECTION_ad0ba06a5c12ec91ea98b36ad8e5f4979}{}char $\ast$ {\bfseries getassembled\+Packet} (uint $\ast$outsize, deque$<$ \hyperlink{classPACKET}{P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$packetque)\label{classCONNECTION_ad0ba06a5c12ec91ea98b36ad8e5f4979}
+
+\item 
+\hypertarget{classCONNECTION_abdbd118327c75dca6de3f672671a5f52}{}void {\bfseries register\+\_\+user} (int fd, sockaddr $\ast$client\+\_\+addr)\label{classCONNECTION_abdbd118327c75dca6de3f672671a5f52}
+
+\item 
+\hypertarget{classCONNECTION_a4af528016616b4361943b3a086fdf62f}{}unsigned int {\bfseries getipbyfd} (int fd)\label{classCONNECTION_a4af528016616b4361943b3a086fdf62f}
+
+\item 
+\hypertarget{classCONNECTION_aa13a749c05b958d46273487de71f4c8e}{}unsigned int {\bfseries getfdbyip} (int ip)\label{classCONNECTION_aa13a749c05b958d46273487de71f4c8e}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classCONNECTION_a539285f4c0510d43c6e62346c71fdf44}{}static void $\ast$ {\bfseries server\+Start\+\_\+wrapper} (void $\ast$context)\label{classCONNECTION_a539285f4c0510d43c6e62346c71fdf44}
+
+\item 
+\hypertarget{classCONNECTION_a00c2ac9ec4f67ab68ea2c3cae144456e}{}static void $\ast$ {\bfseries sender\+\_\+wrapper} (void $\ast$context)\label{classCONNECTION_a00c2ac9ec4f67ab68ea2c3cae144456e}
+
+\item 
+\hypertarget{classCONNECTION_a11682523fefd227c06ff2a9b87f156cd}{}static void $\ast$ {\bfseries receiver\+\_\+wrapper} (void $\ast$context)\label{classCONNECTION_a11682523fefd227c06ff2a9b87f156cd}
+
+\item 
+\hypertarget{classCONNECTION_a6ef84a111db27456fa1b6390f5c5e5f0}{}static void $\ast$ {\bfseries dispatcher\+\_\+wrapper} (void $\ast$context)\label{classCONNECTION_a6ef84a111db27456fa1b6390f5c5e5f0}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+srcbackup/C\+O\+N\+N\+E\+C\+T\+I\+O\+N.\+h\item 
+srcbackup/C\+O\+N\+N\+E\+C\+T\+I\+O\+N.\+cpp\end{DoxyCompactItemize}

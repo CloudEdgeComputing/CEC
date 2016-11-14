@@ -45,17 +45,15 @@ void* BASICCELL::scheduling ( void* arg )
         if ( !this->isrun )
         {
             printf ( "BASICCELL scheduler blocked!\n" );
-            pthread_cond_wait ( &this->condition, &this->mutex );
+            pthread_cond_wait ( &this->condition, &this->cond_mutex );
             printf ( "BASICCELL scheduler released!\n" );
         }
 
 
         // BASICCELL은 SISO를 표방하므로 inpipelist의 첫번째만 알면 된다.
         PIPE* inpipe = * ( this->inpipelist->begin() );
-        lockfreeq* inq = inpipe->getQueue();
-        if ( !inq->empty() )
+        if ( !inpipe->empty() )
         {
-            
             for (auto iter = this->workers.begin() ; iter != this->workers.end(); ++iter )
             {
                 WORKER* worker = *iter;

@@ -1,4 +1,71 @@
 
 Note
 
-3. 두번째 migration 동작 안함 << third important
+1. 마이그레이션 메커니즘 변경 필요
+ - How? 전체 블럭시키는거에서 데이터만 쏙쏙 빼가는걸로...
+ - 마이그레이션 큐가 필요함
+ - 스케줄러를 슬립하면 안됨
+ - 현재 워커를 계산해서 주인 fd를 검사하고 그게 처리중이면 아직 안되는걸로...
+ 
+     /**
+     *  @brief 팩토리를 만들 수 있게 스크립트를 받을 수 있는 형태가 되도록 만든다.
+     *  @details 이 함수를 실행하면 스크립트를 입력 받을 수 있는 형태가 된다. 메인 스크립트 당 하나의 팩토리를 확보하고 스크립트를 통해 셀들을 설치하여 완전한 하나의 팩토리를 구성해야 한다.
+     */
+    void submitScriptforFactory();
+    /**
+     *  @brief 팩토리 빌더 모듈과 마이그레이션 모듈을 연결한다. 
+     *  @details 마이그레이션 모듈은 팩토리빌더가 만든 모든 팩토리의 마이그레이션을 지원한다.
+     *  @param mig 마이그레이션 객체 포인터
+     */
+    void setMIGRATION(MIGRATION* mig);
+    /**
+     *  @brief 베이직 셀 (프로세싱 셀)을 만든다.
+     *  @details 베이직 셀은 기본 프로세싱 유닛을 담당하며, 입력 파이프에서 튜플을 읽어 출력 파이프로 튜플을 출력한다. 이때, 출력 파이프가 여러개라면 같은 튜플을 모든 출력파이프에 넣는다.
+     *  @param count 셀 내부에 생성될 워커의 개수
+     *  @param func TUPLE* (*CODE)(TUPLE\*) 형태의 튜플을 처리할 코드 세그먼트를 전달한다.
+     *  @param streamfactory 셀을 소유 할 부모 팩토리
+     *  @todo processing rate와 튜플당 처리되야 하는 deadline을 정할 수 있는 파라미터 도입 예정
+     *  @return 생성된 베이직 셀의 객체 포인터
+     */
+    BASICCELL* makeBASICCELL(int count, FUNC func, STREAMFACTORY* streamfactory); 
+    /**
+     *  @brief 유니언 셀을 만든다.
+     *  @details 유니언 셀은 두개 이상의 튜플을 합치는 기능을 한다. 튜플의 속성은 cellid에 해당하는 셀로부터 나온 튜플의 속성을 상속받는다.
+     *  @param cellid 합친 튜플의 속성을 정의할 셀 아이디 (그 셀 로부터 나온 튜플의 속성을 따라간다.)
+     *  @param count 유니언 작업을 할 워커의 개수
+     *  @param streamfactory 셀을 소유 할 부모 팩토리
+     *  @param policy POLICY_ALLREADY인 경우, 입력 파이프에 모두 튜플을 갖고 있어 합칠 수 있을때까지 기다린다. 
+     *  \n POLICY_PARTIALREADY인경우, 입력 파이프에 모든 튜플을 대기하지 않는다. 단, 일부 파이프에 합칠 튜플이 없는 경우 이전에 들어온 최신 튜플을 이용해 합친다.
+     *  @todo processing rate와 튜플당 처리되야 하는 deadline을 정할 수 있는 파라미터 도입 예정
+     *  @return 생성된 유니언 셀의 객체 포인터
+     */
+    UNIONCELL* makeUNIONCELL(int cellid, int count, STREAMFACTORY* streamfactory, int policy);
+    /**
+     *  @brief 데이터가 팩토리로 들어오는 소스셀을 만든다.
+     *  @details 소스셀은 팩토리로 데이터가 유입되는 경로이다. 현재 구현은 디바이스와의 통신이 이루어 질때, 디바이스가 보낸 데이터를 받는 경로이다.
+     *  @param recvport 연결을 대기할 리시브 포트
+     *  @param streamfactory 셀을 소유 할 부모 팩토리
+     *  @return 생성된 소스 셀의 객체 포인터
+     *  @todo 추후 DB등과의 입력을 담당할 예정이다.
+     */
+    SRCCELL* makeSRCCELL(int recvport, STREAMFACTORY* streamfactory);
+    /**
+     *  @brief 데이터가 팩토리에서 나가는 데스티네이션셀을 만든다.
+     *  @details 데스티네이션 셀(이하 데스트셀)은 데이터가 팩토리 밖으로 나가는 경로이다. 현재 구현은 소스셀에서 접속된 디바이스에만 데이터를 보낼 수 있다.
+     *  @param streamfactory 셀을 소유 할 부모 팩토리
+     *  @return 생성된 데스트 셀의 객체 포인터
+     *  @todo 추후 DB과의 출력을 담당할 예정이다.
+     */
+    DESTCELL* makeDESTCELL(STREAMFACTORY* streamfactory);
+    /**
+     *  @brief 셀(cell1)과 셀(cell2)을 링킹한다.
+     *  @details 실제 내부로는 셀과 셀을 링킹할 때, 파이프가 생성된다.
+     *  @param cell1 튜플을 출력하는 셀
+     *  @param cell2 튜플을 입력받는 셀
+     */
+    void linking(CELL* cell1, CELL* cell2);
+    /**
+     *  @brief 팩토리를 가동한다.
+     *  @details 팩토리 내부에 등록된 모든 셀을 가동한다.
+     */
+    void runSTREAMFACTORY(STREAMFACTORY* factory);

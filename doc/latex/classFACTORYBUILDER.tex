@@ -1,0 +1,237 @@
+\hypertarget{classFACTORYBUILDER}{}\section{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R Class Reference}
+\label{classFACTORYBUILDER}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+
+
+factory builder를 만든다.  
+
+
+
+
+{\ttfamily \#include $<$F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFACTORYBUILDER_a102e2a057446a1f767425b59983102df}{submit\+Scriptfor\+Factory} ()
+\begin{DoxyCompactList}\small\item\em 팩토리를 만들 수 있게 스크립트를 받을 수 있는 형태가 되도록 만든다. \end{DoxyCompactList}\item 
+void \hyperlink{classFACTORYBUILDER_aeb2912e73dafc162b3e0b7cdbc7fe943}{set\+M\+I\+G\+R\+A\+T\+I\+O\+N} (\hyperlink{classMIGRATION}{M\+I\+G\+R\+A\+T\+I\+O\+N} $\ast$mig)
+\begin{DoxyCompactList}\small\item\em 팩토리 빌더 모듈과 마이그레이션 모듈을 연결한다. \end{DoxyCompactList}\item 
+\hyperlink{classBASICCELL}{B\+A\+S\+I\+C\+C\+E\+L\+L} $\ast$ \hyperlink{classFACTORYBUILDER_ad29f6bcb828945d37bee154b247ded10}{make\+B\+A\+S\+I\+C\+C\+E\+L\+L} (int count, F\+U\+N\+C func, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$streamfactory)
+\begin{DoxyCompactList}\small\item\em 베이직 셀 (프로세싱 셀)을 만든다. \end{DoxyCompactList}\item 
+\hyperlink{classUNIONCELL}{U\+N\+I\+O\+N\+C\+E\+L\+L} $\ast$ \hyperlink{classFACTORYBUILDER_a485976fa00bdee0a822ef949c3db31e0}{make\+U\+N\+I\+O\+N\+C\+E\+L\+L} (int cellid, int count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$streamfactory, int policy)
+\begin{DoxyCompactList}\small\item\em 유니언 셀을 만든다. \end{DoxyCompactList}\item 
+\hyperlink{classSRCCELL}{S\+R\+C\+C\+E\+L\+L} $\ast$ \hyperlink{classFACTORYBUILDER_a1378efcb11e24157cfbdb325e9cbaf2b}{make\+S\+R\+C\+C\+E\+L\+L} (int recvport, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$streamfactory)
+\begin{DoxyCompactList}\small\item\em 데이터가 팩토리로 들어오는 소스셀을 만든다. \end{DoxyCompactList}\item 
+\hyperlink{classDESTCELL}{D\+E\+S\+T\+C\+E\+L\+L} $\ast$ \hyperlink{classFACTORYBUILDER_ab56a2ef6e49fa0370c3b1138e2350d01}{make\+D\+E\+S\+T\+C\+E\+L\+L} (\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$streamfactory)
+\begin{DoxyCompactList}\small\item\em 데이터가 팩토리에서 나가는 데스티네이션셀을 만든다. \end{DoxyCompactList}\item 
+void \hyperlink{classFACTORYBUILDER_ae81ea804ccbb07ef47f94c65e913d597}{linking} (\hyperlink{classCELL}{C\+E\+L\+L} $\ast$cell1, \hyperlink{classCELL}{C\+E\+L\+L} $\ast$cell2)
+\begin{DoxyCompactList}\small\item\em 셀(cell1)과 셀(cell2)을 링킹한다. \end{DoxyCompactList}\item 
+void \hyperlink{classFACTORYBUILDER_a47d4f78877f1fa2a6b4bc00a4c5c4471}{run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} (\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$factory)
+\begin{DoxyCompactList}\small\item\em 팩토리를 가동한다. \end{DoxyCompactList}\item 
+\hypertarget{classFACTORYBUILDER_a1f2abb3549a23a2fc2e25c361ad3f2fa}{}\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$ {\bfseries create\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} (ushort recvport)\label{classFACTORYBUILDER_a1f2abb3549a23a2fc2e25c361ad3f2fa}
+
+\item 
+\hypertarget{classFACTORYBUILDER_a47d4f78877f1fa2a6b4bc00a4c5c4471}{}void {\bfseries run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} (\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$factory)\label{classFACTORYBUILDER_a47d4f78877f1fa2a6b4bc00a4c5c4471}
+
+\item 
+\hypertarget{classFACTORYBUILDER_a9c5c5c444ed7a2d1dc2c098793fb10a6}{}\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$ {\bfseries get\+Stream\+Factorybyid} (int id)\label{classFACTORYBUILDER_a9c5c5c444ed7a2d1dc2c098793fb10a6}
+
+\item 
+\hypertarget{classFACTORYBUILDER_a457513572fcf3e64bee6cac741df0a3f}{}\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ {\bfseries make\+P\+I\+P\+E} (void $\ast$powner, int type, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)\label{classFACTORYBUILDER_a457513572fcf3e64bee6cac741df0a3f}
+
+\item 
+\hypertarget{classFACTORYBUILDER_ac9de10dd42a596ef75df704e19cd2ce2}{}\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ {\bfseries find\+P\+I\+P\+E} (unsigned int id)\label{classFACTORYBUILDER_ac9de10dd42a596ef75df704e19cd2ce2}
+
+\item 
+\hypertarget{classFACTORYBUILDER_aeb2912e73dafc162b3e0b7cdbc7fe943}{}void {\bfseries set\+M\+I\+G\+R\+A\+T\+I\+O\+N} (\hyperlink{classMIGRATION}{M\+I\+G\+R\+A\+T\+I\+O\+N} $\ast$mig)\label{classFACTORYBUILDER_aeb2912e73dafc162b3e0b7cdbc7fe943}
+
+\item 
+\hypertarget{classFACTORYBUILDER_a9af3fdebefbbde78627bcb1dd11d2ede}{}\hyperlink{classMIGRATION}{M\+I\+G\+R\+A\+T\+I\+O\+N} $\ast$ {\bfseries get\+M\+I\+G\+R\+A\+T\+I\+O\+N} ()\label{classFACTORYBUILDER_a9af3fdebefbbde78627bcb1dd11d2ede}
+
+\item 
+\hypertarget{classFACTORYBUILDER_abee07310623351029b708dbd38210cc2}{}void {\bfseries start\+M\+I\+G\+R\+A\+T\+I\+O\+N} ()\label{classFACTORYBUILDER_abee07310623351029b708dbd38210cc2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+factory builder를 만든다. 
+
+factory builder를 통해 factory를 만들 수 있다. factory builder은 전체적인 factory 관리 또한 포함한다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classFACTORYBUILDER_ae81ea804ccbb07ef47f94c65e913d597}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!linking@{linking}}
+\index{linking@{linking}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{linking}]{\setlength{\rightskip}{0pt plus 5cm}void F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::linking (
+\begin{DoxyParamCaption}
+\item[{{\bf C\+E\+L\+L} $\ast$}]{cell1, }
+\item[{{\bf C\+E\+L\+L} $\ast$}]{cell2}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_ae81ea804ccbb07ef47f94c65e913d597}
+
+
+셀(cell1)과 셀(cell2)을 링킹한다. 
+
+실제 내부로는 셀과 셀을 링킹할 때, 파이프가 생성된다. 
+\begin{DoxyParams}{Parameters}
+{\em cell1} & 튜플을 출력하는 셀 \\
+\hline
+{\em cell2} & 튜플을 입력받는 셀 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFACTORYBUILDER_ad29f6bcb828945d37bee154b247ded10}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!make\+B\+A\+S\+I\+C\+C\+E\+L\+L@{make\+B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\index{make\+B\+A\+S\+I\+C\+C\+E\+L\+L@{make\+B\+A\+S\+I\+C\+C\+E\+L\+L}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{make\+B\+A\+S\+I\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}{\bf B\+A\+S\+I\+C\+C\+E\+L\+L}$\ast$ F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::make\+B\+A\+S\+I\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{count, }
+\item[{F\+U\+N\+C}]{func, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{streamfactory}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_ad29f6bcb828945d37bee154b247ded10}
+
+
+베이직 셀 (프로세싱 셀)을 만든다. 
+
+베이직 셀은 기본 프로세싱 유닛을 담당하며, 입력 파이프에서 튜플을 읽어 출력 파이프로 튜플을 출력한다. 이때, 출력 파이프가 여러개라면 같은 튜플을 모든 출력파이프에 넣는다. 
+\begin{DoxyParams}{Parameters}
+{\em count} & 셀 내부에 생성될 워커의 개수 \\
+\hline
+{\em func} & T\+U\+P\+L\+E$\ast$ ($\ast$\+C\+O\+D\+E)(T\+U\+P\+L\+E$\ast$) 형태의 튜플을 처리할 코드 세그먼트를 전달한다. \\
+\hline
+{\em streamfactory} & 셀을 소유 할 부모 팩토리 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000002}{Todo}]processing rate와 튜플당 처리되야 하는 deadline을 정할 수 있는 파라미터 도입 예정 \begin{DoxyReturn}{Returns}
+생성된 베이직 셀의 객체 포인터 
+\end{DoxyReturn}
+\end{DoxyRefDesc}
+\hypertarget{classFACTORYBUILDER_ab56a2ef6e49fa0370c3b1138e2350d01}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!make\+D\+E\+S\+T\+C\+E\+L\+L@{make\+D\+E\+S\+T\+C\+E\+L\+L}}
+\index{make\+D\+E\+S\+T\+C\+E\+L\+L@{make\+D\+E\+S\+T\+C\+E\+L\+L}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{make\+D\+E\+S\+T\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}{\bf D\+E\+S\+T\+C\+E\+L\+L}$\ast$ F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::make\+D\+E\+S\+T\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{streamfactory}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_ab56a2ef6e49fa0370c3b1138e2350d01}
+
+
+데이터가 팩토리에서 나가는 데스티네이션셀을 만든다. 
+
+데스티네이션 셀(이하 데스트셀)은 데이터가 팩토리 밖으로 나가는 경로이다. 현재 구현은 소스셀에서 접속된 디바이스에만 데이터를 보낼 수 있다. 
+\begin{DoxyParams}{Parameters}
+{\em streamfactory} & 셀을 소유 할 부모 팩토리 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+생성된 데스트 셀의 객체 포인터 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000005}{Todo}]추후 D\+B과의 출력을 담당할 예정이다. \end{DoxyRefDesc}
+\hypertarget{classFACTORYBUILDER_a1378efcb11e24157cfbdb325e9cbaf2b}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!make\+S\+R\+C\+C\+E\+L\+L@{make\+S\+R\+C\+C\+E\+L\+L}}
+\index{make\+S\+R\+C\+C\+E\+L\+L@{make\+S\+R\+C\+C\+E\+L\+L}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{make\+S\+R\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}{\bf S\+R\+C\+C\+E\+L\+L}$\ast$ F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::make\+S\+R\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{recvport, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{streamfactory}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_a1378efcb11e24157cfbdb325e9cbaf2b}
+
+
+데이터가 팩토리로 들어오는 소스셀을 만든다. 
+
+소스셀은 팩토리로 데이터가 유입되는 경로이다. 현재 구현은 디바이스와의 통신이 이루어 질때, 디바이스가 보낸 데이터를 받는 경로이다. 
+\begin{DoxyParams}{Parameters}
+{\em recvport} & 연결을 대기할 리시브 포트 \\
+\hline
+{\em streamfactory} & 셀을 소유 할 부모 팩토리 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+생성된 소스 셀의 객체 포인터 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]추후 D\+B등과의 입력을 담당할 예정이다. \end{DoxyRefDesc}
+\hypertarget{classFACTORYBUILDER_a485976fa00bdee0a822ef949c3db31e0}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!make\+U\+N\+I\+O\+N\+C\+E\+L\+L@{make\+U\+N\+I\+O\+N\+C\+E\+L\+L}}
+\index{make\+U\+N\+I\+O\+N\+C\+E\+L\+L@{make\+U\+N\+I\+O\+N\+C\+E\+L\+L}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{make\+U\+N\+I\+O\+N\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+N\+I\+O\+N\+C\+E\+L\+L}$\ast$ F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::make\+U\+N\+I\+O\+N\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{cellid, }
+\item[{int}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{streamfactory, }
+\item[{int}]{policy}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_a485976fa00bdee0a822ef949c3db31e0}
+
+
+유니언 셀을 만든다. 
+
+유니언 셀은 두개 이상의 튜플을 합치는 기능을 한다. 튜플의 속성은 cellid에 해당하는 셀로부터 나온 튜플의 속성을 상속받는다. 
+\begin{DoxyParams}{Parameters}
+{\em cellid} & 합친 튜플의 속성을 정의할 셀 아이디 (그 셀 로부터 나온 튜플의 속성을 따라간다.) \\
+\hline
+{\em count} & 유니언 작업을 할 워커의 개수 \\
+\hline
+{\em streamfactory} & 셀을 소유 할 부모 팩토리 \\
+\hline
+{\em policy} & P\+O\+L\+I\+C\+Y\+\_\+\+A\+L\+L\+R\+E\+A\+D\+Y인 경우, 입력 파이프에 모두 튜플을 갖고 있어 합칠 수 있을때까지 기다린다. ~\newline
+ P\+O\+L\+I\+C\+Y\+\_\+\+P\+A\+R\+T\+I\+A\+L\+R\+E\+A\+D\+Y인경우, 입력 파이프에 모든 튜플을 대기하지 않는다. 단, 일부 파이프에 합칠 튜플이 없는 경우 이전에 들어온 최신 튜플을 이용해 합친다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]processing rate와 튜플당 처리되야 하는 deadline을 정할 수 있는 파라미터 도입 예정 \begin{DoxyReturn}{Returns}
+생성된 유니언 셀의 객체 포인터 
+\end{DoxyReturn}
+\end{DoxyRefDesc}
+\hypertarget{classFACTORYBUILDER_a47d4f78877f1fa2a6b4bc00a4c5c4471}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y@{run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y}}
+\index{run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y@{run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y}]{\setlength{\rightskip}{0pt plus 5cm}void F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::run\+S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y (
+\begin{DoxyParamCaption}
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{factory}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_a47d4f78877f1fa2a6b4bc00a4c5c4471}
+
+
+팩토리를 가동한다. 
+
+팩토리 내부에 등록된 모든 셀을 가동한다. \hypertarget{classFACTORYBUILDER_aeb2912e73dafc162b3e0b7cdbc7fe943}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!set\+M\+I\+G\+R\+A\+T\+I\+O\+N@{set\+M\+I\+G\+R\+A\+T\+I\+O\+N}}
+\index{set\+M\+I\+G\+R\+A\+T\+I\+O\+N@{set\+M\+I\+G\+R\+A\+T\+I\+O\+N}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{set\+M\+I\+G\+R\+A\+T\+I\+O\+N}]{\setlength{\rightskip}{0pt plus 5cm}void F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::set\+M\+I\+G\+R\+A\+T\+I\+O\+N (
+\begin{DoxyParamCaption}
+\item[{{\bf M\+I\+G\+R\+A\+T\+I\+O\+N} $\ast$}]{mig}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_aeb2912e73dafc162b3e0b7cdbc7fe943}
+
+
+팩토리 빌더 모듈과 마이그레이션 모듈을 연결한다. 
+
+마이그레이션 모듈은 팩토리빌더가 만든 모든 팩토리의 마이그레이션을 지원한다. 
+\begin{DoxyParams}{Parameters}
+{\em mig} & 마이그레이션 객체 포인터 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classFACTORYBUILDER_a102e2a057446a1f767425b59983102df}{}\index{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}!submit\+Scriptfor\+Factory@{submit\+Scriptfor\+Factory}}
+\index{submit\+Scriptfor\+Factory@{submit\+Scriptfor\+Factory}!F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R@{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R}}
+\subsubsection[{submit\+Scriptfor\+Factory}]{\setlength{\rightskip}{0pt plus 5cm}void F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R\+::submit\+Scriptfor\+Factory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classFACTORYBUILDER_a102e2a057446a1f767425b59983102df}
+
+
+팩토리를 만들 수 있게 스크립트를 받을 수 있는 형태가 되도록 만든다. 
+
+이 함수를 실행하면 스크립트를 입력 받을 수 있는 형태가 된다. 메인 스크립트 당 하나의 팩토리를 확보하고 스크립트를 통해 셀들을 설치하여 완전한 하나의 팩토리를 구성해야 한다. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{FACTORYBUILDER_8h}{F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R.\+h}\item 
+F\+A\+C\+T\+O\+R\+Y\+B\+U\+I\+L\+D\+E\+R.\+cpp\end{DoxyCompactItemize}

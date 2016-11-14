@@ -1,0 +1,300 @@
+\hypertarget{classSRCCELL}{}\section{S\+R\+C\+C\+E\+L\+L Class Reference}
+\label{classSRCCELL}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+
+
+srccell을 정의해놓은 클래스. factory로 들어오는 데이터의 시작 지점이다. cell의 형태를 상속하며 S\+O의 형태를 갖는다.  
+
+
+
+
+{\ttfamily \#include $<$S\+R\+C\+C\+E\+L\+L.\+h$>$}
+
+
+
+Inheritance diagram for S\+R\+C\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=143pt]{classSRCCELL__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+R\+C\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{classSRCCELL__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSRCCELL_aedfd1c4aaa22c4e44ec89d2c49d67fbb}{S\+R\+C\+C\+E\+L\+L} (int recvport, \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$outpipe, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em srccell을 만드는 생성자. \end{DoxyCompactList}\item 
+\hyperlink{classSRCCELL_a5c02cc02b621822b707a144aedbf5464}{S\+R\+C\+C\+E\+L\+L} (int recvport, list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em srccell을 만드는 생성자. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classSRCCELL_a08f5dfcdead7c32e0de8967b8058f879}{make\+Worker} ()
+\begin{DoxyCompactList}\small\item\em srccell의 워커(리시버)를 만들기 위해 설정한다. \end{DoxyCompactList}\item 
+virtual void $\ast$ \hyperlink{classSRCCELL_afa53082be31a5d956ca4fdc65b606d66}{scheduling} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em 이름은 스케줄링이지만 리시버 브로커 쓰레드를 하나 만드는 함수이다. 브로커 쓰레드는 결국 accept를 부르며 클라이언트 연결 대기상태로 만든다. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{classSRCCELL_a895f7188ce30ab376543a63d9b40740a}{S\+R\+Cbroker\+\_\+start\+\_\+internal} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em S\+R\+C\+C\+E\+L\+L에서 연결 대기를 실제로 수행하는 함수 \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{classSRCCELL_acb7e9826f55fb07c8bae67889ae2d671}{S\+R\+Crecv\+\_\+start\+\_\+internal} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em 실제 리시버 쓰레드에서 데이터를 받는 함수 \end{DoxyCompactList}\item 
+void \hyperlink{classSRCCELL_a098c577b87319d7f5adb914e6567c7e9}{push\+Packet} (char $\ast$input, int size, deque$<$ \hyperlink{classPACKET}{P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$packetque, unsigned char $\ast$seq)
+\begin{DoxyCompactList}\small\item\em 들어온 패킷을 넣는다. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{classSRCCELL_a8e3afdc9b6c09200cd78225ded9425c0}{get\+Packetassembled} (int $\ast$size, deque$<$ \hyperlink{classPACKET}{P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$packetque)
+\begin{DoxyCompactList}\small\item\em 넣은 패킷을 하나의 처리 가능한 패킷으로 돌려 받는다. \end{DoxyCompactList}\item 
+void \hyperlink{classSRCCELL_a0b41dd4b175c06ce862c4fc3d5ba10a2}{register\+Device} (\hyperlink{structCLIENT}{C\+L\+I\+E\+N\+T} $\ast$client)
+\begin{DoxyCompactList}\small\item\em 디바이스와 현재 연결된 정보를 저장한다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void $\ast$ \hyperlink{classSRCCELL_a2be96e34bed6a9186ec85772febdd50b}{S\+R\+Cbroker\+\_\+start\+\_\+wrapper} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em 브로커 쓰레드에서 실제로 실행되는 래퍼 함수. \end{DoxyCompactList}\item 
+static void $\ast$ \hyperlink{classSRCCELL_a7957253a55cddb0c37d3db9c39077387}{S\+R\+Crecv\+\_\+start\+\_\+wrapper} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em S\+R\+C\+C\+E\+L\+L에서 대기상태에서 연결요청이 들어왔을 때 만드는 리시버 쓰레드에 들어가는 함수 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+srccell을 정의해놓은 클래스. factory로 들어오는 데이터의 시작 지점이다. cell의 형태를 상속하며 S\+O의 형태를 갖는다. 
+
+srccell을 정의해놓은 클래스. cell의 형태를 상속하며 S\+O의 형태를 갖는다. 현재는 하나의 소스셀은 서버를 만들고 여기에 디바이스가 접속할 수 있게만 되어 있다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classSRCCELL_aedfd1c4aaa22c4e44ec89d2c49d67fbb}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{recvport, }
+\item[{{\bf P\+I\+P\+E} $\ast$}]{outpipe, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_aedfd1c4aaa22c4e44ec89d2c49d67fbb}
+
+
+srccell을 만드는 생성자. 
+
+dsetcell을 만드는 생성자. 워커는 srccell에 연결된 디바이스당 하나가 생긴다. 스케줄링 개념은 없으며 일반적 서버-\/클라이언트 모델에 서버에서의 리시버 스레드 형태를 워커로써 갖는다. 
+\begin{DoxyParams}{Parameters}
+{\em recvport} & 소스셀에 접속할 때의 포트를 정의한다. \\
+\hline
+{\em outpipe} & cell에 대한 단일 output pipe이다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSRCCELL_a5c02cc02b621822b707a144aedbf5464}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{int}]{recvport, }
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{outpipelist, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_a5c02cc02b621822b707a144aedbf5464}
+
+
+srccell을 만드는 생성자. 
+
+destcell을 만드는 생성자. 워커는 srccell에 연결된 디바이스당 하나가 생긴다. 스케줄링 개념은 없으며 일반적 서버-\/클라이언트 모델에 서버에서의 리시버 스레드 형태를 워커로써 갖는다. 
+\begin{DoxyParams}{Parameters}
+{\em recvport} & 소스셀에 접속할 때의 포트를 정의한다. \\
+\hline
+{\em outpipelist} & cell에 대한 output pipe list를 넘겨준다. 포인터이며 안에서는 깊은복사가 일어난다. 파라미터로 들어온 포인터는 필요없으면 해제하는것이 좋다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classSRCCELL_a8e3afdc9b6c09200cd78225ded9425c0}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!get\+Packetassembled@{get\+Packetassembled}}
+\index{get\+Packetassembled@{get\+Packetassembled}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{get\+Packetassembled}]{\setlength{\rightskip}{0pt plus 5cm}char $\ast$ S\+R\+C\+C\+E\+L\+L\+::get\+Packetassembled (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{size, }
+\item[{deque$<$ {\bf P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$}]{packetque}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_a8e3afdc9b6c09200cd78225ded9425c0}
+
+
+넣은 패킷을 하나의 처리 가능한 패킷으로 돌려 받는다. 
+
+넣은 패킷을 하나의 처리 가능한 패킷으로 돌려받는다. 처리 가능한 패킷이란 프로토콜을 완벽히 가지고 있고, 프로토콜만큼의 데이터 사이즈를 가진 패킷을 말한다. 
+\begin{DoxyParams}{Parameters}
+{\em size} & 하나의 처리 가능한 패킷의 전체 사이즈 \\
+\hline
+{\em packetque} & 들어온 패킷을 저장해놓은 큐 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSRCCELL_a08f5dfcdead7c32e0de8967b8058f879}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!make\+Worker@{make\+Worker}}
+\index{make\+Worker@{make\+Worker}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{make\+Worker}]{\setlength{\rightskip}{0pt plus 5cm}void S\+R\+C\+C\+E\+L\+L\+::make\+Worker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classSRCCELL_a08f5dfcdead7c32e0de8967b8058f879}
+
+
+srccell의 워커(리시버)를 만들기 위해 설정한다. 
+
+srccell의 워커(리시버)를 만들기 위해 설정한다. \begin{DoxyReturn}{Returns}
+void 의미 없음 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}{C\+E\+L\+L}.
+
+\hypertarget{classSRCCELL_a098c577b87319d7f5adb914e6567c7e9}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!push\+Packet@{push\+Packet}}
+\index{push\+Packet@{push\+Packet}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{push\+Packet}]{\setlength{\rightskip}{0pt plus 5cm}void S\+R\+C\+C\+E\+L\+L\+::push\+Packet (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{input, }
+\item[{int}]{size, }
+\item[{deque$<$ {\bf P\+A\+C\+K\+E\+T} $\ast$ $>$ $\ast$}]{packetque, }
+\item[{unsigned char $\ast$}]{seq}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_a098c577b87319d7f5adb914e6567c7e9}
+
+
+들어온 패킷을 넣는다. 
+
+들어온 패킷을 넣는다. 이 패킷들은 get\+Packetassembled에서 조립되어 받을 수 있다. 
+\begin{DoxyParams}{Parameters}
+{\em input} & 패킷의 바이트 스트림 \\
+\hline
+{\em size} & 들어온 패킷의 사이즈 \\
+\hline
+{\em packetque} & 들어온 패킷을 저장해놓은 큐 \\
+\hline
+{\em seq} & 패킷의 시퀀스 넘버를 할당하기 위한 공유변수 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSRCCELL_a0b41dd4b175c06ce862c4fc3d5ba10a2}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!register\+Device@{register\+Device}}
+\index{register\+Device@{register\+Device}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{register\+Device}]{\setlength{\rightskip}{0pt plus 5cm}void S\+R\+C\+C\+E\+L\+L\+::register\+Device (
+\begin{DoxyParamCaption}
+\item[{{\bf C\+L\+I\+E\+N\+T} $\ast$}]{client}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_a0b41dd4b175c06ce862c4fc3d5ba10a2}
+
+
+디바이스와 현재 연결된 정보를 저장한다. 
+
+디바이스와 현재 연결된 정보를 저장한다. 이 정보는 나중에 destcell에서 데이터를 보낼 때 사용된다. 
+\begin{DoxyParams}{Parameters}
+{\em client} & 디바이스의 접속 정보이다. 연결 시 필요한 sockaddr과 fd을 가지고 있다. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classSRCCELL_afa53082be31a5d956ca4fdc65b606d66}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!scheduling@{scheduling}}
+\index{scheduling@{scheduling}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{scheduling}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ S\+R\+C\+C\+E\+L\+L\+::scheduling (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classSRCCELL_afa53082be31a5d956ca4fdc65b606d66}
+
+
+이름은 스케줄링이지만 리시버 브로커 쓰레드를 하나 만드는 함수이다. 브로커 쓰레드는 결국 accept를 부르며 클라이언트 연결 대기상태로 만든다. 
+
+이름은 스케줄링이지만 리시버 브로커 쓰레드를 하나 만드는 함수이다. 브로커 쓰레드는 결국 accept를 부르며 클라이언트 연결 대기상태로 만든다. \begin{DoxyReturn}{Returns}
+void 의미 없음 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}{C\+E\+L\+L}.
+
+\hypertarget{classSRCCELL_a895f7188ce30ab376543a63d9b40740a}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+Cbroker\+\_\+start\+\_\+internal@{S\+R\+Cbroker\+\_\+start\+\_\+internal}}
+\index{S\+R\+Cbroker\+\_\+start\+\_\+internal@{S\+R\+Cbroker\+\_\+start\+\_\+internal}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+Cbroker\+\_\+start\+\_\+internal}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+Cbroker\+\_\+start\+\_\+internal (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_a895f7188ce30ab376543a63d9b40740a}
+
+
+S\+R\+C\+C\+E\+L\+L에서 연결 대기를 실제로 수행하는 함수 
+
+S\+R\+C\+C\+E\+L\+L에서 연결 대기를 실제로 수행하는 함수 this pointer를 이용할 수 있다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & (S\+R\+C\+E\+L\+L의)this pointer가 들어온다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 의미 없음 
+\end{DoxyReturn}
+\hypertarget{classSRCCELL_a2be96e34bed6a9186ec85772febdd50b}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+Cbroker\+\_\+start\+\_\+wrapper@{S\+R\+Cbroker\+\_\+start\+\_\+wrapper}}
+\index{S\+R\+Cbroker\+\_\+start\+\_\+wrapper@{S\+R\+Cbroker\+\_\+start\+\_\+wrapper}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+Cbroker\+\_\+start\+\_\+wrapper}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+Cbroker\+\_\+start\+\_\+wrapper (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classSRCCELL_a2be96e34bed6a9186ec85772febdd50b}
+
+
+브로커 쓰레드에서 실제로 실행되는 래퍼 함수. 
+
+브로커 쓰레드에서 실제로 실행되는 래퍼 함수. 존재 의의는 this 포인터를 넘기고 사용하기 위한 trick함수이다. 
+\begin{DoxyParams}{Parameters}
+{\em arg} & (S\+R\+C\+E\+L\+L의)this pointer가 들어온다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 의미 없음 
+\end{DoxyReturn}
+\hypertarget{classSRCCELL_acb7e9826f55fb07c8bae67889ae2d671}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+Crecv\+\_\+start\+\_\+internal@{S\+R\+Crecv\+\_\+start\+\_\+internal}}
+\index{S\+R\+Crecv\+\_\+start\+\_\+internal@{S\+R\+Crecv\+\_\+start\+\_\+internal}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+Crecv\+\_\+start\+\_\+internal}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+Crecv\+\_\+start\+\_\+internal (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)}\label{classSRCCELL_acb7e9826f55fb07c8bae67889ae2d671}
+
+
+실제 리시버 쓰레드에서 데이터를 받는 함수 
+
+실제 리시버 쓰레드에서 데이터를 받는 함수. wrapper 함수에서 부른다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & (S\+R\+C\+E\+L\+L의)this pointer가 들어온다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 의미 없음 
+\end{DoxyReturn}
+\hypertarget{classSRCCELL_a7957253a55cddb0c37d3db9c39077387}{}\index{S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}!S\+R\+Crecv\+\_\+start\+\_\+wrapper@{S\+R\+Crecv\+\_\+start\+\_\+wrapper}}
+\index{S\+R\+Crecv\+\_\+start\+\_\+wrapper@{S\+R\+Crecv\+\_\+start\+\_\+wrapper}!S\+R\+C\+C\+E\+L\+L@{S\+R\+C\+C\+E\+L\+L}}
+\subsubsection[{S\+R\+Crecv\+\_\+start\+\_\+wrapper}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ S\+R\+C\+C\+E\+L\+L\+::\+S\+R\+Crecv\+\_\+start\+\_\+wrapper (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classSRCCELL_a7957253a55cddb0c37d3db9c39077387}
+
+
+S\+R\+C\+C\+E\+L\+L에서 대기상태에서 연결요청이 들어왔을 때 만드는 리시버 쓰레드에 들어가는 함수 
+
+S\+R\+C\+C\+E\+L\+L에서 대기상태에서 연결요청이 들어왔을 때 만드는 리시버 쓰레드에 들어가는 함수. 쓰레드당 디바이스가 1\+:1로 매핑되어 생성된다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & (S\+R\+C\+E\+L\+L의)this pointer가 들어온다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 의미 없음 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{SRCCELL_8h}{S\+R\+C\+C\+E\+L\+L.\+h}\item 
+S\+R\+C\+C\+E\+L\+L.\+cpp\end{DoxyCompactItemize}

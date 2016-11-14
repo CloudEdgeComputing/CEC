@@ -1,0 +1,422 @@
+\hypertarget{classCELL}{}\section{C\+E\+L\+L Class Reference}
+\label{classCELL}\index{C\+E\+L\+L@{C\+E\+L\+L}}
+
+
+processing cell의 기본 구현이 들어있는 클래스  
+
+
+
+
+{\ttfamily \#include $<$C\+E\+L\+L.\+h$>$}
+
+
+
+Inheritance diagram for C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classCELL__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{classCELL__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCELL_a266db2529e185e3f0f653f874c783c54}{C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$outpipe, ushort count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent, uint X\+I\+X\+O)
+\begin{DoxyCompactList}\small\item\em cell을 만드는 생성자 \end{DoxyCompactList}\item 
+\hyperlink{classCELL_a8dcb65b2c6869145de9cf5056d7fe356}{C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inoutpipe, ushort count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent, uint X\+I\+X\+O)
+\begin{DoxyCompactList}\small\item\em cell을 만드는 생성자. 일반적으로 X\+I\+X\+O가 S\+O, S\+I일때 쓰인다. \end{DoxyCompactList}\item 
+\hyperlink{classCELL_ae82291f0f5dd18ef2ba31e6af1a74e09}{C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist, ushort count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent, uint X\+I\+X\+O)
+\begin{DoxyCompactList}\small\item\em cell을 만드는 생성자. \end{DoxyCompactList}\item 
+\hyperlink{classCELL_a2fad68b40d0adbecfee691618c256518}{C\+E\+L\+L} (list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist, ushort count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent, uint X\+I\+X\+O)
+\begin{DoxyCompactList}\small\item\em cell을 만드는 생성자. 일반적으로 S\+O일때 쓰인다. \end{DoxyCompactList}\item 
+\hyperlink{classCELL_a42a40e06fa704cbe13e1a5fbfaaaafdd}{C\+E\+L\+L} (list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$inpipelist, list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist, ushort count, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent, uint X\+I\+X\+O)
+\begin{DoxyCompactList}\small\item\em cell을 만드는 생성자. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}{make\+Worker} ()=0
+\begin{DoxyCompactList}\small\item\em cell의 워커를 만드는 순수 가상 메소드 \end{DoxyCompactList}\item 
+void \hyperlink{classCELL_a99661b458e7c235892c9bcd3414f1403}{scheduling\+Start} ()
+\begin{DoxyCompactList}\small\item\em cell안의 워커를 스케줄링 및 실행한다. \end{DoxyCompactList}\item 
+virtual void $\ast$ \hyperlink{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}{scheduling} (void $\ast$arg)=0
+\begin{DoxyCompactList}\small\item\em 실제 스케줄러의 내부 알고리즘이다. 순수 가상 메소드이다. \end{DoxyCompactList}\item 
+bool \hyperlink{classCELL_a768550329a49aa05ca98f31ab859aac4}{get\+W\+O\+R\+K\+E\+R\+State} ()
+\begin{DoxyCompactList}\small\item\em 워커가 하나 이상이 수행중이면 true를 반환한다. 모든 워커가 블록 되어있으면 false를 리턴한다. \end{DoxyCompactList}\item 
+list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$ \hyperlink{classCELL_ae9f289599c3fee2e1789b81ff72742e8}{getoutpipelist} ()
+\begin{DoxyCompactList}\small\item\em cell에 연결된 outpipe의 list를 반환한다. \end{DoxyCompactList}\item 
+void \hyperlink{classCELL_ac9f06814e46403e615afd0a7c43d26f9}{scheduler\+Sleep} ()
+\begin{DoxyCompactList}\small\item\em cell의 스케줄러를 블럭한다. \end{DoxyCompactList}\item 
+void \hyperlink{classCELL_a70bb6d324838362f2feeb4ba47accc4e}{scheduler\+Wakeup} ()
+\begin{DoxyCompactList}\small\item\em cell의 스케줄러를 깨운다. \end{DoxyCompactList}\item 
+bool \hyperlink{classCELL_aa9a99d28684e6b16841851f4e42fcc18}{get\+C\+E\+L\+L\+State} ()
+\begin{DoxyCompactList}\small\item\em cell의 스케줄러 상태를 반환한다. \end{DoxyCompactList}\item 
+ushort \hyperlink{classCELL_a96407db1499c2bd1d03d23c12e7e1821}{get\+X\+I\+X\+O} ()
+\begin{DoxyCompactList}\small\item\em cell의 입출력 형태를 반환한다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void $\ast$ \hyperlink{classCELL_a9af98a9c48fa039b109f3e7bbdedf3b5}{scheduling\+\_\+wrapper} (void $\ast$context)
+\begin{DoxyCompactList}\small\item\em 내부 스케줄링 알고리즘인 scheduling을 호출한다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classCELL_a12af7a46f05c67ea5ad29d436e260897}{}list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$ {\bfseries inpipelist}\label{classCELL_a12af7a46f05c67ea5ad29d436e260897}
+
+\item 
+\hypertarget{classCELL_ad352add44722ccba56347f90134294bf}{}list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$ {\bfseries outpipelist}\label{classCELL_ad352add44722ccba56347f90134294bf}
+
+\item 
+\hypertarget{classCELL_a9daad014764db889e1eb1ae8e9a3e669}{}ushort {\bfseries count}\label{classCELL_a9daad014764db889e1eb1ae8e9a3e669}
+
+\item 
+\hypertarget{classCELL_a2134083623b7adc33f790f1bebd49193}{}\hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$ {\bfseries parent}\label{classCELL_a2134083623b7adc33f790f1bebd49193}
+
+\item 
+\hypertarget{classCELL_a5b8c354b0b11bf129bb201867e6ed1f9}{}bool {\bfseries isrun}\label{classCELL_a5b8c354b0b11bf129bb201867e6ed1f9}
+
+\item 
+\hypertarget{classCELL_a48ac64047c6cbb13258ed723df05329d}{}bool {\bfseries is\+End}\label{classCELL_a48ac64047c6cbb13258ed723df05329d}
+
+\item 
+\hypertarget{classCELL_af34bb74ac1ad036c344ba8924576e6a7}{}pthread\+\_\+t {\bfseries scheduling\+\_\+tid}\label{classCELL_af34bb74ac1ad036c344ba8924576e6a7}
+
+\item 
+\hypertarget{classCELL_abf039900f9bb3735e2d0f97d399780cd}{}list$<$ \hyperlink{classWORKER}{W\+O\+R\+K\+E\+R} $\ast$ $>$ {\bfseries workers}\label{classCELL_abf039900f9bb3735e2d0f97d399780cd}
+
+\item 
+\hypertarget{classCELL_a089446e6f9d6281652344c0f3fce062b}{}ushort {\bfseries X\+I\+X\+O}\label{classCELL_a089446e6f9d6281652344c0f3fce062b}
+
+\item 
+\hypertarget{classCELL_a97db6750f7be9deeba90eb1bf03f7bf7}{}pthread\+\_\+cond\+\_\+t {\bfseries condition}\label{classCELL_a97db6750f7be9deeba90eb1bf03f7bf7}
+
+\item 
+\hypertarget{classCELL_a85ebe512fcc57a9e7dba4318e1999cc9}{}pthread\+\_\+mutex\+\_\+t {\bfseries cond\+\_\+mutex}\label{classCELL_a85ebe512fcc57a9e7dba4318e1999cc9}
+
+\item 
+\hypertarget{classCELL_a6eb8c2b8eaff0eff3f4bf585132d73b0}{}pthread\+\_\+mutex\+\_\+t {\bfseries mutex}\label{classCELL_a6eb8c2b8eaff0eff3f4bf585132d73b0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+processing cell의 기본 구현이 들어있는 클래스 
+
+processing cell의 기본 구현이 들어있는 클래스이다. 이 클래스는 파생되는 셀에 상속된다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCELL_a266db2529e185e3f0f653f874c783c54}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}C\+E\+L\+L\+::\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inpipe, }
+\item[{{\bf P\+I\+P\+E} $\ast$}]{outpipe, }
+\item[{ushort}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent, }
+\item[{uint}]{X\+I\+X\+O}
+\end{DoxyParamCaption}
+)}\label{classCELL_a266db2529e185e3f0f653f874c783c54}
+
+
+cell을 만드는 생성자 
+
+cell을 만드는 생성자. 보통은 상속할 때 상속 생성자로 불리는 생성자이다. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & cell에 대한 단일 input pipe이다. \\
+\hline
+{\em outpipe} & cell에 대한 단일 output pipe이다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classCELL_a8dcb65b2c6869145de9cf5056d7fe356}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}C\+E\+L\+L\+::\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inoutpipe, }
+\item[{ushort}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent, }
+\item[{uint}]{X\+I\+X\+O}
+\end{DoxyParamCaption}
+)}\label{classCELL_a8dcb65b2c6869145de9cf5056d7fe356}
+
+
+cell을 만드는 생성자. 일반적으로 X\+I\+X\+O가 S\+O, S\+I일때 쓰인다. 
+
+cell을 만드는 생성자. 일반적으로 X\+I\+X\+O가 S\+O, S\+I일때 쓰인다. 보통은 상속할 때 상속 생성자로 불리는 생성자이다. 
+\begin{DoxyParams}{Parameters}
+{\em inoutpipe} & input 또는 output pipe로 쓰일 단일 파이프를 지정한다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classCELL_ae82291f0f5dd18ef2ba31e6af1a74e09}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}C\+E\+L\+L\+::\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inpipe, }
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{outpipelist, }
+\item[{ushort}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent, }
+\item[{uint}]{X\+I\+X\+O}
+\end{DoxyParamCaption}
+)}\label{classCELL_ae82291f0f5dd18ef2ba31e6af1a74e09}
+
+
+cell을 만드는 생성자. 
+
+cell을 만드는 생성자. 보통은 상속할 때 상속 생성자로 불리는 생성자이다. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & cell에 대한 단일 input pipe이다. \\
+\hline
+{\em outpipelist} & cell에 대한 output pipe list이다. 깊은 복사로 넘어간다. 이후 파라미터로 들어온것은 필요 없으면 메모리 해제 해야 한다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classCELL_a2fad68b40d0adbecfee691618c256518}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}C\+E\+L\+L\+::\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{outpipelist, }
+\item[{ushort}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent, }
+\item[{uint}]{X\+I\+X\+O}
+\end{DoxyParamCaption}
+)}\label{classCELL_a2fad68b40d0adbecfee691618c256518}
+
+
+cell을 만드는 생성자. 일반적으로 S\+O일때 쓰인다. 
+
+cell을 만드는 생성자. 일반적으로 S\+O일때 쓰인다. 보통은 상속할 때 상속 생성자로 불리는 생성자이다. 
+\begin{DoxyParams}{Parameters}
+{\em outpipelist} & cell에 대한 output pipe list이다. 깊은 복사로 넘어간다. 이후 파라미터로 들어온것은 필요 없으면 메모리 해제 해야 한다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classCELL_a42a40e06fa704cbe13e1a5fbfaaaafdd}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\index{C\+E\+L\+L@{C\+E\+L\+L}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}C\+E\+L\+L\+::\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{inpipelist, }
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{outpipelist, }
+\item[{ushort}]{count, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent, }
+\item[{uint}]{X\+I\+X\+O}
+\end{DoxyParamCaption}
+)}\label{classCELL_a42a40e06fa704cbe13e1a5fbfaaaafdd}
+
+
+cell을 만드는 생성자. 
+
+cell을 만드는 생성자. 보통은 상속할 때 상속 생성자로 불리는 생성자이다. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & cell에 대한 단일 input pipe list이다. 깊은 복사로 넘어간다. 이후 파라미터로 들어온것은 필요 없으면 메모리 해제 해야 한다. \\
+\hline
+{\em outpipelist} & cell에 대한 output pipe list이다. 깊은 복사로 넘어간다. 이후 파라미터로 들어온것은 필요 없으면 메모리 해제 해야 한다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classCELL_aa9a99d28684e6b16841851f4e42fcc18}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!get\+C\+E\+L\+L\+State@{get\+C\+E\+L\+L\+State}}
+\index{get\+C\+E\+L\+L\+State@{get\+C\+E\+L\+L\+State}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{get\+C\+E\+L\+L\+State}]{\setlength{\rightskip}{0pt plus 5cm}bool C\+E\+L\+L\+::get\+C\+E\+L\+L\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_aa9a99d28684e6b16841851f4e42fcc18}
+
+
+cell의 스케줄러 상태를 반환한다. 
+
+cell의 스케줄러 상태를 반환한다. cell의 상태는 워커 상태와 다르며 cell의 스케줄러 상태가 러닝 상태이면 true, 블럭 상태면 false를 반환한다. \begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\hypertarget{classCELL_ae9f289599c3fee2e1789b81ff72742e8}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!getoutpipelist@{getoutpipelist}}
+\index{getoutpipelist@{getoutpipelist}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{getoutpipelist}]{\setlength{\rightskip}{0pt plus 5cm}list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$ C\+E\+L\+L\+::getoutpipelist (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_ae9f289599c3fee2e1789b81ff72742e8}
+
+
+cell에 연결된 outpipe의 list를 반환한다. 
+
+cell에 연결된 outpipe의 list를 반환한다. \begin{DoxyReturn}{Returns}
+list$<$\+P\+I\+P\+E$\ast$$>$$\ast$ 리스트 포인터를 반환한다. 
+\end{DoxyReturn}
+\hypertarget{classCELL_a768550329a49aa05ca98f31ab859aac4}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!get\+W\+O\+R\+K\+E\+R\+State@{get\+W\+O\+R\+K\+E\+R\+State}}
+\index{get\+W\+O\+R\+K\+E\+R\+State@{get\+W\+O\+R\+K\+E\+R\+State}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{get\+W\+O\+R\+K\+E\+R\+State}]{\setlength{\rightskip}{0pt plus 5cm}bool C\+E\+L\+L\+::get\+W\+O\+R\+K\+E\+R\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_a768550329a49aa05ca98f31ab859aac4}
+
+
+워커가 하나 이상이 수행중이면 true를 반환한다. 모든 워커가 블록 되어있으면 false를 리턴한다. 
+
+워커가 하나 이상이 수행중이면 true를 반환한다. 모든 워커가 블록 되어있으면 false를 리턴한다. \begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\hypertarget{classCELL_a96407db1499c2bd1d03d23c12e7e1821}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!get\+X\+I\+X\+O@{get\+X\+I\+X\+O}}
+\index{get\+X\+I\+X\+O@{get\+X\+I\+X\+O}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{get\+X\+I\+X\+O}]{\setlength{\rightskip}{0pt plus 5cm}ushort C\+E\+L\+L\+::get\+X\+I\+X\+O (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_a96407db1499c2bd1d03d23c12e7e1821}
+
+
+cell의 입출력 형태를 반환한다. 
+
+cell의 입출력 형태를 반환한다. S\+I\+S\+O, M\+I\+S\+O, S\+I 그리고 S\+O중 하나를 리턴한다. \begin{DoxyReturn}{Returns}
+ushort S\+I\+S\+O(0) M\+I\+S\+O(1) S\+O(2) S\+I(3)을 리턴한다. 
+\end{DoxyReturn}
+\hypertarget{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!make\+Worker@{make\+Worker}}
+\index{make\+Worker@{make\+Worker}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{make\+Worker}]{\setlength{\rightskip}{0pt plus 5cm}virtual void C\+E\+L\+L\+::make\+Worker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}
+
+
+cell의 워커를 만드는 순수 가상 메소드 
+
+실제 워커를 쓰레드화 시킨다. 사용자 지정 함수도 여기에서 할당된다. 순수 가상 메소드이므로 상속하면 구현이 필수적이다. \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classBASICCELL_aacb2fd7565d13f80e407854e0a978d73}{B\+A\+S\+I\+C\+C\+E\+L\+L}, \hyperlink{classSRCCELL_a08f5dfcdead7c32e0de8967b8058f879}{S\+R\+C\+C\+E\+L\+L}, \hyperlink{classUNIONCELL_ac57cb2a3f83bf219133a9d942c24f5aa}{U\+N\+I\+O\+N\+C\+E\+L\+L}, and \hyperlink{classDESTCELL_a98ba282e719612c8dbeaca6037968a6b}{D\+E\+S\+T\+C\+E\+L\+L}.
+
+\hypertarget{classCELL_ac9f06814e46403e615afd0a7c43d26f9}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!scheduler\+Sleep@{scheduler\+Sleep}}
+\index{scheduler\+Sleep@{scheduler\+Sleep}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{scheduler\+Sleep}]{\setlength{\rightskip}{0pt plus 5cm}void C\+E\+L\+L\+::scheduler\+Sleep (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_ac9f06814e46403e615afd0a7c43d26f9}
+
+
+cell의 스케줄러를 블럭한다. 
+
+cell의 스케줄러를 블럭한다. 동작 즉시 워커가 블럭되지는 않는다. 즉, 스케줄러 블럭 후 워커가 일을 마치면 차례대로 블럭된다. cell의 state를 false로 변환시킨다. \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classCELL_a70bb6d324838362f2feeb4ba47accc4e}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!scheduler\+Wakeup@{scheduler\+Wakeup}}
+\index{scheduler\+Wakeup@{scheduler\+Wakeup}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{scheduler\+Wakeup}]{\setlength{\rightskip}{0pt plus 5cm}void C\+E\+L\+L\+::scheduler\+Wakeup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_a70bb6d324838362f2feeb4ba47accc4e}
+
+
+cell의 스케줄러를 깨운다. 
+
+cell의 스케줄러를 깨운다. 스케줄러를 깨우면 다시 스케줄러라 input pipe를 풀링한다. \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\hypertarget{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!scheduling@{scheduling}}
+\index{scheduling@{scheduling}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{scheduling}]{\setlength{\rightskip}{0pt plus 5cm}virtual void$\ast$ C\+E\+L\+L\+::scheduling (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}
+
+
+실제 스케줄러의 내부 알고리즘이다. 순수 가상 메소드이다. 
+
+실제 스케줄러의 내부 알고리즘이다. 순수 가상 메소드이다. 즉, 파생 셀마다 스케줄링 내부 알고리즘이 달라질 수 있으므로 상속 대상자에서 함수를 정의해야 한다. 
+\begin{DoxyParams}{Parameters}
+{\em arg} & cell의 this 포인터이다. 즉, 상속클래스로 포인터 캐스팅하여 이용할 수 있다. 하지만 현재까지 이용하는 경우 없음 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 실제로는 보통 N\+U\+L\+L을 리턴하고 의미는 없다. 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classBASICCELL_a2e910313cdad1651908cca08f89be64c}{B\+A\+S\+I\+C\+C\+E\+L\+L}, \hyperlink{classSRCCELL_afa53082be31a5d956ca4fdc65b606d66}{S\+R\+C\+C\+E\+L\+L}, \hyperlink{classUNIONCELL_a0179dad91d30e7bca318bb7e3b4a4995}{U\+N\+I\+O\+N\+C\+E\+L\+L}, and \hyperlink{classDESTCELL_a19366e1b07246beeff944f5c0c3ca520}{D\+E\+S\+T\+C\+E\+L\+L}.
+
+\hypertarget{classCELL_a9af98a9c48fa039b109f3e7bbdedf3b5}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!scheduling\+\_\+wrapper@{scheduling\+\_\+wrapper}}
+\index{scheduling\+\_\+wrapper@{scheduling\+\_\+wrapper}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{scheduling\+\_\+wrapper}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ C\+E\+L\+L\+::scheduling\+\_\+wrapper (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classCELL_a9af98a9c48fa039b109f3e7bbdedf3b5}
+
+
+내부 스케줄링 알고리즘인 scheduling을 호출한다. 
+
+내부 스케줄링 알고리즘인 scheduling을 호출한다. 이 래퍼의 존재 의의는 this pointer를 넘겨주기 위함이다. 
+\begin{DoxyParams}{Parameters}
+{\em context} & cell의 this 포인터이다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 실제로는 보통 N\+U\+L\+L을 리턴하고 의미는 없다. 
+\end{DoxyReturn}
+\hypertarget{classCELL_a99661b458e7c235892c9bcd3414f1403}{}\index{C\+E\+L\+L@{C\+E\+L\+L}!scheduling\+Start@{scheduling\+Start}}
+\index{scheduling\+Start@{scheduling\+Start}!C\+E\+L\+L@{C\+E\+L\+L}}
+\subsubsection[{scheduling\+Start}]{\setlength{\rightskip}{0pt plus 5cm}void C\+E\+L\+L\+::scheduling\+Start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classCELL_a99661b458e7c235892c9bcd3414f1403}
+
+
+cell안의 워커를 스케줄링 및 실행한다. 
+
+cell안의 워커를 스케줄링 및 실행한다. 내부에서 쓰레드를 만들어 최종적으로 scheduling 함수를 호출한다. scheduling\+Start -\/$>$ scheduling\+\_\+wrapper -\/$>$ scheduling 순으로 작동한다. \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{CELL_8h}{C\+E\+L\+L.\+h}\item 
+C\+E\+L\+L.\+cpp\end{DoxyCompactItemize}

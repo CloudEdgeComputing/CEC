@@ -395,6 +395,30 @@ SRCCELL.cpp.s:
 	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.s
 .PHONY : SRCCELL.cpp.s
 
+STATEMANAGER.o: STATEMANAGER.cpp.o
+.PHONY : STATEMANAGER.o
+
+# target to build an object file
+STATEMANAGER.cpp.o:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.o
+.PHONY : STATEMANAGER.cpp.o
+
+STATEMANAGER.i: STATEMANAGER.cpp.i
+.PHONY : STATEMANAGER.i
+
+# target to preprocess a source file
+STATEMANAGER.cpp.i:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.i
+.PHONY : STATEMANAGER.cpp.i
+
+STATEMANAGER.s: STATEMANAGER.cpp.s
+.PHONY : STATEMANAGER.s
+
+# target to generate assembly for a file
+STATEMANAGER.cpp.s:
+	$(MAKE) -f CMakeFiles/cec_mig_framwork.dir/build.make CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.s
+.PHONY : STATEMANAGER.cpp.s
+
 STREAMFACTORY.o: STREAMFACTORY.cpp.o
 .PHONY : STREAMFACTORY.o
 
@@ -558,6 +582,9 @@ help:
 	@echo "... SRCCELL.o"
 	@echo "... SRCCELL.i"
 	@echo "... SRCCELL.s"
+	@echo "... STATEMANAGER.o"
+	@echo "... STATEMANAGER.i"
+	@echo "... STATEMANAGER.s"
 	@echo "... STREAMFACTORY.o"
 	@echo "... STREAMFACTORY.i"
 	@echo "... STREAMFACTORY.s"

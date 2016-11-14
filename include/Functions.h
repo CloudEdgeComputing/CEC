@@ -5,9 +5,10 @@
 using namespace std;
 
 class TUPLE;
+class STATEMANAGER;
 
-typedef TUPLE* (*FUNC)(TUPLE*);
+typedef TUPLE* (*FUNC)(TUPLE*, STATEMANAGER*);
 typedef TUPLE* (*MERGE_FUNC)(list<TUPLE*>*, uint dominantpipeid);
 
-TUPLE* task_1(TUPLE* data);
-TUPLE* task_2(TUPLE* data);
+TUPLE* cartask(TUPLE* data, STATEMANAGER* statemanager);
+TUPLE* pedtask(TUPLE* data, STATEMANAGER* statemanager);

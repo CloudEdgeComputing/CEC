@@ -1,0 +1,365 @@
+\hypertarget{classTUPLE}{}\section{T\+U\+P\+L\+E Class Reference}
+\label{classTUPLE}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+
+
+data의 교환단위인 tuple을 정의한 클래스이다.  
+
+
+
+
+{\ttfamily \#include $<$T\+U\+P\+L\+E.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classTUPLE_aed245ec6fb2cd8e94cd9bc1e7eb4a86d}{T\+U\+P\+L\+E} (char $\ast$data, ushort n\+Len, ushort seq, int fd)
+\begin{DoxyCompactList}\small\item\em T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 프로토콜을 가진 raw data에서 tuple로 전환하기 위한 생성자이다. \end{DoxyCompactList}\item 
+\hyperlink{classTUPLE_a00b079f9d403adb63356880c62d48e22}{T\+U\+P\+L\+E} (ushort n\+Len, int fd, int type)
+\begin{DoxyCompactList}\small\item\em T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 새로운 튜플을 만들어야 할 때 쓰인다. \end{DoxyCompactList}\item 
+\hyperlink{classTUPLE_ac92a492d3f8a793fe02fe364244c34af}{T\+U\+P\+L\+E} (char $\ast$packet, bool is\+Special)
+\begin{DoxyCompactList}\small\item\em T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 migration에 쓰인다. (migration은 특수 프로토콜을 쓰기 때문..) \end{DoxyCompactList}\item 
+bool \hyperlink{classTUPLE_a15e6fe7915b00b6fce4842630dc3bbb0}{validity} ()
+\begin{DoxyCompactList}\small\item\em 튜플이 유효한 튜플인지 체크한다. \end{DoxyCompactList}\item 
+uchar \hyperlink{classTUPLE_a6616af9acaa70eadc0d4110a6b81a642}{gettype} ()
+\begin{DoxyCompactList}\small\item\em 튜플의 type 또는 attribute를 가져온다. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{classTUPLE_a92c2046bfd6da6f0cfee98f3eb79a16b}{getcontent} ()
+\begin{DoxyCompactList}\small\item\em 튜플이 가지고 있는 프로토콜을 제외한 byte array의 포인터를 받아온다. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{classTUPLE_aee1504a1fcdc572c7882a3a2bfdb68c1}{getdata} ()
+\begin{DoxyCompactList}\small\item\em 튜플이 가지고 있는 프로토콜을 포함한 byte array의 포인터를 받아온다. \end{DoxyCompactList}\item 
+ushort \hyperlink{classTUPLE_ab76925f0b573319312d68b99b01c430b}{get\+Len} ()
+\begin{DoxyCompactList}\small\item\em 튜플이 가지고 있는 프로토콜을 제외한 byte array의 사이즈를 받아온다. \end{DoxyCompactList}\item 
+int \hyperlink{classTUPLE_aceaeef41e02218844ec771742ce58cb8}{getfd} ()
+\begin{DoxyCompactList}\small\item\em 튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 받아온다. \end{DoxyCompactList}\item 
+void \hyperlink{classTUPLE_af8d5f46162486df038818d8dc70dcc49}{setfd} (int fd)
+\begin{DoxyCompactList}\small\item\em 튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 세팅하거나 바꾼다. \end{DoxyCompactList}\item 
+void \hyperlink{classTUPLE_acd1a1ae03890b2c6a732357b353c31a0}{setpipeid} (uint pipeid)
+\begin{DoxyCompactList}\small\item\em T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 세팅한다. \end{DoxyCompactList}\item 
+uint \hyperlink{classTUPLE_aa9626dd889eecbc754ed339edd4adefc}{getpipeid} ()
+\begin{DoxyCompactList}\small\item\em T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 받아온다. \end{DoxyCompactList}\item 
+int \hyperlink{classTUPLE_a7acd2309510ebffdb18f017305d19eae}{get\+Int} ()
+\begin{DoxyCompactList}\small\item\em 실제 프로토콜을 제외한 데이터에서 앞에서 4byte를 빼서 integer로 받아온다. \end{DoxyCompactList}\item 
+void \hyperlink{classTUPLE_aa63aa375cc37d317e7285ee981633bf4}{get\+String} (char $\ast$str, int n\+Size)
+\begin{DoxyCompactList}\small\item\em 실제 프로토콜을 제외한 데이터에서 앞에서 정해진 사이즈만큼 빼서 byte array로 받아온다. \end{DoxyCompactList}\item 
+short \hyperlink{classTUPLE_a823b939e5468a2eed9a5aa0f8b146386}{get\+Short} ()
+\begin{DoxyCompactList}\small\item\em 실제 프로토콜을 제외한 데이터에서 앞에서 2byte를 빼서 short로 받아온다. \end{DoxyCompactList}\item 
+char \hyperlink{classTUPLE_a043493af57989a416ea5720ac33f1c4b}{get\+Char} ()
+\begin{DoxyCompactList}\small\item\em 실제 프로토콜을 제외한 데이터에서 앞에서 1byte를 빼서 char로 받아온다. \end{DoxyCompactList}\item 
+void \hyperlink{classTUPLE_a79848defdc0abc394db4df16eeab7c91}{push} (void $\ast$data, ushort size)
+\begin{DoxyCompactList}\small\item\em Tuple 내부에 데이터를 넣는다. 큐 형태로 계속 푸쉬 된다. \end{DoxyCompactList}\item 
+void \hyperlink{classTUPLE_a4e13d79b8a856ada3ecd1a21fec500f2}{sealing} ()
+\begin{DoxyCompactList}\small\item\em 이제까지 넣은 데이터 사이즈를 계산해 튜플 프로토콜을 완성시킨다. (사이즈를 재구성 한다.) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+data의 교환단위인 tuple을 정의한 클래스이다. 
+
+data의 교환단위인 tuple을 정의한 클래스이다. 실제 내부는 byte array로 되어 있으며, 튜플의 프로토콜에 따라 byte array가 배열되어 있다. 프로토콜은 다음과 같다. \mbox{[}0x\+A\+A\mbox{]}\+: 튜플의 프로토콜을 정의하거나 integrity를 체크할 수 있는 바이트이다. \mbox{[}size(2byte)\mbox{]}\+: 튜플의 프로토콜을 제외한 데이터 사이즈를 나타낸다. 최대 255byte를 가질 수 있다. \mbox{[}type(1byte)\mbox{]}\+: 튜플 데이터가 가지고 있는 data type을 나타낸다. 또한 attribute로도 reserved 되어 있다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classTUPLE_aed245ec6fb2cd8e94cd9bc1e7eb4a86d}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{T\+U\+P\+L\+E}]{\setlength{\rightskip}{0pt plus 5cm}T\+U\+P\+L\+E\+::\+T\+U\+P\+L\+E (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{data, }
+\item[{ushort}]{n\+Len, }
+\item[{ushort}]{seq, }
+\item[{int}]{fd}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_aed245ec6fb2cd8e94cd9bc1e7eb4a86d}
+
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 프로토콜을 가진 raw data에서 tuple로 전환하기 위한 생성자이다. 
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 프로토콜을 가진 raw data에서 tuple로 전환하기 위한 생성자이다. 보통 데이터를 받았을 때, 튜플로 전환하기 위해 쓰인다. 
+\begin{DoxyParams}{Parameters}
+{\em data} & 튜플에 들어갈 byte array. 이 byte array는 튜플의 프로토콜 또한 포함하고 있어야 한다. \\
+\hline
+{\em n\+Len} & 프로토콜을 제외한 byte array의 사이즈 \\
+\hline
+{\em seq} & 튜플의 시퀀스를 나타낸다. reserved 되어 있다. \\
+\hline
+{\em fd} & 튜플을 처리한 뒤, 결과적으로 보낼 소켓의 디스크립터를 설정한다. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_a00b079f9d403adb63356880c62d48e22}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{T\+U\+P\+L\+E}]{\setlength{\rightskip}{0pt plus 5cm}T\+U\+P\+L\+E\+::\+T\+U\+P\+L\+E (
+\begin{DoxyParamCaption}
+\item[{ushort}]{n\+Len, }
+\item[{int}]{fd, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a00b079f9d403adb63356880c62d48e22}
+
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 새로운 튜플을 만들어야 할 때 쓰인다. 
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 새로운 튜플을 만들어야 할 때 쓰인다. 즉, 어떤 생성된 데이터를 튜플화 시키고자 할 때 쓰인다. 
+\begin{DoxyParams}{Parameters}
+{\em n\+Len} & 튜플이 가지고 있을 byte array의 사이즈를 확보한다. \\
+\hline
+{\em fd} & 튜플을 처리한 뒤, 결과적으로 보낼 소켓의 디스크립터를 설정한다. \\
+\hline
+{\em type} & 튜플의 type(attribute)를 설정한다. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_ac92a492d3f8a793fe02fe364244c34af}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{T\+U\+P\+L\+E}]{\setlength{\rightskip}{0pt plus 5cm}T\+U\+P\+L\+E\+::\+T\+U\+P\+L\+E (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{packet, }
+\item[{bool}]{is\+Special}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_ac92a492d3f8a793fe02fe364244c34af}
+
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 migration에 쓰인다. (migration은 특수 프로토콜을 쓰기 때문..) 
+
+T\+U\+P\+L\+E을 만드는 생성자. 이 생성자는 migration에 쓰인다. (migration은 특수 프로토콜을 쓰기 때문..) \mbox{[}0x\+A\+A\mbox{]}\mbox{[}size(2byte)\mbox{]}\mbox{[}type(1byte)\mbox{]} 까지는 일반적인 프로토콜을 따른다. 단 내용에 \mbox{[}4byte for ipv4\mbox{]}와 \mbox{[}4byte for pipe id\mbox{]}가 추가된다. 그 뒤, 실제적 내용이 추가된다. 
+\begin{DoxyParams}{Parameters}
+{\em packet} & 특수 프로토콜을 가진 byte array가 input으로 들어간다. \\
+\hline
+{\em is\+Special} & 패킷이 특수 프로토콜을 가지는지 설정한다. T\+R\+U\+E면 특수 프로토콜을 사용한다고 가정한다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000006}{Todo}]is\+Special이 false인경우 프로그램이 종료된다. (미구현) \end{DoxyRefDesc}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classTUPLE_a043493af57989a416ea5720ac33f1c4b}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!get\+Char@{get\+Char}}
+\index{get\+Char@{get\+Char}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{get\+Char}]{\setlength{\rightskip}{0pt plus 5cm}char T\+U\+P\+L\+E\+::get\+Char (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a043493af57989a416ea5720ac33f1c4b}
+
+
+실제 프로토콜을 제외한 데이터에서 앞에서 1byte를 빼서 char로 받아온다. 
+
+실제 프로토콜을 제외한 데이터에서 앞에서 1byte를 빼서 char로 받아온다. 한번 빼온 char는 이 메소드를 통해 받아올 수 없다. \begin{DoxyReturn}{Returns}
+char 값 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_a92c2046bfd6da6f0cfee98f3eb79a16b}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!getcontent@{getcontent}}
+\index{getcontent@{getcontent}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{getcontent}]{\setlength{\rightskip}{0pt plus 5cm}char $\ast$ T\+U\+P\+L\+E\+::getcontent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a92c2046bfd6da6f0cfee98f3eb79a16b}
+
+
+튜플이 가지고 있는 프로토콜을 제외한 byte array의 포인터를 받아온다. 
+
+튜플이 가지고 있는 프로토콜을 제외한 byte array의 포인터를 받아온다. \begin{DoxyReturn}{Returns}
+프로토콜을 제외한 byte array의 포인터 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_aee1504a1fcdc572c7882a3a2bfdb68c1}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!getdata@{getdata}}
+\index{getdata@{getdata}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{getdata}]{\setlength{\rightskip}{0pt plus 5cm}char $\ast$ T\+U\+P\+L\+E\+::getdata (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_aee1504a1fcdc572c7882a3a2bfdb68c1}
+
+
+튜플이 가지고 있는 프로토콜을 포함한 byte array의 포인터를 받아온다. 
+
+튜플이 가지고 있는 프로토콜을 포함한 byte array의 포인터를 받아온다. \begin{DoxyReturn}{Returns}
+프로토콜을 포함한 byte array의 포인터 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_aceaeef41e02218844ec771742ce58cb8}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!getfd@{getfd}}
+\index{getfd@{getfd}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{getfd}]{\setlength{\rightskip}{0pt plus 5cm}int T\+U\+P\+L\+E\+::getfd (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_aceaeef41e02218844ec771742ce58cb8}
+
+
+튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 받아온다. 
+
+튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 받아온다. \begin{DoxyReturn}{Returns}
+튜플의 종착에서 쓸 소켓의 소켓 디스크립터 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_a7acd2309510ebffdb18f017305d19eae}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!get\+Int@{get\+Int}}
+\index{get\+Int@{get\+Int}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{get\+Int}]{\setlength{\rightskip}{0pt plus 5cm}int T\+U\+P\+L\+E\+::get\+Int (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a7acd2309510ebffdb18f017305d19eae}
+
+
+실제 프로토콜을 제외한 데이터에서 앞에서 4byte를 빼서 integer로 받아온다. 
+
+실제 프로토콜을 제외한 데이터에서 앞에서 4byte를 빼서 integer로 받아온다. 한번 빼온 integer는 이 메소드를 통해 받아올 수 없다. \begin{DoxyReturn}{Returns}
+4byte integer 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_ab76925f0b573319312d68b99b01c430b}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!get\+Len@{get\+Len}}
+\index{get\+Len@{get\+Len}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{get\+Len}]{\setlength{\rightskip}{0pt plus 5cm}ushort T\+U\+P\+L\+E\+::get\+Len (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_ab76925f0b573319312d68b99b01c430b}
+
+
+튜플이 가지고 있는 프로토콜을 제외한 byte array의 사이즈를 받아온다. 
+
+튜플이 가지고 있는 프로토콜을 제외한 byte array의 사이즈를 받아온다. \begin{DoxyReturn}{Returns}
+튜플이 가지고 있는 프로토콜을 제외한 byte array의 사이즈 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_aa9626dd889eecbc754ed339edd4adefc}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!getpipeid@{getpipeid}}
+\index{getpipeid@{getpipeid}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{getpipeid}]{\setlength{\rightskip}{0pt plus 5cm}uint T\+U\+P\+L\+E\+::getpipeid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_aa9626dd889eecbc754ed339edd4adefc}
+
+
+T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 받아온다. 
+
+T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 받아온다. 이 아이디는 dominant id를 비교하기 위해 쓰인다. \begin{DoxyReturn}{Returns}
+T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_a823b939e5468a2eed9a5aa0f8b146386}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!get\+Short@{get\+Short}}
+\index{get\+Short@{get\+Short}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{get\+Short}]{\setlength{\rightskip}{0pt plus 5cm}short int T\+U\+P\+L\+E\+::get\+Short (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a823b939e5468a2eed9a5aa0f8b146386}
+
+
+실제 프로토콜을 제외한 데이터에서 앞에서 2byte를 빼서 short로 받아온다. 
+
+실제 프로토콜을 제외한 데이터에서 앞에서 2byte를 빼서 short로 받아온다. 한번 빼온 short는 이 메소드를 통해 받아올 수 없다. \begin{DoxyReturn}{Returns}
+short 값 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_aa63aa375cc37d317e7285ee981633bf4}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!get\+String@{get\+String}}
+\index{get\+String@{get\+String}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{get\+String}]{\setlength{\rightskip}{0pt plus 5cm}void T\+U\+P\+L\+E\+::get\+String (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{str, }
+\item[{int}]{n\+Size}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_aa63aa375cc37d317e7285ee981633bf4}
+
+
+실제 프로토콜을 제외한 데이터에서 앞에서 정해진 사이즈만큼 빼서 byte array로 받아온다. 
+
+실제 프로토콜을 제외한 데이터에서 앞에서 정해진 사이즈만큼 빼서 byte array로 받아온다. 한번 빼온 byte array는 이 메소드를 통해 받아올 수 없다. 
+\begin{DoxyParams}{Parameters}
+{\em str} & 실제 byte array가 저장될 배열. 이 배열은 미리 충분한 크기로 초기화가 되어 있어야 한다. \\
+\hline
+{\em n\+Size} & 받아올 byte array의 사이즈 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_a6616af9acaa70eadc0d4110a6b81a642}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!gettype@{gettype}}
+\index{gettype@{gettype}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{gettype}]{\setlength{\rightskip}{0pt plus 5cm}uchar T\+U\+P\+L\+E\+::gettype (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a6616af9acaa70eadc0d4110a6b81a642}
+
+
+튜플의 type 또는 attribute를 가져온다. 
+
+튜플의 type 또는 attribute를 가져온다. 0x00\+: 일반적인 튜플 0x02\+: 마이그레이션을 위한 튜플 나머지는 reserved되어 있다. \begin{DoxyReturn}{Returns}
+튜플의 type을 리턴한다. 
+\end{DoxyReturn}
+\hypertarget{classTUPLE_a79848defdc0abc394db4df16eeab7c91}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!push@{push}}
+\index{push@{push}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{push}]{\setlength{\rightskip}{0pt plus 5cm}void T\+U\+P\+L\+E\+::push (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{data, }
+\item[{ushort}]{size}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a79848defdc0abc394db4df16eeab7c91}
+
+
+Tuple 내부에 데이터를 넣는다. 큐 형태로 계속 푸쉬 된다. 
+
+Tuple 내부에 데이터를 넣는다. 큐 형태로 계속 푸쉬 된다. 
+\begin{DoxyParams}{Parameters}
+{\em data} & 넣을 데이터의 포인터 \\
+\hline
+{\em size} & 데이터의 사이즈 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_a4e13d79b8a856ada3ecd1a21fec500f2}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!sealing@{sealing}}
+\index{sealing@{sealing}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{sealing}]{\setlength{\rightskip}{0pt plus 5cm}void T\+U\+P\+L\+E\+::sealing (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a4e13d79b8a856ada3ecd1a21fec500f2}
+
+
+이제까지 넣은 데이터 사이즈를 계산해 튜플 프로토콜을 완성시킨다. (사이즈를 재구성 한다.) 
+
+이제까지 넣은 데이터 사이즈를 계산해 튜플 프로토콜을 완성시킨다. (사이즈를 재구성 한다.) \hypertarget{classTUPLE_af8d5f46162486df038818d8dc70dcc49}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!setfd@{setfd}}
+\index{setfd@{setfd}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{setfd}]{\setlength{\rightskip}{0pt plus 5cm}void T\+U\+P\+L\+E\+::setfd (
+\begin{DoxyParamCaption}
+\item[{int}]{fd}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_af8d5f46162486df038818d8dc70dcc49}
+
+
+튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 세팅하거나 바꾼다. 
+
+튜플을 디바이스에게 보낼 때 소켓을 이용하는데, 그 소켓의 디스크립터를 세팅하거나 바꾼다. 
+\begin{DoxyParams}{Parameters}
+{\em fd} & 새로 설정할 파일 디스크립터 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_acd1a1ae03890b2c6a732357b353c31a0}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!setpipeid@{setpipeid}}
+\index{setpipeid@{setpipeid}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{setpipeid}]{\setlength{\rightskip}{0pt plus 5cm}void T\+U\+P\+L\+E\+::setpipeid (
+\begin{DoxyParamCaption}
+\item[{uint}]{pipeid}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_acd1a1ae03890b2c6a732357b353c31a0}
+
+
+T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 세팅한다. 
+
+T\+U\+P\+L\+E이 현재 존재하거나 존재 했던 파이프의 최신 아이디를 세팅한다. 이 아이디는 dominant id를 비교하기 위해 쓰인다. 
+\begin{DoxyParams}{Parameters}
+{\em pipeid} & tuple에 넘겨 줄 파이프의 최신 아이디 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classTUPLE_a15e6fe7915b00b6fce4842630dc3bbb0}{}\index{T\+U\+P\+L\+E@{T\+U\+P\+L\+E}!validity@{validity}}
+\index{validity@{validity}!T\+U\+P\+L\+E@{T\+U\+P\+L\+E}}
+\subsubsection[{validity}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+U\+P\+L\+E\+::validity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classTUPLE_a15e6fe7915b00b6fce4842630dc3bbb0}
+
+
+튜플이 유효한 튜플인지 체크한다. 
+
+튜플이 유효한 튜플인지 체크한다. 내부에서는 0x\+A\+A 바이트를 체크한다. \begin{DoxyReturn}{Returns}
+true인 경우 유효한 패킷이고, false인 경우, 유효하지 않은 패킷이다. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{TUPLE_8h}{T\+U\+P\+L\+E.\+h}\item 
+T\+U\+P\+L\+E.\+cpp\end{DoxyCompactItemize}

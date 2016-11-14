@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/cec_mig_framwork.dir/STATEMANAGER.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/DESTCELL.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/SRCCELL.cpp.o"
   "CMakeFiles/cec_mig_framwork.dir/PACKET.cpp.o"

@@ -6,7 +6,7 @@
 #include "STREAMFACTORY.h"
 #include "Debug.h"
 
-PIPE::PIPE ( lockfreeq* queue, void* owner, int type, int id, STREAMFACTORY* parent )
+PIPE::PIPE ( quetype* queue, void* owner, int type, int id, STREAMFACTORY* parent )
 {
     this->queue = queue;
     if ( owner != NULL )
@@ -16,9 +16,11 @@ PIPE::PIPE ( lockfreeq* queue, void* owner, int type, int id, STREAMFACTORY* par
     this->isMigrated = false;
     this->id = id;
     this->parent = parent;
+    this->newest_tuple = NULL;
+    this->ignored_tuple_uuid = 0;
 }
 
-lockfreeq* PIPE::getQueue()
+quetype* PIPE::getQueue()
 {
     return this->queue;
 }
@@ -33,13 +35,13 @@ void PIPE::registerforwardDependency ( void* owner, int type )
     this->forward_dependency.push_back ( make_pair ( owner, type ) );
 }
 
-bool PIPE::sendQueue ( int fd )
+bool PIPE::sendQueue ( int fd, unsigned int uuid )
 {
     if ( this->isMigrated == true )
     {
         return true;
     }
-
+    
     // Queue의 Dependency 체크
     // 모든 Dependency를 가진 것들이 멈춰야 한다.
     // 안멈춰 있으면 False return
@@ -62,10 +64,10 @@ bool PIPE::sendQueue ( int fd )
         {
             CELL* cell = ( BASICCELL* ) powner;
             //printf("cellstate %d workerstate: %d\n", cell->getCELLState(), cell->getWORKERState());
-            // 셀은 논러닝 하고 워커가 작동하는건 없어야 한다.
-            if ( cell->getCELLState() || cell->getWORKERState() )
+            // 셀의 워커 중 지정된 uuid를 처리하고 있는 워커가 없어야 한다.
+            if ( cell->hasuuid(uuid) )
             {
-                //printf ( "cell is running\n" );
+                printf ( "cell is processing uuid: %d\n", uuid );
                 return false;
             }
         }
@@ -77,14 +79,14 @@ bool PIPE::sendQueue ( int fd )
     }
 
     // 직렬화단계
-    lockfreeq* q = this->getQueue();
+    //lockfreeq* q = this->getQueue();
     vector<char> bytearray;
     // packet full data와 fd를 넣는다.
 
-    while ( !q->empty() )
+    while ( !this->empty() )
     {
         TUPLE* tuple;
-        q->pop ( tuple );
+        tuple = this->pop ( );
         // 0xAA
         bytearray.push_back ( 0xAA );
         // Size [2byte]
@@ -96,10 +98,10 @@ bool PIPE::sendQueue ( int fd )
         // type
         bytearray.push_back ( tuple->gettype() );
 
-        // [ip 4byte]
-        int fd = tuple->getfd();
+        // [uuid 4byte]
+        int uuid = tuple->getuuid();
         // find ip by fd
-        struct sockaddr_in* sain = (struct sockaddr_in*)(this->parent->getClientbyfd(fd)->var_sockaddr);
+        struct sockaddr_in* sain = (struct sockaddr_in*)(this->parent->getClientbyuuid(uuid)->var_sockaddr);
         unsigned int ip = sain->sin_addr.s_addr;
         //printf("ip: %d queid: %d\n", ip, id);
         bytearray.insert ( bytearray.end(), ( ( char* ) &ip ), ( ( char* ) &ip ) + 4 );
@@ -161,7 +163,7 @@ void PIPE::install_comp_signal()
         void* powner = ( *iter ).first;
         int type = ( *iter ).second;
 
-        if ( type == 0 )
+        if ( type == TYPE_FACTORY )
         {
             STREAMFACTORY* streamfactory = ( STREAMFACTORY* ) powner;
             // 익스큐터에 연결되어있는 첫번째 태스크를 런 시킨다.
@@ -171,7 +173,7 @@ void PIPE::install_comp_signal()
                 cell->schedulingStart();
             }
         }
-        else if ( type == 1 )
+        else if ( type == TYPE_CELL )
         {
             BASICCELL* cell = ( BASICCELL* ) powner;
             if ( cell->getCELLState() == false )
@@ -195,4 +197,84 @@ void PIPE::install_comp_signal()
 void PIPE::clearMigration()
 {
     this->isMigrated = false;
+}
+
+void PIPE::setnewest ( TUPLE* tuple )
+{
+    TUPLE* result = new TUPLE(tuple->getdata(), tuple->getLen(), 0, tuple->getuuid());
+    this->newest_tuple = result;
+}
+
+TUPLE* PIPE::getnewest(bool copied)
+{
+    if(copied && newest_tuple != NULL)
+    {
+        TUPLE* result = new TUPLE(newest_tuple->getdata(), newest_tuple->getLen(), 0, newest_tuple->getuuid());
+        return result;
+    }
+    return newest_tuple;
+}
+
+void PIPE::deletenewest()
+{
+    delete[] newest_tuple->getdata();
+    delete newest_tuple;
+}
+
+void PIPE::push ( TUPLE* data )
+{
+    this->queue->push_back(data);
+}
+
+TUPLE* PIPE::pop()
+{
+    if(this->queue->empty() == false)
+    {
+        if(this->ignored_tuple_uuid == 0)
+        {
+            TUPLE* tuple = this->queue->front();
+            this->queue->pop_back();
+            return tuple;
+        }
+        else
+        {
+            for(auto iter = this->queue->begin(); iter != this->queue->end(); ++iter)
+            {
+                TUPLE* tuple = *iter;
+                if(tuple->getuuid() != this->ignored_tuple_uuid)
+                {
+                    this->queue->erase(iter);
+                    return tuple;
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+bool PIPE::empty()
+{
+    if(this->ignored_tuple_uuid == 0)
+        return this->queue->empty();
+    else
+    {
+        for(auto iter = this->queue->begin(); iter != this->queue->end(); ++iter)
+        {
+            TUPLE* tuple = *iter;
+            if(tuple->getuuid() == this->ignored_tuple_uuid)
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+void PIPE::setingnoreuuid ( unsigned int uuid )
+{
+    this->ignored_tuple_uuid = uuid;
+}
+
+void PIPE::clearignoreuuid()
+{
+    this->ignored_tuple_uuid = 0;
 }

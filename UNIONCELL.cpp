@@ -4,13 +4,13 @@
 #include "WORKER.h"
 #include "TUPLE.h"
 
-UNIONCELL::UNIONCELL ( list< PIPE* >* inpipelist, uint dominantpipeid, std::__cxx11::list< PIPE* >* outpipelist, ushort count, STREAMFACTORY* parent ) : CELL ( inpipelist, outpipelist, count, parent, MISO )
+UNIONCELL::UNIONCELL ( list< PIPE* >* inpipelist, uint dominantpipeid, list< PIPE* >* outpipelist, ushort count, STREAMFACTORY* parent, uint union_policy ) : CELL ( inpipelist, outpipelist, count, parent, MISO )
 {    
     // Internal merge 함수를 쓴다.
     this->func = merge;
     this->dominantpipeid = dominantpipeid;
     this->pipelock = PTHREAD_MUTEX_INITIALIZER;
-    
+    this->union_policy = union_policy;
 }
 
 void UNIONCELL::makeWorker()
@@ -50,14 +50,50 @@ void* UNIONCELL::scheduling ( void* arg )
         }
         
         // UNIONCELL은 MISO를 표방하므로 inpipelist를 전부 찾아내고 그 데이터들을 한번에 꺼낼 수 있도록 한다.
-        bool allready = false;
-        for(auto iter = this->inpipelist->begin(); iter != this->inpipelist->end(); ++iter)
+        // pipe_ready 하나 이상만 레디되면 됨
+        bool pipe_ready = false;
+        // newest_ready 비어있는 pipe에 대해 모두 ready야 함
+        bool newest_ready = true;
+        bool result_ready = false;
+        
+        if(this->union_policy == POLICY_PARTIALREADY)
         {
-            PIPE* pipe;
-            allready &= !pipe->getQueue()->empty();
+            for(auto iter = this->inpipelist->begin(); iter != this->inpipelist->end(); ++iter)
+            {
+                PIPE* pipe = *iter;
+                
+                if(pipe->getQueue()->empty() == false)
+                {
+                    pipe_ready |= true;
+                }
+                else
+                {
+                    if(pipe->getnewest(false) != false)
+                    {
+                        newest_ready &= true;
+                    }
+                    else
+                    {
+                        newest_ready = false;
+                    }
+                }
+            }
+        }
+        else if(this->union_policy == POLICY_ALLREADY)
+        {
+            pipe_ready = true;
+            for ( auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter )
+            {
+                PIPE* pipe = *iter;
+                // 파이프 큐에 데이터가 있거나 전에 보냈던 데이터가 있는 경우
+                newest_ready &= !pipe->getQueue()->empty();
+            }
         }
         
-        if(allready == true)
+
+        result_ready = ( pipe_ready && newest_ready );
+        
+        if(result_ready == true)
         {
             for (auto iter = this->workers.begin() ; iter != this->workers.end(); ++iter )
             {
@@ -91,6 +127,11 @@ uint UNIONCELL::getdominantpipeid()
     return this->dominantpipeid;
 }
 
+uint UNIONCELL::getUnionPolicy()
+{
+    return this->union_policy;
+}
+
 TUPLE* merge(list< TUPLE* >* tuplelist, uint dominantpipeid )
 {
     // 튜플들의 데이터 사이즈 합
@@ -110,13 +151,12 @@ TUPLE* merge(list< TUPLE* >* tuplelist, uint dominantpipeid )
         return new TUPLE(0, 0, 0);
     }
     
-    TUPLE* new_tuple = new TUPLE(size, dominantTuple->getfd(), dominantTuple->gettype());
+    TUPLE* new_tuple = new TUPLE(size, dominantTuple->getuuid(), dominantTuple->gettype());
     
     for(auto iter = tuplelist->begin(); iter != tuplelist->end(); ++iter)
     {
         TUPLE* tuple = *iter;
-        new_tuple->push(tuple->getdata(), tuple->getLen());
-        //튜플 내부 데이터 삭제 금지!!!!! (Important)
+        new_tuple->push(tuple->getcontent(), tuple->getLen());
         delete tuple;
     }
     

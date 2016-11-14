@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <list>
+#include <deque>
 #include "Functions.h"
 
 class PIPE;
@@ -25,6 +26,8 @@ private:
     
     // lock을 위한 lock primitive & condition
     pthread_mutex_t MISOmutex;
+    // 어떤 uuid를 가진 tuple을 처리하고 있는가?
+    list<unsigned int> uuid;
 public:
 
     // 오퍼레이터를 생성한다. 단, 인자로 실제 실행 함수가 주어져야 한다.
@@ -39,6 +42,12 @@ public:
     void sleep();
     // 오퍼레이터의 부모 태스크 entity를 가져온다.
     CELL* getParentCELL();
+    // set uuid
+    void setuuid(unsigned int uuid);
+    // 특정 uuid를 가지고 있는가?
+    bool hasuuid(unsigned int uuid);
+    // uuid reset
+    void clearuuid();
 };
 
 static void* wrapper_thread ( void* arg );

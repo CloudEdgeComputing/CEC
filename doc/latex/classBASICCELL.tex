@@ -1,0 +1,197 @@
+\hypertarget{classBASICCELL}{}\section{B\+A\+S\+I\+C\+C\+E\+L\+L Class Reference}
+\label{classBASICCELL}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+
+
+cell의 기본 형태를 상속하고 S\+I\+S\+O의 형태를 갖고 있는 processing cell. 실제 processing의 유닛이다.  
+
+
+
+
+{\ttfamily \#include $<$B\+A\+S\+I\+C\+C\+E\+L\+L.\+h$>$}
+
+
+
+Inheritance diagram for B\+A\+S\+I\+C\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=152pt]{classBASICCELL__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for B\+A\+S\+I\+C\+C\+E\+L\+L\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{classBASICCELL__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classBASICCELL_a0058bee3f5c99d05c321b47cb803badc}{B\+A\+S\+I\+C\+C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$outpipe, ushort count, F\+U\+N\+C func, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em basiccell을 만드는 생성자 \end{DoxyCompactList}\item 
+\hyperlink{classBASICCELL_a9e173d89e7c3c2b2513cb7f6d8f455b8}{B\+A\+S\+I\+C\+C\+E\+L\+L} (\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$inpipe, list$<$ \hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ $>$ $\ast$outpipelist, ushort count, F\+U\+N\+C func, \hyperlink{classSTREAMFACTORY}{S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$parent)
+\begin{DoxyCompactList}\small\item\em basiccell을 만드는 생성자 \end{DoxyCompactList}\item 
+virtual void \hyperlink{classBASICCELL_aacb2fd7565d13f80e407854e0a978d73}{make\+Worker} ()
+\begin{DoxyCompactList}\small\item\em 워커를 만든다. \end{DoxyCompactList}\item 
+virtual void $\ast$ \hyperlink{classBASICCELL_a2e910313cdad1651908cca08f89be64c}{scheduling} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em 만든 워커를 실제로 스케줄링 하는 함수 \end{DoxyCompactList}\item 
+\hyperlink{classPIPE}{P\+I\+P\+E} $\ast$ \hyperlink{classBASICCELL_a0008bc2d8bb7bd0f85729fd2f049458a}{getinpipe} ()
+\begin{DoxyCompactList}\small\item\em 단일 inpipe를 반환하는 함수 \end{DoxyCompactList}\item 
+F\+U\+N\+C \hyperlink{classBASICCELL_a0b157d23811cb140c2567572adc0034b}{getfunc} ()
+\begin{DoxyCompactList}\small\item\em 코드 세그먼트를 반환하는 함수 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+cell의 기본 형태를 상속하고 S\+I\+S\+O의 형태를 갖고 있는 processing cell. 실제 processing의 유닛이다. 
+
+cell의 기본 형태를 상속하고 S\+I\+S\+O의 형태를 갖고 있는 processing cell. 실제 processing의 유닛이다. S\+I는 한번에 하나의 튜플만을 받음을 의미하며 이 튜플들은 독립적으로 처리된다. S\+O는 하나의 튜플만이 나오며 outpipe에는 데이터가 각각 복사된다. \begin{DoxyAuthor}{Author}
+ysmoon 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2016-\/11-\/08 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+0.\+1 
+\end{DoxyVersion}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classBASICCELL_a0058bee3f5c99d05c321b47cb803badc}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{B\+A\+S\+I\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}B\+A\+S\+I\+C\+C\+E\+L\+L\+::\+B\+A\+S\+I\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inpipe, }
+\item[{{\bf P\+I\+P\+E} $\ast$}]{outpipe, }
+\item[{ushort}]{count, }
+\item[{F\+U\+N\+C}]{func, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classBASICCELL_a0058bee3f5c99d05c321b47cb803badc}
+
+
+basiccell을 만드는 생성자 
+
+basiccell을 만드는 생성자. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & cell에 대한 단일 input pipe이다. \\
+\hline
+{\em outpipe} & cell에 대한 단일 output pipe이다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em func} & 사용자가 정의할 수 있는 코드 세그먼트이다. T\+U\+P\+L\+E$\ast$ code(\+T\+U\+P\+L\+E$\ast$ tuple) 함수 형태를 갖는다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classBASICCELL_a9e173d89e7c3c2b2513cb7f6d8f455b8}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{B\+A\+S\+I\+C\+C\+E\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}B\+A\+S\+I\+C\+C\+E\+L\+L\+::\+B\+A\+S\+I\+C\+C\+E\+L\+L (
+\begin{DoxyParamCaption}
+\item[{{\bf P\+I\+P\+E} $\ast$}]{inpipe, }
+\item[{list$<$ {\bf P\+I\+P\+E} $\ast$ $>$ $\ast$}]{outpipelist, }
+\item[{ushort}]{count, }
+\item[{F\+U\+N\+C}]{func, }
+\item[{{\bf S\+T\+R\+E\+A\+M\+F\+A\+C\+T\+O\+R\+Y} $\ast$}]{parent}
+\end{DoxyParamCaption}
+)}\label{classBASICCELL_a9e173d89e7c3c2b2513cb7f6d8f455b8}
+
+
+basiccell을 만드는 생성자 
+
+basiccell을 만드는 생성자. 
+\begin{DoxyParams}{Parameters}
+{\em inpipe} & cell에 대한 단일 input pipe이다. \\
+\hline
+{\em outpipelist} & cell에 대한 output pipe list이다. 깊은 복사로 넘어간다. 이후 파라미터로 들어온것은 필요 없으면 메모리 해제 해야 한다. \\
+\hline
+{\em count} & cell에 들어있는 worker의 개수를 정의한다. \\
+\hline
+{\em parent} & cell이 속한 factory를 명시한다. \\
+\hline
+{\em func} & 사용자가 정의할 수 있는 코드 세그먼트이다. T\+U\+P\+L\+E$\ast$ code(\+T\+U\+P\+L\+E$\ast$ tuple) 함수 형태를 갖는다. \\
+\hline
+{\em X\+I\+X\+O} & cell의 input과 output의 형태를 정의한다. S\+I\+S\+O, M\+I\+S\+O, S\+O, S\+I중 선택 \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classBASICCELL_a0b157d23811cb140c2567572adc0034b}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!getfunc@{getfunc}}
+\index{getfunc@{getfunc}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{getfunc}]{\setlength{\rightskip}{0pt plus 5cm}F\+U\+N\+C B\+A\+S\+I\+C\+C\+E\+L\+L\+::getfunc (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classBASICCELL_a0b157d23811cb140c2567572adc0034b}
+
+
+코드 세그먼트를 반환하는 함수 
+
+코드 세그먼트를 반환하는 함수. T\+U\+P\+L\+E$\ast$ code(\+T\+U\+P\+L\+E$\ast$ tuple) 함수 형태를 갖는다. \begin{DoxyReturn}{Returns}
+F\+U\+N\+C, F\+U\+N\+C는 typedef T\+U\+P\+L\+E$\ast$ ({\itshape F\+U\+N\+C)(\hyperlink{classTUPLE}{T\+U\+P\+L\+E}}) 이다. 
+\end{DoxyReturn}
+\hypertarget{classBASICCELL_a0008bc2d8bb7bd0f85729fd2f049458a}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!getinpipe@{getinpipe}}
+\index{getinpipe@{getinpipe}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{getinpipe}]{\setlength{\rightskip}{0pt plus 5cm}{\bf P\+I\+P\+E} $\ast$ B\+A\+S\+I\+C\+C\+E\+L\+L\+::getinpipe (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classBASICCELL_a0008bc2d8bb7bd0f85729fd2f049458a}
+
+
+단일 inpipe를 반환하는 함수 
+
+단일 inpipe를 반환하는 함수. inpipe가 여러개이면 등록된 맨 첫번째 input pipe를 반환한다. \begin{DoxyReturn}{Returns}
+P\+I\+P\+E$\ast$로써, inpipe의 포인터를 반환한다. 
+\end{DoxyReturn}
+\hypertarget{classBASICCELL_aacb2fd7565d13f80e407854e0a978d73}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!make\+Worker@{make\+Worker}}
+\index{make\+Worker@{make\+Worker}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{make\+Worker}]{\setlength{\rightskip}{0pt plus 5cm}void B\+A\+S\+I\+C\+C\+E\+L\+L\+::make\+Worker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classBASICCELL_aacb2fd7565d13f80e407854e0a978d73}
+
+
+워커를 만든다. 
+
+워커를 만든다. basiccell 생성자의 count에서 정의된 숫자만큼 functor를 수행하는 워커를 만든다. cell의 순수 가상 함수를 implementation한다. \begin{DoxyReturn}{Returns}
+void 의미 없음 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classCELL_a1b048e8ac8cc57bcdff18bbcba6ed975}{C\+E\+L\+L}.
+
+\hypertarget{classBASICCELL_a2e910313cdad1651908cca08f89be64c}{}\index{B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}!scheduling@{scheduling}}
+\index{scheduling@{scheduling}!B\+A\+S\+I\+C\+C\+E\+L\+L@{B\+A\+S\+I\+C\+C\+E\+L\+L}}
+\subsubsection[{scheduling}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ B\+A\+S\+I\+C\+C\+E\+L\+L\+::scheduling (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classBASICCELL_a2e910313cdad1651908cca08f89be64c}
+
+
+만든 워커를 실제로 스케줄링 하는 함수 
+
+워커를 실제로 스케줄링 하는 함수이다. cell의 scheduling\+\_\+wrapper에 의해 불린다. while문을 돌면서 iput pipe들을 풀링한다. \begin{DoxyReturn}{Returns}
+void 의미 없음 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Bug}
+\item[\hyperlink{bug__bug000001}{Bug}]스케줄링에서 outpipe로 데이터를 넘길 때, pipe에 각각 데이터를 깊은복사를 해서 넘겨주어야 한다. \end{DoxyRefDesc}
+
+
+Implements \hyperlink{classCELL_adcd2e66700a2c6f0cb234cbe63d2e10c}{C\+E\+L\+L}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{BASICCELL_8h}{B\+A\+S\+I\+C\+C\+E\+L\+L.\+h}\item 
+B\+A\+S\+I\+C\+C\+E\+L\+L.\+cpp\end{DoxyCompactItemize}

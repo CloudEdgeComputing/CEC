@@ -1,0 +1,62 @@
+\hypertarget{UNIONCELL_8h}{}\section{include/\+U\+N\+I\+O\+N\+C\+E\+L\+L.h File Reference}
+\label{UNIONCELL_8h}\index{include/\+U\+N\+I\+O\+N\+C\+E\+L\+L.\+h@{include/\+U\+N\+I\+O\+N\+C\+E\+L\+L.\+h}}
+
+
+두개 이상의 tuple을 합쳐주는 cell  
+
+
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$list$>$}\\*
+{\ttfamily \#include $<$functional$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}Functions.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}C\+E\+L\+L.\+h\char`\"{}}\\*
+Include dependency graph for U\+N\+I\+O\+N\+C\+E\+L\+L.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{UNIONCELL_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classUNIONCELL}{U\+N\+I\+O\+N\+C\+E\+L\+L}
+\begin{DoxyCompactList}\small\item\em cell의 기본 형태를 상속하고 M\+I\+S\+O의 형태를 갖고 있는 union cell이다. (processing cell이 아니다.) M\+I\+S\+O의 형태를 갖는다. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{UNIONCELL_8h_afd95b62b61000ed5fc3e8517a33d9092}{}\#define {\bfseries P\+O\+L\+I\+C\+Y\+\_\+\+A\+L\+L\+R\+E\+A\+D\+Y}~0\label{UNIONCELL_8h_afd95b62b61000ed5fc3e8517a33d9092}
+
+\item 
+\hypertarget{UNIONCELL_8h_aaff08d419f716fc12722c8bbe8a4bc4b}{}\#define {\bfseries P\+O\+L\+I\+C\+Y\+\_\+\+P\+A\+R\+T\+I\+A\+L\+R\+E\+A\+D\+Y}~1\label{UNIONCELL_8h_aaff08d419f716fc12722c8bbe8a4bc4b}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classTUPLE}{T\+U\+P\+L\+E} $\ast$ \hyperlink{UNIONCELL_8h_a6f5457bd2820312a229bf464f813198d}{merge} (list$<$ \hyperlink{classTUPLE}{T\+U\+P\+L\+E} $\ast$ $>$ $\ast$tuplelist, uint dominantpipeid)
+\begin{DoxyCompactList}\small\item\em 두개 이상의 튜플을 merge를 수행하는 내부 로직 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+두개 이상의 tuple을 합쳐주는 cell 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{UNIONCELL_8h_a6f5457bd2820312a229bf464f813198d}{}\index{U\+N\+I\+O\+N\+C\+E\+L\+L.\+h@{U\+N\+I\+O\+N\+C\+E\+L\+L.\+h}!merge@{merge}}
+\index{merge@{merge}!U\+N\+I\+O\+N\+C\+E\+L\+L.\+h@{U\+N\+I\+O\+N\+C\+E\+L\+L.\+h}}
+\subsubsection[{merge}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+U\+P\+L\+E}$\ast$ merge (
+\begin{DoxyParamCaption}
+\item[{list$<$ {\bf T\+U\+P\+L\+E} $\ast$ $>$ $\ast$}]{tuplelist, }
+\item[{uint}]{dominantpipeid}
+\end{DoxyParamCaption}
+)}\label{UNIONCELL_8h_a6f5457bd2820312a229bf464f813198d}
+
+
+두개 이상의 튜플을 merge를 수행하는 내부 로직 
+
+두개 이상의 튜플을 merge하는 내부 로직이다. 다수의 튜플은 리스트 형태로 들어가며, 또한 결과 튜플의 속성을 정의하기 위한 dominantpipeid가 필요하다. \begin{DoxyReturn}{Returns}
+T\+U\+P\+L\+E$\ast$로써, 하나의 튜플 포인터를 반환한다. 
+\end{DoxyReturn}

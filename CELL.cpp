@@ -1,6 +1,8 @@
 #include "CELL.h"
 #include "PIPE.h"
 #include "WORKER.h"
+#include "STREAMFACTORY.h"
+#include <string.h>
 
 CELL::CELL ( PIPE* inpipe, list< PIPE* >* outpipes, ushort count, STREAMFACTORY* parent, uint XIXO )
 {
@@ -180,18 +182,17 @@ list< PIPE* >* CELL::getoutpipelist()
 
 void CELL::schedulerSleep()
 {
-    pthread_mutex_lock ( &this->mutex );
+    int lockerror = pthread_mutex_trylock ( &this->mutex );
     this->isrun = false;
-    pthread_mutex_unlock ( &this->mutex );
+    lockerror = pthread_mutex_unlock ( &this->mutex );
 }
 
 void CELL::schedulerWakeup()
 {
-    pthread_mutex_lock ( &this->mutex );
+    int lockerror = pthread_mutex_lock ( &this->mutex );
     this->isrun = true;
-    pthread_cond_signal ( &this->condition );
-    //printf("Op wake up...\n");
-    pthread_mutex_unlock ( &this->mutex );
+    int error = pthread_cond_signal ( &this->condition );
+    lockerror = pthread_mutex_unlock ( &this->mutex );
 }
 
 bool CELL::getCELLState()
@@ -199,6 +200,7 @@ bool CELL::getCELLState()
     return this->isrun;
 }
 
+/*
 bool CELL::getWORKERState()
 {
     // 워커가 없는 경우 true
@@ -221,9 +223,57 @@ bool CELL::getWORKERState()
     }
 
     return checker;
-}
+}*/
 
 ushort CELL::getXIXO()
 {
     return this->XIXO;
+}
+
+STREAMFACTORY* CELL::getParentFactory()
+{
+    return this->parent;
+}
+
+void CELL::setignoreuuid ( unsigned int uuid )
+{
+    if(this->inpipelist != NULL)
+    {
+        for(auto iter = this->inpipelist->begin(); iter != this->inpipelist->end(); ++iter)
+        {
+            PIPE* pipe = *iter;
+            pipe->setingnoreuuid(uuid);
+        }
+    }
+}
+
+void CELL::clearignoreuuid()
+{
+    if(this->inpipelist != NULL)
+    {
+        for(auto iter = this->inpipelist->begin(); iter != this->inpipelist->end(); ++iter)
+        {
+            PIPE* pipe = *iter;
+            pipe->clearignoreuuid();
+        }
+    }
+}
+
+bool CELL::hasuuid ( unsigned int uuid )
+{
+    // 워커가 없는 경우 true
+    if(workers.size() == 0)
+    {
+        return false;
+    }
+    
+    bool checker = false;
+    // 워커 검색하여 워커중 하나라도 작동하는지 검사함
+    for ( auto iter = workers.begin(); iter != workers.end(); ++iter )
+    {
+        WORKER* worker = *iter;
+        checker |= worker->hasuuid(uuid);
+    }
+
+    return checker;
 }

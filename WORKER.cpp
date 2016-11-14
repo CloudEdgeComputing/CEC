@@ -3,6 +3,7 @@
 #include "BASICCELL.h"
 #include "TUPLE.h"
 #include "UNIONCELL.h"
+#include <STREAMFACTORY.h>
 
 WORKER::WORKER ( CELL* parent )
 {
@@ -41,38 +42,38 @@ void WORKER::sleep()
 static void* wrapper_thread ( void* arg )
 {
     WORKER* worker = ( WORKER* ) arg;
-    
-    switch(worker->getParentCELL()->getXIXO())
+
+    switch ( worker->getParentCELL()->getXIXO() )
     {
         case SISO:
         {
-            lockfreeq* inpipeq;
             list<PIPE*>* outpipelist;
-            
-            BASICCELL* cell = (BASICCELL*)worker->getParentCELL();
-            
-            inpipeq = cell->getinpipe()->getQueue();
+
+            BASICCELL* cell = ( BASICCELL* ) worker->getParentCELL();
+
             outpipelist = cell->getoutpipelist();
-            
-            while( 1 )
+
+            while ( 1 )
             {
                 // 인풋큐가 비었거나 셀 스테이트가 false인경우
-                bool besleep = inpipeq->empty() || !cell->getCELLState();
-                
-                if( besleep )
+                bool besleep = cell->getinpipe()->empty() || !cell->getCELLState();
+
+                if ( besleep )
                 {
                     //printf("SISO sleeping...\n");
                     worker->sleep();
                     //printf("SISO wakeup... \n");
                     continue;
                 }
-                
+
                 TUPLE* tuple;
-                
-                if ( !inpipeq->pop ( tuple ) )
+
+                if ( ( tuple = cell->getinpipe()->pop() ) == NULL )
                 {
                     continue;
                 }
+                
+                worker->setuuid(tuple->getuuid());
 
                 // Sequence check TODO
                 //debug_packet(data->getcontent(), (unsigned int)data->getLen());
@@ -81,103 +82,149 @@ static void* wrapper_thread ( void* arg )
 
                 FUNC func = ( FUNC ) cell->getfunc();
                 //printf("processing!\n");
-                TUPLE* output = func ( tuple );
+                TUPLE* output = func ( tuple, worker->getParentCELL()->getParentFactory()->getStatemanager() );
+                
+                
+                if(output == NULL)
+                    continue;
 
-                // 오너 소켓디스크립터는 변하지 않았으므로 유지한다.
-                output->setfd ( tuple->getfd() );
+                // uuid는 변하지 않는다.
+                output->setuuid ( tuple->getuuid() );
 
                 // outq로 결과 데이터를 보낸다.
                 for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
                 {
-                    auto outpipeq = ( *iter )->getQueue();
+                    auto outpipe = *iter;
 
-                    if ( !outpipeq->push ( output ) )
-                    {
-                        printf ( "Error occured in wrapper thread push!\n" );
-                        exit ( 0 );
-                    }
+                    outpipe->push ( output );
                 }
-                
+                worker->clearuuid();
+
             }
-            
+
             break;
         }
         case MISO:
         {
             list<PIPE*>* inpipelist;
             list<PIPE*>* outpipelist;
-            
-            UNIONCELL* cell = (UNIONCELL*)worker->getParentCELL();
-            
+
+            UNIONCELL* cell = ( UNIONCELL* ) worker->getParentCELL();
+
             inpipelist = cell->getinpipelist();
             outpipelist = cell->getoutpipelist();
-            
-            while(1)
+
+            while ( 1 )
             {
-                bool allready = false;
-                
-                // 여기는 inpipe가 모두 데이터를 가지고 있음을 보장 받아야 하고 
-                // 보장 받은 순간 이 워커만 데이터들을 뽑아낼 수 있다. 
-                pthread_mutex_lock(cell->getpipelock());
-                
+                // 여기는 inpipe가 모두 데이터를 가지고 있음을 보장 받아야 하고
+                // 보장 받은 순간 이 워커만 데이터들을 뽑아낼 수 있다.
+                pthread_mutex_lock ( cell->getpipelock() );
+
+                // 튜플을 보관하기 위한 임시장소
                 list<TUPLE*>* intuples = new list<TUPLE*>;
-                
-                for(auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter)
+
+                // pipe_ready: 하나 이상의 파이프는 데이터를 담고 있어야 함
+                // newest_ready: 데이터를 담고 있지 않은 파이프는 newest가 있어야 함
+                // besleep: 위 두 ready 중 하나 이상 만족 하지 않아야 함 + cell state가 러닝이 안되어 있어야 함
+
+                bool pipe_ready = false;
+                bool newest_ready = true;
+
+                if ( cell->getUnionPolicy() == POLICY_PARTIALREADY )
                 {
-                    PIPE* pipe = *iter;
-                    allready &= !pipe->getQueue()->empty();
+                    for ( auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter )
+                    {
+                        PIPE* pipe = *iter;
+                        // 파이프 큐에 데이터가 있거나 전에 보냈던 데이터가 있는 경우
+                        if ( pipe->getQueue()->empty() == false )
+                        {
+                            pipe_ready |= true;
+                        }
+                        else
+                        {
+                            if ( pipe->getnewest ( false ) != false )
+                            {
+                                newest_ready &= true;
+                            }
+                            else
+                            {
+                                newest_ready = false;
+                            }
+                        }
+                    }
+                }
+                else if ( cell->getUnionPolicy() == POLICY_ALLREADY )
+                {
+                    pipe_ready = true;
+                    for ( auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter )
+                    {
+                        PIPE* pipe = *iter;
+                        // 파이프 큐에 데이터가 있거나 전에 보냈던 데이터가 있는 경우
+                        newest_ready &= !pipe->getQueue()->empty();
+                    }
                 }
                 
-                bool besleep = !allready || !cell->getCELLState();
-                
-                if( besleep )
+                bool besleep = !cell->getCELLState() || ! ( pipe_ready && newest_ready );
+
+                if ( besleep )
                 {
-                    //printf("SISO sleeping...\n");
-                    pthread_mutex_unlock(cell->getpipelock());
+                    //printf("MISO sleeping...\n");
+                    pthread_mutex_unlock ( cell->getpipelock() );
                     worker->sleep();
-                    //printf("SISO wakeup... \n");
+                    //printf("MISO wakeup... \n");
                     continue;
                 }
-                
-                for(auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter)
+
+                for ( auto iter = inpipelist->begin(); iter != inpipelist->end(); ++iter )
                 {
                     PIPE* pipe = *iter;
-                    
+
                     TUPLE* tuple;
-                    if(!pipe->getQueue()->pop ( tuple ))
+                    if ( ( tuple = pipe->pop() ) == NULL )
                     {
-                        printf("MISO pipelock does not working appropriately\n");
-                        exit(0);
+                        // 데이터가 없는 경우 newest data를 긁어 온다.
+                        TUPLE* pasttuple = pipe->getnewest ( true );
+                        pasttuple->setpipeid ( pipe->getid() );
+                        intuples->push_back ( pasttuple );
                     }
-                    
-                    intuples->push_back(tuple);
+                    else
+                    {
+                        // 데이터가 있는 경우 현재 tuple에 데이터가 있음
+                        tuple->setpipeid ( pipe->getid() );
+                        intuples->push_back ( tuple );
+                        // newest tuple로 복사함
+                        pipe->setnewest ( tuple );
+
+                    }
                 }
-                
-                pthread_mutex_unlock(cell->getpipelock());
-                
+
+                pthread_mutex_unlock ( cell->getpipelock() );
+                for(auto iter = intuples->begin(); iter != intuples->end(); ++iter)
+                {
+                    TUPLE* tuple = *iter;
+                    worker->setuuid(tuple->getuuid());
+                }
+
                 MERGE_FUNC func = cell->getfunc();
-                
+
                 TUPLE* output = func ( intuples, cell->getdominantpipeid() );
-                
+
                 delete intuples;
-                
+
                 for ( auto iter = outpipelist->begin(); iter != outpipelist->end(); ++iter )
                 {
-                    auto outpipeq = ( *iter )->getQueue();
+                    auto outpipe = *iter;
 
-                    if ( !outpipeq->push ( output ) )
-                    {
-                        printf ( "Error occured in wrapper thread push!\n" );
-                        exit ( 0 );
-                    }
+                    outpipe->push ( output );
                 }
+                worker->clearuuid();
             }
             break;
         }
         default:
         {
-            printf("Unexpected XIXO type!\n");
-            exit(0);
+            printf ( "Unexpected XIXO type!\n" );
+            exit ( 0 );
             break;
         }
     }
@@ -186,4 +233,25 @@ static void* wrapper_thread ( void* arg )
 CELL* WORKER::getParentCELL()
 {
     return this->parentCELL;
+}
+
+void WORKER::setuuid ( unsigned int uuid )
+{
+    this->uuid.push_back(uuid);
+}
+
+bool WORKER::hasuuid( unsigned int uuid )
+{
+    for(auto iter = this->uuid.begin(); iter != this->uuid.end(); ++iter)
+    {
+        unsigned int _uuid = *iter;
+        if(_uuid == uuid)
+            return true;
+    }
+    return false;
+}
+
+void WORKER::clearuuid()
+{
+    this->uuid.clear();
 }

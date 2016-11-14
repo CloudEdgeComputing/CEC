@@ -5,6 +5,7 @@
 #include "PACKET.h"
 #include "TUPLE.h"
 #include "Debug.h"
+#include <FACTORYBUILDER.h>
 
 SRCCELL::SRCCELL ( int recvport, list< PIPE* >* outpipelist, STREAMFACTORY* parent ) : CELL ( outpipelist, 1, parent, SO )
 {
@@ -83,20 +84,21 @@ void* SRCCELL::SRCbroker_start_internal ( void* context )
         printf("accepted!\n");
         
         this->isrun = true;
-
-        struct CONNDATA* receiverdata = new struct CONNDATA;
-        receiverdata->fd = fd;
-        receiverdata->thispointer = this;
-        receiverdata->outpipelist = this->outpipelist;
-
-        pthread_t receiver_tid;
-        pthread_create ( &receiver_tid, NULL, &SRCCELL::SRCrecv_start_wrapper, ( void* ) receiverdata );
         
         // user register
         CLIENT* client = new CLIENT;
         client->fd = fd;
         client->var_sockaddr = client_addr;
         this->registerDevice(client);
+
+        struct CONNDATA* receiverdata = new struct CONNDATA;
+        receiverdata->fd = fd;
+        receiverdata->thispointer = this;
+        receiverdata->outpipelist = this->outpipelist;
+        receiverdata->client = client;
+
+        pthread_t receiver_tid;
+        pthread_create ( &receiver_tid, NULL, &SRCCELL::SRCrecv_start_wrapper, ( void* ) receiverdata );
     }
 }
 
@@ -121,6 +123,7 @@ void* SRCCELL::SRCrecv_start_internal ( void* context )
     while ( 1 )
     {
         unsigned int size = recv ( srcctx->fd, buffer, sizeof ( buffer ), 0 );
+        printf("size: %d\n", size);
         if ( ( size == -1 ) || ( size == 0 ) )
             break;
 
@@ -144,9 +147,28 @@ void* SRCCELL::SRCrecv_start_internal ( void* context )
             for ( auto iter = srcctx->outpipelist->begin(); iter != srcctx->outpipelist->end(); ++iter )
             {
                 PIPE* pipe = *iter;
-                lockfreeq* outq = pipe->getQueue();
-                TUPLE* data = new TUPLE ( result, outsize - 4, 0, srcctx->fd );
-                outq->push ( data );
+                TUPLE* data = new TUPLE ( result, outsize - 4, 0, 0 );
+                
+                // 어셈블 된 튜플의 타입이 0x01인경우 startmigration 실행
+                if(data->gettype() == 0x01)
+                {
+                    this->parent->startMIGRATION(srcctx->client->uuid);
+                    delete[] data->getdata();
+                    delete data;
+                    continue;
+                }
+                // 디바이스 등록
+                else if(data->gettype() == 0x03)
+                {
+                    int uuid = data->getInt();
+                    srcctx->client->uuid = uuid;
+                    printf("registerd client's uuid: %d\n", uuid);
+                    delete[] data->getdata();
+                    delete data;
+                    continue;
+                }
+                data->setuuid(srcctx->client->uuid);
+                pipe->push ( data );
             }
         }
         memset ( buffer, 0, sizeof buffer );

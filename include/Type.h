@@ -15,10 +15,11 @@ typedef unsigned short WORD;
 typedef unsigned char BYTE;
 typedef unsigned short ushort;
 typedef unsigned char uchar;
-typedef boost::lockfree::queue<TUPLE*> lockfreeq;
+typedef list<TUPLE*> quetype;
 
 struct CLIENT
 {
+    int uuid;
     int fd;
     struct sockaddr* var_sockaddr;
 };
@@ -28,5 +29,6 @@ struct CONNDATA
     list<PIPE*>* inpipelist;
     list<PIPE*>* outpipelist;
     int fd;
+    CLIENT* client;
     void* thispointer;
 };
